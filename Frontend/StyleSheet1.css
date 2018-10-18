@@ -45,3 +45,13 @@ table {
 	border-spacing: 0;
 }
 
+.container{
+	text-align: center;
+	padding: 10px;
+}
+
+.clearfix:after{
+	content: "";
+	display:block;
+	clear:both;
+}
