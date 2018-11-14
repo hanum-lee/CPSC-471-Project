@@ -1,0 +1,50 @@
+:root {
+	--base-color: #eef6ff;
+	--mid-color: #bfbfbf;
+	--dark-color: #3d414c;
+	--point-color: #B98289;
+}
+
+body {
+background-color: var(--base-color);
+line-height:1.6em;
+margin:0;
+}
+
+header {
+	background-color: var(--mid-color);
+}
+
+.container {
+	width:90%;
+	margin:auto;
+	overflow:hidden;
+}
+
+#mainHeader {
+	position:fixed;
+}
+
+/* logo in top left corner */
+.leftContain {
+	float:left;
+	display:inline;
+}
+
+/* log in/out button style */
+.rightContain {
+	float:right;
+	display:inline;
+}
+#logButton {
+	background-color: var(--dark-color);
+	color: #fff;
+	padding:10px 15px;
+	border:none;
+	text-decoration:none;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+#logButton:hover {
+	background-color: var(--point-color);
+	color: #000;
+}
