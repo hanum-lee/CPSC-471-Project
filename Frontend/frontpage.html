@@ -19,17 +19,22 @@
             </div>
         </div>
     </header>
-    <div class="container">
-    	<a href = "managepage.html" class = "button">Manage</a>
+  	<a href = "managepage.html" class = "button">Manage</a>
 
-      <!-- search icon library -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- search icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-      <form class="searchbar">
-        <input type="text" name="searchBox" />
-        <button type="submit"><i class="fa fa-search"></i></button>
-      </form>
+    <div class="searchbar">
+      <h1 id="searchTitle"> search </h1>
+      <input type="text" name="searchBox" />
+      <button type="submit"><i class="fa fa-search"></i></button>
     </div>
+
+    <!-- should only be available to logged in user or admin -->
+    <ul>
+      <li><a id="account" href = "" class = "button"> account </a></li>
+      <li><a id="addRecipe" href = "" class = "button"> add recipe </a></li>
+    </ul>
 
 </body>
 </html>
