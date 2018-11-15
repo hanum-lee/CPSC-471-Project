@@ -21,17 +21,13 @@ header {
 	overflow:hidden;
 }
 
-#mainHeader {
-	position:fixed;
-}
-
-/* logo in top left corner */
+/* logo in top left corner*/
 .leftContain {
 	float:left;
 	display:inline;
 }
 
-/* log in/out button style */
+/* log in/out button style*/
 .rightContain {
 	float:right;
 	display:inline;
@@ -48,17 +44,29 @@ header {
 	background-color: var(--point-color);
 	color: #000;
 }
-.container2 {
-	width:80%;
-	margin:auto;
-	overflow:auto;
-	padding: 125px 0;
+
+/* search bar */
+input {
+	background: #fff;
+	width: 80%;
+	height: 35px;
+	outline: none;
+	border: none;
+	padding: 0 20px;
+	outline: none;
+	border-radius: 25px 0 0 25px;
 }
-a.button {
-	-webkit-appearance: button;
-	-moz=appearance: button;
-	appearance: button;
-	padding: 0 5px;
-	text-decoration: none;
-	color: initial;
+button {
+	position: relative;
+	left: -5px;
+	border-radius: 0 25px 25px 0;
+	width: 100px;
+	height: 35px;
+	outline: none;
+	border: none;
+	background-color: var(--mid-color);
+}
+button:hover {
+	background-color: var(--dark-color);
+	color: #fff;
 }

@@ -9,22 +9,26 @@
    <script src = "js/JavaScript.js"></script>
 </head>
 <body>
-    <header id=mainHeader>
+    <header>
         <div class="container">
             <div class="leftContain">
-              <h1>
-                  Recipe Searcher (logo)
-              </h1>
+              <h1> Recipe Searcher (logo) </h1>
             </div>
             <div class="rightContain">
               <a id="logButton" href = "loginpage.html" class = "button">Log In/Register</a>
             </div>
         </div>
     </header>
-    <div class="container2">
-        <input type="search" name="searchBox" size="100" />
-        <button type="button">Search</button>
-    	<a id = "managebutton" href = "managepage.html" class = "button">Manage</a>
+    <div class="container">
+    	<a href = "managepage.html" class = "button">Manage</a>
+
+      <!-- search icon library -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+      <form class="searchbar">
+        <input type="text" name="searchBox" />
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
     </div>
 
 </body>
