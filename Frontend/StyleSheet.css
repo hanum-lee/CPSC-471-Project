@@ -45,6 +45,10 @@ header {
 	color: #000;
 }
 
+/***************************
+MAIN PAGE
+***************************/
+
 /* search bar */
 .searchbar {
 	margin: auto;
@@ -99,4 +103,14 @@ ul a {
 }
 ul a:hover {
 	color: #000;
+}
+
+/***************************
+LOGIN PAGE
+***************************/
+
+#info-container {
+  padding: 10px;
+
+  border-color: var(--point-color);
 }
