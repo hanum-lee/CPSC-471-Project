@@ -1,5 +1,11 @@
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
 :root {
-	--base-color: #ffe0a1;
+	--base-color: #fff;
 	--mid-color: #bfbfbf;
 	--dark-color: #3d414c;
 	--point-color: #96080f;
@@ -12,10 +18,12 @@ margin:0;
 }
 
 header {
+	display: block;
 	background-color: var(--base-color);
 }
 
 .container {
+	display: block;
 	width:90%;
 	margin:auto;
 	overflow:hidden;
@@ -32,6 +40,50 @@ header {
 	float:right;
 	display:inline;
 }
+
+.headContainer {
+    position: fixed;
+    display: block;
+    width: 100%;
+    margin:auto;
+    padding: 0 50px;
+    overflow:hidden;
+    background-color: var(--base-color);
+}
+
+.contentContainer {
+  position: relative;
+  top: 80px;
+  width: 100%;
+  padding: 0 50px;
+  display: block;
+  margin:auto;
+  overflow:hidden;
+}
+
+.titleContainer {
+  position: relative;
+  top: 80px;
+  display: block;
+  background-image: url("bread.jpg");
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+  color: var(--dark-color);
+  font-size: 40px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-weight: 700;
+  padding: 45px;
+}
+
+.flexContainer {
+  position: relative;
+  top: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
 #logButton {
 	background-color: var(--dark-color);
 	color: #fff;
@@ -45,33 +97,59 @@ header {
 	color: #000;
 }
 
+#navSearch {
+  background-color: var(--dark-color);
+  text-align: center;
+  border: none;
+  border-radius: 25px;
+  outline: none;
+  font-size: 15px;
+  width: 30%;
+  height: 25px;
+  position: relative;
+  top: 20px;
+  left: 10%;
+}
+
 /***************************
 MAIN PAGE
 ***************************/
-
+.imageContainer {
+  position:relative;
+  top: 70px;
+  width:100%;
+  height: 400px;
+  background-image: url("bread.jpg");
+  background-size: cover;
+  background-position: center;
+}
 /* search bar */
-.searchbar {
+#searchbar {
 	margin: auto;
-	width: 60%;
-	padding: 50px 5px;
-
+	width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 #searchTitle {
-	color: var(--point-color);
+	color: var(--dark-color);
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 	text-align: center;
 }
-input {
+#mainSearch {
+  margin-left:12%;
 	background: #fff;
-	width: 80%;
+	width: 70%;
 	height: 35px;
 	outline: none;
-	border: none;
+  border: none;
 	padding: 0 20px;
 	outline: none;
 	border-radius: 25px 0 0 25px;
 }
-button {
+button[type="submit"] {
+  margin:auto;
 	position: relative;
 	left: -10px;
 	border-radius: 0 25px 25px 0;
@@ -82,27 +160,13 @@ button {
 	background-color: #fff;
 	color: var(--dark-color);
 }
-button:hover {
+button[type="submit"]:hover {
 	background-color: var(--point-color);
 	color: #fff;
 }
-
-ul {
-	margin: auto;
-	float:left;
-	width: 100px;
-	background-color: var(--point-color);
-	list-style-type: none;
-	border-radius: 0 50px 50px 0;
-	padding: 10px;
-}
-ul a {
-	color: #fff;
-	text-decoration: none;
-	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-}
-ul a:hover {
-	color: #000;
+#mainImage {
+  position:absolute;
+  width: 100%;
 }
 
 /***************************
@@ -110,7 +174,79 @@ LOGIN PAGE
 ***************************/
 
 #info-container {
-  padding: 10px;
+  padding: 50px;
+  width: 45%;
+  background-color: var(--mid-color);
+}
 
-  border-color: var(--point-color);
+.loginfo {
+  display: block;
+  margin: 20px 0;
+  text-align: center;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  overflow: hidden;
+  width: 100%;
+  height: 50px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.logRegButton {
+  display: block;
+  margin: 40px 0;
+  text-align: center;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  width: 100%;
+  height: 50px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/***************************
+MANAGE PAGE
+***************************/
+
+.manageOption {
+  border-style: solid;
+  border-color: var(--dark-color);
+  text-align: center;
+  text-decoration: none;
+  color: var(--dark-color);
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  padding: 20px;
+  margin: 10px;
+  flex: 1;
+}
+
+/***************************
+RECIPE PAGE
+***************************/
+
+.saveButton {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: var(--dark-color);
+  color: #fff;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+}
+
+.xButton {
+  background-color: var(--point-color);
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  outline: none;
+  padding: 3px 10px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  float: right;
 }

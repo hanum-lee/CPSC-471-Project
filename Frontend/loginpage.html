@@ -9,34 +9,30 @@
    <script src = "js/JavaScript.js"></script>
 </head>
 <body>
-	<div id="container">
 		<header>
+      <div class=headContainer>
 			<h1>
 			<a href = "frontpage.html">Recipe Searcher logo</a>
 			</h1>
+    </div>
 		</header>
-	</div>
-  <div id="container">
-    <div id="info-container">
-      <header>
-        <h1>Log In</h1>
-      </header>
-		  <h2>UserID</h2>
-		    <input type="UserID" name="IDBox" size="50" />
-		  <h2>Password</h2>
-		    <input type="password" name="passwordBox" size="50" />
-		    <button type="login">Log In</button>
+  <div class=contentContainer>
+    <div class=leftContain id="info-container">
+      <h1>Log In</h1>
+      <form>
+		    <input class="loginfo" type="UserID" name="IDBox" placeholder="Username"/>
+		    <input class="loginfo" type="password" name="passwordBox" placeholder="Password" />
+		    <button class="logRegButton" type="login">Log In</button>
+      </form>
 	   </div>
 
-	  <div id="info-container">
-		  <header>
-			  <h1>Register</h1>
-		  </header>
-		  <h2>UserID</h2>
-			  <input type="UserID" name="IDBox" size="50" />
-		  <h2>Password</h2>
-			  <input type="password" name="passwordBox" size="50" />
-			  <button type="register">Register</button>
+	  <div class=rightContain id="info-container">
+      <h1>Register</h1>
+      <form>
+			  <input class="loginfo" type="UserID" name="IDBox" placeholder="Username"/>
+			  <input class="loginfo" type="password" name="passwordBox" placeholder="Password"/>
+			  <button class="logRegButton" type="register">Register</button>
+      </form>
 	   </div>
   </div>
 </body>
