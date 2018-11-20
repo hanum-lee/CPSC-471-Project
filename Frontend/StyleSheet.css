@@ -84,6 +84,10 @@ header {
   margin: auto;
 }
 
+.hide {
+  display: none;
+}
+
 #logButton {
 	background-color: var(--dark-color);
 	color: #fff;
@@ -164,9 +168,12 @@ button[type="submit"]:hover {
 	background-color: var(--point-color);
 	color: #fff;
 }
-#mainImage {
-  position:absolute;
-  width: 100%;
+#searchMessage {
+  margin:auto;
+  color: var(--dark-color);
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  text-align: center;
+
 }
 
 /***************************
