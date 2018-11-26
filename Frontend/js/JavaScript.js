@@ -1,30 +1,38 @@
 //document.write("Hello World");
 
-// use variable to hide certain elements
+/**********************
+var for all pages
+**********************/
 let userLogin = false;
 
-let loginButton = document.getElementById("logButton");
-let manageButton = document.getElementById("manageButton");
-if (userLogin) {
-  loginButton.innerHTML = "Logout";
-  manageButton.className = "";
+function Login() {
+  let loginButton = document.getElementById("logButton");
+  let manageButton = document.getElementById("manageButton");
+  if (userLogin) {
+    loginButton.innerHTML = "Logout";
+    manageButton.className = "";
+  }
+  else {
+    loginButton.innerHTML = "Login/Register";
+    manageButton.className = "hide";
+  }
 }
-else {
-  loginButton.innerHTML = "Login/Register";
-  manageButton.className = "hide";
-}
-
 
 /***********************
 Searchbar
 ***********************/
+//variables
 let searchBar =  document.getElementById('mainSearch');
 let searchButton = document.getElementById('searchButton');
 let searchMssg = document.getElementById('searchMessage');
 let searchInput = '';
 
-searchButton.addEventListener("click",search);
+let drop = document.getElementById('dropOption');
+let dropbtn = document.getElementById('dropbtn');
+let dropOptions = document.getElementsByClassName('dropOption');
+let searchOption = '';
 
+//functions
 function search() {
   let searchInput = searchBar.value;
   if (searchInput == '') {
@@ -36,13 +44,27 @@ function search() {
   }
 }
 
-let drop = document.getElementById('dropOption');
-let dropbtn = document.getElementByClassName('dropbtn');
-drop.className = "hide";
-
-dropbtn.addEventListener("click", dropdown);
 function dropdown() {
   drop.className = "dropdown-content";
+}
+
+function selectOption() {
+  dropbtn.textContent = this.textContent;
+  searchOption = this.textContent;
+  drop.className = "hide";
+
+}
+
+//implementation
+searchButton.addEventListener("click",search);
+
+drop.className = "hide";
+dropbtn.addEventListener("click", dropdown);
+
+for (var i = 0; i < dropOptions.length; i++) {
+    (function () {
+        dropOptions[i].addEventListener("click", selectOption);
+    }());
 }
 
 /***********************
@@ -53,6 +75,9 @@ Login/Register
 Add/Edit/View Recipe
 ***********************/
 
+/***********************
+Manage
+***********************/
 
 
 

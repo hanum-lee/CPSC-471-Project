@@ -142,9 +142,9 @@ MAIN PAGE
 	text-align: center;
 }
 #mainSearch {
-  margin-left:5%;
+  margin-left:10%;
 	background: #fff;
-	width: 70%;
+	width: 60%;
 	height: 35px;
 	outline: none;
   border: none;
@@ -190,20 +190,25 @@ button[type="submit"]:hover {
   color: var(--dark-color);
 }
 .dropdown-content {
-    margin-left:5%;
+    margin-left:6%;
     position: absolute;
     background-color: #f1f1f1;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
-.dropdown-content a {
+.dropdown-content button {
     color: black;
+    min-width: 160px;
     padding: 12px 16px;
     text-decoration: none;
+    background-color: #58c962;
     display: block;
+    outline: none;
+    border: none;
+    color: var(--dark-color);
 }
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content button:hover {background-color: #ddd;}
 
 /***************************
 LOGIN PAGE
