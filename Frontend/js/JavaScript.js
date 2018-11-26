@@ -36,9 +36,23 @@ function search() {
   }
 }
 
+let drop = document.getElementById('dropOption');
+let dropbtn = document.getElementByClassName('dropbtn');
+drop.className = "hide";
+
+dropbtn.addEventListener("click", dropdown);
+function dropdown() {
+  drop.className = "dropdown-content";
+}
+
 /***********************
 Login/Register
 ***********************/
+
+/***********************
+Add/Edit/View Recipe
+***********************/
+
 
 
 

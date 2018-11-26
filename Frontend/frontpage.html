@@ -25,9 +25,17 @@
       <a id="manageButton" href = "managepage.html" class = "hide">Manage</a>
       <div id="searchbar">
         <h1 id="searchTitle"> search </h1>
-        <input id="mainSearch" type="text" name="searchBox" />
+        <div class="dropdown">
+          <button class="dropbtn">Dropdown</button>
+          <div id="dropOption" class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="#">Link 3</a>
+          </div>
+        </div>
+        <input id="mainSearch" type="text" name="searchBox" autocomplete="off"/>
         <button id = "searchButton" type="submit"><i class="fa fa-search"></i></button>
-        <p id="searchMessage"> Let's search for a recipe! </p>
+        <p id="searchMessage"> eg. flour, water, sugar </p>
       </div>
     </div>
     <script src = "js/JavaScript.js"></script>
