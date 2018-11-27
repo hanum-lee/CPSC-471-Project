@@ -47,8 +47,8 @@ header {
     width: 100%;
     margin:auto;
     padding: 0 50px;
-    overflow:hidden;
     background-color: var(--base-color);
+    z-index: 1000;
 }
 
 .contentContainer {
@@ -84,10 +84,9 @@ header {
   margin: auto;
 }
 
-.hide {
-  display: none;
-}
-
+/***************************
+NAVIGATION BAR
+***************************/
 #logButton {
 	background-color: var(--dark-color);
 	color: #fff;
@@ -103,6 +102,7 @@ header {
 
 #navSearch {
   background-color: var(--dark-color);
+  color: #fff;
   text-align: center;
   border: none;
   border-radius: 25px;
@@ -112,8 +112,70 @@ header {
   height: 25px;
   position: relative;
   top: 20px;
-  left: 10%;
+  left: 5%;
 }
+
+#navSearchBttn {
+	border-radius: 25px;
+  position: relative;
+  top: 20px;
+  right: -60px;
+	width: 50px;
+	height: 30px;
+	outline: none;
+	border: none;
+	background-color: var(--dark-color);
+  display: inline;
+	color: #fff;
+}
+#navSearchBttn:hover {
+	background-color: var(--mid-color);
+	color: var(--dark-color);
+}
+
+.navDropdown {
+  display: inline;
+  position: relative;
+  top: 20px;
+  left: 5%;
+}
+
+.navDropbtn {
+  margin:auto;
+  min-width: 170px;
+  height: 25px;
+  outline: none;
+  border: none;
+  border-radius: 25px;
+  background-color: var(--dark-color);
+  color: #fff;
+}
+
+.navDropdown-content {
+  opacity:0.9;
+  margin: auto;
+  position: absolute;
+  right: 10px;
+  background-color: #f1f1f1;
+  min-width: 70px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.navDropdown-content button {
+    opacity: inherit;
+    color: black;
+    min-width: 160px;
+    padding: 12px 16px;
+    text-decoration: none;
+    background-color: var(--dark-color);
+    display: block;
+    outline: none;
+    border: none;
+    color: #fff;
+}
+.navDropdown-content button:hover {background-color: #ddd;}
+
 
 /***************************
 MAIN PAGE
@@ -190,6 +252,7 @@ button[type="submit"]:hover {
   color: var(--dark-color);
 }
 .dropdown-content {
+    opacity:0.9;
     margin-left:6%;
     position: absolute;
     background-color: #f1f1f1;
@@ -198,7 +261,7 @@ button[type="submit"]:hover {
     z-index: 1;
 }
 .dropdown-content button {
-    color: black;
+    opacity: inherit;
     min-width: 160px;
     padding: 12px 16px;
     text-decoration: none;
@@ -209,6 +272,7 @@ button[type="submit"]:hover {
     color: var(--dark-color);
 }
 .dropdown-content button:hover {background-color: #ddd;}
+.dropbtn:hover {background-color: #ddd;}
 
 /***************************
 LOGIN PAGE
