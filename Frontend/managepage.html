@@ -6,14 +6,28 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="StyleSheet.css">
     <title>Recipe Website-Manage</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src = "js/managepage.js"></script>
 </head>
 <body>
   <header>
       <div class="headContainer">
           <div class="leftContain">
-            <h1> Recipe Searcher (logo) </h1>
+            <h1> Recipe Searcher </h1>
           </div>
+          <div class="navDropdown">
+            <button id="navDropbtn" class="navDropbtn">Select search option</button>
+            <div id="navDropOption" class="navDropdown-content">
+              <button class="navDropOption">Ingredients</button>
+              <button class="navDropOption">Food type</button>
+              <button class="navDropOption">Food name</button>
+              <button class="navDropOption">Recipe name</button>
+              <button class="navDropOption">Cookware</button>
+            </div>
+          </div>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
           <input id="navSearch" type = "text" placeholder="Search...">
+          <button id = "navSearchBttn"><i class="fa fa-search"></i></button>
           <div class="rightContain">
             <a id="logButton" href = "loginpage.html" class = "button">Log In/Register</a>
           </div>
@@ -28,6 +42,5 @@
 		<a class="manageOption" href = "removefav.html"> Remove Favorites</a>
 		<a class="manageOption" href = "editreview.html"> Edit Existing Reviews</a>
 	</div>
-  <script src = "js/JavaScript.js"></script>
 </body>
 </html>
