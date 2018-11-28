@@ -36,6 +36,11 @@ function getRecipes() {
 }
 
 $(document).ready(function(){
+  $.ajax("localhost:8080");
+
+
+
+
   // display login or logout
   if (userLogin) {
     $("#logButton").text('Logout');
