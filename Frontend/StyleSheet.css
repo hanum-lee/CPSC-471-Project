@@ -43,27 +43,26 @@ header {
 
 .headContainer {
     position: fixed;
+    top: 0px;
     display: block;
     width: 100%;
-    margin:auto;
+    margin:0px auto;
     padding: 0 50px;
     background-color: var(--base-color);
     z-index: 1000;
 }
 
 .contentContainer {
-  position: relative;
-  top: 80px;
   width: 100%;
   padding: 0 50px;
   display: block;
-  margin:auto;
+  margin:0px auto;
   overflow:hidden;
 }
 
 .titleContainer {
-  position: relative;
-  top: 80px;
+  position: static;
+  margin: 80px 0px auto auto;
   display: block;
   background-image: url("bread.jpg");
   background-size: cover;
@@ -76,12 +75,17 @@ header {
   padding: 45px;
 }
 
+.reviewContainer {
+  position: static;
+  margin: auto;
+  padding: 0 50px;
+}
+
 .flexContainer {
-  position: relative;
-  top: 100px;
+  position: static;
   display: flex;
   flex-wrap: wrap;
-  margin: auto;
+  margin: 50px auto;
 }
 
 /***************************
@@ -354,4 +358,15 @@ RECIPE PAGE
   padding: 3px 10px;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
   float: right;
+}
+
+/***************************
+VIEW RECIPE PAGE
+***************************/
+
+#recipeTitle {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    text-decoration: underline;
+    text-align: center;
+    font-size: 20px;
 }

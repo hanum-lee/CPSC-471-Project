@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="StyleSheet.css">
     <title>Recipe Website-AddRecipe</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src = "js/listpage.js"></script>
+    <script src = "js/viewrecipepage.js"></script>
 </head>
 <body>
   <header>
@@ -33,12 +33,18 @@
           </div>
       </div>
   </header>
-  <div id="listPageTitle" class="titleContainer">
-    RESULTS
+  <div id="recipePageTitle" class="titleContainer">
   </div>
   <div class="contentContainer">
-
-
+	   <a class="xButton" href = "managepage.html" class = "button">X</a>
+     <p id="recipeTitle"> Recipe Title </p>
+     <p id="recipeDesc"> Recipe description </p>
+     <p class="ingredient"> ingredient 1 </p>
+     <p class="cookware"> cookware </p>
+     <p calss="steps"> steps </p>
+  </div>
+  <div class="reviewContainer">
+    Reviews
   </div>
 </body>
 </html>

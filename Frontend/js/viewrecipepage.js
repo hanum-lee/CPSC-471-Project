@@ -1,6 +1,5 @@
 // get stored variables
 let userLogin = false;
-let recipePageTitle = "ADD RECIPE"; // ADD RECIPE, EDIT RECIPE
 // set stored variables
 function setVar() {
 
@@ -44,8 +43,7 @@ $(document).ready(function(){
   $(".navDropOption").click(selectOption);
 
   /***********************
-  Add/Edit Recipe
+  View Recipe
   ***********************/
-  $("#recipePageTitle").text(recipePageTitle);
 
 });
