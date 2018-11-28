@@ -6,13 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="StyleSheet.css">
     <title>Recipe Website-LogIn/Register</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src = "js/loginpage.js"></script>
 </head>
 <body>
 		<header>
       <div class="headContainer">
-			<h1>
-			<a href = "frontpage.html">Recipe Searcher logo</a>
-			</h1>
+        <div class="leftContain">
+          <a href="frontpage.html">  <img src="logo.png" height = 75px> </a>
+        </div>
     </div>
 		</header>
   <div class=contentContainer>
@@ -22,6 +24,7 @@
 		    <input id="logUsername" class="loginfo" type="UserID" name="IDBox" placeholder="Username"/>
 		    <input id="logPassword" class="loginfo" type="password" name="passwordBox" placeholder="Password" />
 		    <button id="logBtn" class="logRegButton" type="login">Log In</button>
+        <p .class="mssg" id="logMessage"> <br> <p>
       </form>
 	   </div>
 
@@ -31,9 +34,9 @@
 			  <input id="regUsername" class="loginfo" type="UserID" name="IDBox" placeholder="Username"/>
 			  <input id="regPassword" class="loginfo" type="password" name="passwordBox" placeholder="Password"/>
 			  <button id="regBtn" class="logRegButton" type="register">Register</button>
+        <p .class="mssg" id="regMessage"> <br> <p>
       </form>
 	   </div>
   </div>
-  <script src = "js/JavaScript.js"></script>
 </body>
 </html>

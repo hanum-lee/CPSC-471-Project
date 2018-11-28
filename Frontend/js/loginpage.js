@@ -1,6 +1,5 @@
 // get stored variables
 let userLogin = false;
-let recipePageTitle = "ADD RECIPE"; // ADD RECIPE, EDIT RECIPE
 // set stored variables
 function setVar() {
 
@@ -9,23 +8,37 @@ function setVar() {
 function userLog() {
   let username = $("#logUsername").val();
   let password = $("#logPassword").val();
+
+  // sending information to server
+  /*
+
+
+  */
+
+  // get info from server (if user exists/password correct)
+  // set user login to true
+
 }
 function userReg() {
   let username = $("#regUsername").val();
-  let password = $("#regPassword").val();  
+  let password = $("#regPassword").val();
+
+  // sending information to server
+  /*
+
+
+  */
+
+  // get info from server (if user already exists)
+  // set user login to true
+
 }
 
-// global variables
-let searchInput = '';
-let searchOption = '';
-
 $(document).ready(function(){
-  /***********************
-  Login/Register
-  ***********************/
+  if (sessionStorage.get("userLogin") == null) {
 
-  $("#logBtn").userLog();
-  $("#regBtn").userReg();
-
+  }
+  $("#logBtn").click(userLog);
+  $("#regBtn").click(userReg);
 
 });

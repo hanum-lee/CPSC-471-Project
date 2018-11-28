@@ -1,19 +1,4 @@
-// get stored variables
-let userLogin = false;
 let recipePageTitle = "ADD RECIPE"; // ADD RECIPE, EDIT RECIPE
-// set stored variables
-function setVar() {
-
-}
-
-// global variables
-let searchInput = '';
-let searchOption = '';
-
-//functions
-function search() {
-  searchInput = $("#navSearch").value;
-}
 
 function selectOption() {
   $("#navDropbtn").text($(this).text());
@@ -22,27 +7,6 @@ function selectOption() {
 }
 
 $(document).ready(function(){
-  // display login or logout
-  if (userLogin) {
-    $("#logButton").text('Logout');
-  }
-  else {
-    $("#logButton").text('Login/Register');
-    $("#manageButton").hide();
-  }
-
-  /***********************
-  Navigation bar
-  ***********************/
-  $("#navSearchBttn").click(search);
-
-  $("#navDropOption").hide();
-  $("#navDropbtn").click(function(){
-    $("#navDropOption").slideDown();
-  });
-
-  $(".navDropOption").click(selectOption);
-
   /***********************
   Add/Edit Recipe
   ***********************/
