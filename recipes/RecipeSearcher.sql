@@ -26,6 +26,7 @@ CREATE TABLE `consists_of_ing` (
   `ing_name` char(45) NOT NULL,
   `amount` char(45) NOT NULL,
   `recipe_no` int(11) NOT NULL,
+  PRIMARY KEY (`ing_name`),
   KEY `i_name_idx` (`ing_name`),
   KEY `r_no_idx` (`recipe_no`),
   CONSTRAINT `i_name` FOREIGN KEY (`ing_name`) REFERENCES `ingredients` (`name`),
@@ -39,6 +40,7 @@ CREATE TABLE `consists_of_ing` (
 
 LOCK TABLES `consists_of_ing` WRITE;
 /*!40000 ALTER TABLE `consists_of_ing` DISABLE KEYS */;
+INSERT INTO `consists_of_ing` VALUES ('Baking powder','3 1/2 Tsp',1),('Butter','3 Tbsp',1),('Eggs','1',1),('Flour','1 1/2 Cup',1),('Milk','1 1/4 Cup',1),('Table Salt','1 Tsp',1),('White Sugar','1 Tbsp',1);
 /*!40000 ALTER TABLE `consists_of_ing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,9 +52,10 @@ DROP TABLE IF EXISTS `favorites`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `favorites` (
-  `user_id` varchar(45) NOT NULL,
+  `user_id` char(45) NOT NULL,
   `r_no.` int(11) NOT NULL,
-  `f_name` varchar(45) NOT NULL,
+  `f_name` char(45) NOT NULL,
+  PRIMARY KEY (`user_id`),
   KEY `r_no_idx` (`r_no.`),
   KEY `u_id_idx` (`user_id`),
   KEY `f_name_fk_idx` (`f_name`),
@@ -68,6 +71,7 @@ CREATE TABLE `favorites` (
 
 LOCK TABLES `favorites` WRITE;
 /*!40000 ALTER TABLE `favorites` DISABLE KEYS */;
+INSERT INTO `favorites` VALUES ('test',1,'Pancakes');
 /*!40000 ALTER TABLE `favorites` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,6 +97,7 @@ CREATE TABLE `food` (
 
 LOCK TABLES `food` WRITE;
 /*!40000 ALTER TABLE `food` DISABLE KEYS */;
+INSERT INTO `food` VALUES ('Pancakes',1);
 /*!40000 ALTER TABLE `food` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,10 +109,11 @@ DROP TABLE IF EXISTS `food_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `food_type` (
-  `f_name` varchar(45) NOT NULL,
+  `f_name` char(45) NOT NULL,
   `type` varchar(45) NOT NULL,
-  KEY `f_name_fk_idx` (`f_name`),
-  CONSTRAINT `f_name_fk` FOREIGN KEY (`f_name`) REFERENCES `food` (`name`)
+  PRIMARY KEY (`f_name`),
+  KEY `r_name_fk_idx` (`f_name`) /*!80000 INVISIBLE */,
+  CONSTRAINT `f_name` FOREIGN KEY (`f_name`) REFERENCES `food` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -117,6 +123,7 @@ CREATE TABLE `food_type` (
 
 LOCK TABLES `food_type` WRITE;
 /*!40000 ALTER TABLE `food_type` DISABLE KEYS */;
+INSERT INTO `food_type` VALUES ('Pancakes','Cake');
 /*!40000 ALTER TABLE `food_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,6 +148,7 @@ CREATE TABLE `ingredients` (
 
 LOCK TABLES `ingredients` WRITE;
 /*!40000 ALTER TABLE `ingredients` DISABLE KEYS */;
+INSERT INTO `ingredients` VALUES ('Artichokes','Vegetable'),('Asparagus','Vegetable'),('Baking powder','Misc'),('Baking soda','Misc'),('Beet','Vegetable'),('Blueberry','Fruit'),('Broccoli','Vegetable'),('Brown Sugar','Sugar'),('Brussels sprouts','Vegetable'),('Butter','Dairy'),('Cabbage','Vegetable'),('Cane Sugar','Sugar'),('Cantaloupe','Fruit'),('Carrot','Vegetable'),('Cauliflower','Vegetable'),('Celery','Vegetable'),('Chedder Cheese','Dairy'),('Chicken(breast)','Poultry'),('Chicken(drumstick)','Poultry'),('Chicken(whole)','Poultry'),('Chicken(wings)','Poultry'),('Chilli peppers','Vegetable'),('Cucumber','Vegetable'),('Eggplant','Vegetable'),('Eggs','Protein'),('Flour','Grain'),('Garlic','Vegetable'),('Green onion','Vegetable'),('Honey','Sugar'),('Honeydew(Melon)','Fruit'),('Kale','Vegetable'),('Milk','Dairy'),('Onion','Vegetable'),('Peas','Vegetable'),('Potatoes','Vegetable'),('Pumpkin','Vegetable'),('Rhubarb','Vegetable'),('Rice','Grain'),('Rice flour','Grain'),('Sea Salt','Salt'),('Spinach','Vegetable'),('Steak(t-bone)','Beef'),('Strawberry','Fruit'),('Sweet Rice','Grain'),('Sweet Rice flour','Grain'),('Table Salt','Salt'),('Tomatoes','Fruit'),('Turkey(whole)','Poultry'),('Water','Misc'),('Watermelon','Fruit'),('White Sugar','Sugar'),('Yams','Vegetable');
 /*!40000 ALTER TABLE `ingredients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,9 +161,10 @@ DROP TABLE IF EXISTS `recipe`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `recipe` (
   `NUM.` int(11) NOT NULL,
-  `user_id` varchar(45) NOT NULL,
+  `user_id` char(45) NOT NULL,
   `name` varchar(45) NOT NULL,
   `time_taken` int(11) NOT NULL,
+  `directions` text NOT NULL,
   PRIMARY KEY (`NUM.`),
   UNIQUE KEY `NUM._UNIQUE` (`NUM.`),
   KEY `u_id_idx` (`user_id`),
@@ -169,6 +178,7 @@ CREATE TABLE `recipe` (
 
 LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` DISABLE KEYS */;
+INSERT INTO `recipe` VALUES (1,'test','Pancakes',10,'1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving ');
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,6 +230,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES ('test','test');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -232,4 +243,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-28 23:20:31
+-- Dump completed on 2018-11-29  0:28:07
