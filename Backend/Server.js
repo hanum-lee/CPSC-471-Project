@@ -15,10 +15,13 @@ app.use(bodyParser.json());
 app.get('/', function (req, res) {
     res.send('Hello World!');
   });
-  
+
 app.post('/login*',function(req,res){
     res.send("Login request");
 });
+
+
+
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));
 /*
