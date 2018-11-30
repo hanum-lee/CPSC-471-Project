@@ -45,6 +45,30 @@ INSERT INTO `consists_of_ing` VALUES ('Baking powder','3 1/2 Tsp',1),('Butter','
 UNLOCK TABLES;
 
 --
+-- Table structure for table `cookware_used`
+--
+
+DROP TABLE IF EXISTS `cookware_used`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `cookware_used` (
+  `cookware` char(45) NOT NULL,
+  `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
+  KEY `fk_r_no_idx` (`r_no`),
+  CONSTRAINT `fk_r_no` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cookware_used`
+--
+
+LOCK TABLES `cookware_used` WRITE;
+/*!40000 ALTER TABLE `cookware_used` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cookware_used` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `favorites`
 --
 
@@ -61,7 +85,7 @@ CREATE TABLE `favorites` (
   KEY `f_name_fk_idx` (`f_name`),
   CONSTRAINT `food_name_fk` FOREIGN KEY (`f_name`) REFERENCES `food` (`fname`),
   CONSTRAINT `r_no_fk2` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`),
-  CONSTRAINT `u_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `u_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user_recipesearcher` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -162,7 +186,7 @@ DROP TABLE IF EXISTS `recipe`;
 CREATE TABLE `recipe` (
   `NUM` smallint(11) NOT NULL AUTO_INCREMENT,
   `user_id` char(45) NOT NULL,
-  `name` varchar(45) NOT NULL,
+  `rname` char(45) NOT NULL,
   `time_taken` int(11) NOT NULL,
   `directions` text NOT NULL,
   PRIMARY KEY (`NUM`),
@@ -195,7 +219,7 @@ CREATE TABLE `review` (
   UNIQUE KEY `u_id_UNIQUE` (`u_id`),
   KEY `recipe_num_fk_idx` (`r_no`),
   CONSTRAINT `recipe_num_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`NUM`),
-  CONSTRAINT `user_id_fk2` FOREIGN KEY (`u_id`) REFERENCES `user` (`id`)
+  CONSTRAINT `user_id_fk2` FOREIGN KEY (`u_id`) REFERENCES `user_recipesearcher` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -209,29 +233,216 @@ LOCK TABLES `review` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user`
+-- Table structure for table `user_recipesearcher`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `user_recipesearcher`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `user` (
+CREATE TABLE `user_recipesearcher` (
   `ID` char(45) NOT NULL,
-  `password` char(45) DEFAULT NULL,
+  `pswd` char(45) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `user_recipesearcher`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('test','test');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `user_recipesearcher` WRITE;
+/*!40000 ALTER TABLE `user_recipesearcher` DISABLE KEYS */;
+INSERT INTO `user_recipesearcher` VALUES ('test','test');
+/*!40000 ALTER TABLE `user_recipesearcher` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'recipesearcher'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `add_user` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `add_user`(id char(45), pass char(45))
+BEGIN
+	insert into user_recipesearcher(ID, password)
+    values(id, pass);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_full_recipe` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `get_full_recipe`(rnum smallint(11))
+BEGIN
+	select rname, time_taken, directions
+    from recipe
+    where NUM = rnum;
+    
+    select cookware
+    from cookware_used
+    where r_no = rnum;
+    
+    select ing_name, amount
+    from consists_of_ing
+    where recipe_no = rnum;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `log_in` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `log_in`(id char(45), pass char(45))
+BEGIN
+	select ID
+    from user_recipesearcher
+    where ID = id
+		AND
+			pswd = pass;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `search_cookware` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_cookware`(cookware_arr char)
+BEGIN
+	select NUM, user_id, rname, time_taken 
+    from recipe 
+    where NUM in (select r_no
+					from cookware_used
+                    where cookware in (cookware_arr));
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `search_favorites` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_favorites`(id char(45))
+BEGIN
+	select NUM, user_id, rname, time_taken 
+    from recipe
+    where NUM IN (select r_no
+					from favorites
+					where user_id = id);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `search_food` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_food`(aname char(45))
+BEGIN
+	select NUM, user_id, rname, time_taken 
+    from recipe as R
+    where NUM IN (select r_no
+					from food
+                    where fname = aname);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `search_recipe` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_recipe`(rn char(45))
+BEGIN
+	select NUM, user_id, rname, time_taken 
+    from recipe 
+    where rname = rn;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `search_user` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_user`(userid char(45))
+BEGIN
+	select rname, time_taken, NUM 
+    from recipe
+    where user_id = userid;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -242,4 +453,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-29 22:26:48
+-- Dump completed on 2018-11-30 15:55:29
