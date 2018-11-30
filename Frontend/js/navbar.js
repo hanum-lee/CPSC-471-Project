@@ -1,10 +1,3 @@
-// get stored variables
-let userLogin = false;
-// set stored variables
-function setVar() {
-
-}
-
 // global variables
 let searchInput = '';
 let searchOption = '';
@@ -21,9 +14,14 @@ function selectOption() {
 }
 
 $(document).ready(function(){
+  if (sessionStorage.getItem("userLogin") == null) {
+    sessionStorage.setItem("userLogin", "false");
+  }
+
   // display login or logout
-  if (userLogin) {
+  if (sessionStorage.getItem("userLogin") == "true") {
     $("#logButton").text('Logout');
+    $("#manageButton").show();
   }
   else {
     $("#logButton").text('Login/Register');
