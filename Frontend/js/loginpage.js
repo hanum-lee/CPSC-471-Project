@@ -1,44 +1,35 @@
-//var req = new XMLHttpRequest();
+var req = new XMLHttpRequest();
 
 function userLog() {
   let username = $("#logUsername").val();
   let password = $("#logPassword").val();
+  var logSuccess;
 
   var logInfo = {
     user: username,
     pass: password
   }
-  /*
-  var loggedInt = {
-    success: true;
-  }
-  */
-  
+
   var logInfoString = JSON.stringify(logInfo);
 
-  $.ajax({
-    url:  'localhost:8080',
-    type: 'GET',
-    data: logInfoString,
-    dataType: 'json',
-    success: (data) => {
-      console.log("success");
-    }
-
-  })
 
   // sending information to server using xml
-  /*
+
   var logInfo = {
-    username: $("#logUsername").val();
-    password: $("#logPassword").val();
+    username: $("#logUsername").val(),
+    password: $("#logPassword").val()
   }
   var logInfoString = JSON.stringify(logInfo);
 
+  req.open('GET', '/login', true);
+  req.setRequestHeader("Content-Type", "application/json");
+  req.onreadystatechange = function () {
+      if (req.readyState === 4 && req.status === 200) {
+        logSuccess = JSON.parse(req.responseText);
+      }
+  };
+  req.send(logInfoString);
 
-  req.open('GET', 'Server.js', true);
-  req.send();
-  */
 
   // get info from server (if user exists/password correct)
   // set user login to true
@@ -47,6 +38,7 @@ function userLog() {
     //window.location.href = 'frontpage.html'
 
 }
+
 function userReg() {
   let username = $("#regUsername").val();
   let password = $("#regPassword").val();
