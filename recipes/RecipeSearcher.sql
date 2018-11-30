@@ -25,13 +25,13 @@ DROP TABLE IF EXISTS `consists_of_ing`;
 CREATE TABLE `consists_of_ing` (
   `ing_name` char(45) NOT NULL,
   `amount` char(45) NOT NULL,
-  `recipe_no` int(11) NOT NULL,
+  `recipe_no` smallint(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ing_name`),
   KEY `i_name_idx` (`ing_name`),
   KEY `r_no_idx` (`recipe_no`),
   CONSTRAINT `i_name` FOREIGN KEY (`ing_name`) REFERENCES `ingredients` (`name`),
-  CONSTRAINT `r_no` FOREIGN KEY (`recipe_no`) REFERENCES `recipe` (`num.`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `r_no_fk3` FOREIGN KEY (`recipe_no`) REFERENCES `recipe` (`NUM`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,16 +53,16 @@ DROP TABLE IF EXISTS `favorites`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `favorites` (
   `user_id` char(45) NOT NULL,
-  `r_no.` int(11) NOT NULL,
+  `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   `f_name` char(45) NOT NULL,
   PRIMARY KEY (`user_id`),
-  KEY `r_no_idx` (`r_no.`),
+  KEY `r_no_idx` (`r_no`),
   KEY `u_id_idx` (`user_id`),
   KEY `f_name_fk_idx` (`f_name`),
-  CONSTRAINT `food_name_fk` FOREIGN KEY (`f_name`) REFERENCES `food` (`name`),
-  CONSTRAINT `r_no_fk2` FOREIGN KEY (`r_no.`) REFERENCES `recipe` (`num.`),
+  CONSTRAINT `food_name_fk` FOREIGN KEY (`f_name`) REFERENCES `food` (`fname`),
+  CONSTRAINT `r_no_fk2` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`),
   CONSTRAINT `u_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -83,12 +83,12 @@ DROP TABLE IF EXISTS `food`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `food` (
-  `name` char(45) NOT NULL,
-  `r_no` int(11) NOT NULL,
-  PRIMARY KEY (`name`),
+  `fname` char(45) NOT NULL,
+  `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`fname`),
   KEY `r_no_idx` (`r_no`),
-  CONSTRAINT `r_no_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num.`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `r_no_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`NUM`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +113,7 @@ CREATE TABLE `food_type` (
   `type` varchar(45) NOT NULL,
   PRIMARY KEY (`f_name`),
   KEY `r_name_fk_idx` (`f_name`) /*!80000 INVISIBLE */,
-  CONSTRAINT `f_name` FOREIGN KEY (`f_name`) REFERENCES `food` (`name`)
+  CONSTRAINT `f_name` FOREIGN KEY (`f_name`) REFERENCES `food` (`fname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -160,16 +160,15 @@ DROP TABLE IF EXISTS `recipe`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `recipe` (
-  `NUM.` int(11) NOT NULL,
+  `NUM` smallint(11) NOT NULL AUTO_INCREMENT,
   `user_id` char(45) NOT NULL,
   `name` varchar(45) NOT NULL,
   `time_taken` int(11) NOT NULL,
   `directions` text NOT NULL,
-  PRIMARY KEY (`NUM.`),
-  UNIQUE KEY `NUM._UNIQUE` (`NUM.`),
-  KEY `u_id_idx` (`user_id`),
-  CONSTRAINT `u_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`NUM`),
+  UNIQUE KEY `NUM._UNIQUE` (`NUM`),
+  KEY `u_id_idx` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,12 +189,12 @@ DROP TABLE IF EXISTS `review`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `review` (
-  `r_no` int(11) NOT NULL,
+  `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   `u_id` varchar(45) NOT NULL,
   `rating` text NOT NULL,
   UNIQUE KEY `u_id_UNIQUE` (`u_id`),
   KEY `recipe_num_fk_idx` (`r_no`),
-  CONSTRAINT `recipe_num_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num.`),
+  CONSTRAINT `recipe_num_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`NUM`),
   CONSTRAINT `user_id_fk2` FOREIGN KEY (`u_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -243,4 +242,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-29  0:28:07
+-- Dump completed on 2018-11-29 22:26:48
