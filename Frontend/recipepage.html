@@ -30,38 +30,46 @@
           <input id="navSearch" type = "text" placeholder="Search...">
           <button id = "navSearchBttn"><i class="fa fa-search"></i></button>
           <div class="rightContain">
-            <a id="logButton" href = "loginpage.html" class = "button">Log In/Register</a>
+            <a id="logButton" href = "loginpage.html" class = "blackButton">Log In/Register</a>
           </div>
       </div>
   </header>
+  <div class="userAccount">
+    <a id="manageButton" href = "managepage.html" class="blackButton">Manage</a>
+    <a id="accountName" href = "listpage.html" class="blackButton"> </a>
+  </div>
   <div id="recipePageTitle" class="titleContainer">
-    ADD NEW RECIPE
+    <br>
   </div>
   <div class="contentContainer">
-
-	   <a class="xButton" href = "managepage.html" class = "button">X</a>
      <form>
        Recipe Title: <br>
        <input class="recipeInfo"> <br>
        Recipe Description: <br>
        <input class="recipeInfo"> <br>
        <div id="foodTypes">
-         <button id="addFoodtype" type="button">Add</button> <br>
-         Food type: <input class="recipeInfo"> <br>
+         <button id="addFoodtype" type="button">Add</button>
+         <button id="removeFoodtype" type="button">Remove</button> <br>
+          Food Type 1: <input class="recipeInfo"> <br>
        </div>
        <div id="ingredients">
-          <button id="addIngredient" type="button">Add</button> <br>
-         ingredient: <input>
-          ingredient type: <input> <br>
+         <button id="addIngredient" type="button">Add</button>
+          <button id="removeIngredient" type="button">Remove</button> <br>
+         Ingredient 1: <input class="recipeInfo">Ingredient Type 1: <input class="recipeInfo"> <br>
        </div>
        <div id="cookwares">
-        <button id="addCookware" type="button">Add</button> <br>
-         cookware: <input>  <br>
+        <button id="addCookware" type="button">Add</button>
+         <button id="removeCookware" type="button">Remove</button> <br>
+         Cookware 1: <input class="recipeInfo">  <br>
        </div>
        Instructions (steps): <br>
-       <input> <br>
+       <input class="recipeInfo"> <br>
      </form>
-
+  </div>
+  <div class = "bottomButtons">
+    <a class="exitButton" href = "managepage.html" class = "button"> EXIT </a>
+    <a class="saveButton" href = "managepage.html" class = "button"> SAVE </a>
+    <a class="deleteButton" href = "managepage.html" class = "button"> DELETE </a>
   </div>
 </body>
 </html>

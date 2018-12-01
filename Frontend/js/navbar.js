@@ -1,16 +1,20 @@
-// global variables
-let searchInput = '';
-let searchOption = '';
-
-//functions
 function search() {
-  searchInput = $("#navSearch").value;
+  let searchInput = $("#navSearch").val();
+  if (searchInput == '') {
+    return;
+  }
+  else {
+    sessionStorage.setItem("userSearch", searchInput);
+    window.location.href = 'listpage.html';
+  }
 }
 
 function selectOption() {
   $("#navDropbtn").text($(this).text());
   searchOption = $(this).text();
   $("#navDropOption").hide();
+
+  sessionStorage.setItem("userSearchType", $(this).text());
 }
 
 $(document).ready(function(){
@@ -22,11 +26,15 @@ $(document).ready(function(){
   if (sessionStorage.getItem("userLogin") == "true") {
     $("#logButton").text('Logout');
     $("#manageButton").show();
+    $("#accountName").text(sessionStorage.getItem("user"));
+    $("#accountName").show();
   }
   else {
     $("#logButton").text('Login/Register');
     $("#manageButton").hide();
+    $("#accountName").hide();
   }
+
 
   /***********************
   Navigation bar
