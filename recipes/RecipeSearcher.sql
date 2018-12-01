@@ -29,8 +29,8 @@ CREATE TABLE `consists_of_ing` (
   PRIMARY KEY (`ing_name`),
   KEY `i_name_idx` (`ing_name`),
   KEY `r_no_idx` (`recipe_no`),
-  CONSTRAINT `i_name` FOREIGN KEY (`ing_name`) REFERENCES `ingredients` (`name`),
-  CONSTRAINT `r_no_fk3` FOREIGN KEY (`recipe_no`) REFERENCES `recipe` (`NUM`)
+  CONSTRAINT `i_name` FOREIGN KEY (`ing_name`) REFERENCES `ingredients` (`iname`),
+  CONSTRAINT `r_no_fk3` FOREIGN KEY (`recipe_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -55,7 +55,7 @@ CREATE TABLE `cookware_used` (
   `cookware` char(45) NOT NULL,
   `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   KEY `fk_r_no_idx` (`r_no`),
-  CONSTRAINT `fk_r_no` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`)
+  CONSTRAINT `fk_r_no` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -84,8 +84,8 @@ CREATE TABLE `favorites` (
   KEY `u_id_idx` (`user_id`),
   KEY `f_name_fk_idx` (`f_name`),
   CONSTRAINT `food_name_fk` FOREIGN KEY (`f_name`) REFERENCES `food` (`fname`),
-  CONSTRAINT `r_no_fk2` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`),
-  CONSTRAINT `u_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user_recipesearcher` (`ID`)
+  CONSTRAINT `r_no_fk2` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE,
+  CONSTRAINT `u_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user_recipesearcher` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -111,7 +111,7 @@ CREATE TABLE `food` (
   `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`fname`),
   KEY `r_no_idx` (`r_no`),
-  CONSTRAINT `r_no_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`NUM`)
+  CONSTRAINT `r_no_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -159,10 +159,10 @@ DROP TABLE IF EXISTS `ingredients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `ingredients` (
-  `name` char(45) NOT NULL,
+  `iname` char(45) NOT NULL,
   `type` char(45) NOT NULL,
-  PRIMARY KEY (`name`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
+  PRIMARY KEY (`iname`),
+  UNIQUE KEY `name_UNIQUE` (`iname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -217,9 +217,10 @@ CREATE TABLE `review` (
   `u_id` varchar(45) NOT NULL,
   `rating` text NOT NULL,
   UNIQUE KEY `u_id_UNIQUE` (`u_id`),
+  UNIQUE KEY `r_no_UNIQUE` (`r_no`),
   KEY `recipe_num_fk_idx` (`r_no`),
-  CONSTRAINT `recipe_num_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`NUM`),
-  CONSTRAINT `user_id_fk2` FOREIGN KEY (`u_id`) REFERENCES `user_recipesearcher` (`ID`)
+  CONSTRAINT `recipe_num_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE,
+  CONSTRAINT `user_id_fk2` FOREIGN KEY (`u_id`) REFERENCES `user_recipesearcher` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -260,6 +261,78 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'recipesearcher'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `addedit_review` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `addedit_review`(r_no smallint, id char(45), review text)
+BEGIN
+	insert into review(r_no, u_id, rating)
+    value (r_no, id, review)
+    on duplicate key update
+    rating = review;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_favorites` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `add_favorites`(rnum smallint(11), id char(45))
+BEGIN
+	insert into favorites(user_id, r_no, f_name)
+    values(id, rnum, (select fname
+						from food
+						where r_no = rnum));
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_recipe` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `add_recipe`(recname char(45), foodname char(45), tt int(11), id char(45), dir text)
+BEGIN
+	insert into recipe(user_id, rname, time_taken, directions)
+    values (id, recname, tt, dir);
+    
+    insert into food(fname, r_no)
+    values (foodname,(select NUM
+						from recipe
+						where (user_id = id 
+							AND rname = recname 
+                            AND timetaken = tt 
+                            AND directions = dir)));
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `add_user` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -274,6 +347,48 @@ CREATE DEFINER=`sally`@`%` PROCEDURE `add_user`(id char(45), pass char(45))
 BEGIN
 	insert into user_recipesearcher(ID, password)
     values(id, pass);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `delete_recipe` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
+BEGIN
+	delete from recipe
+    where NUM = rno AND user_id = id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `delete_review` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `delete_review`(rno smallint(11), id char(45))
+BEGIN
+	delete from review
+    where r_no = rno 
+		AND
+        u_id = id;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -326,6 +441,26 @@ BEGIN
     where ID = id
 		AND
 			pswd = pass;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `remove_favorites` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
+BEGIN
+	delete from favorites
+    where user_id = id AND r_no = rnum;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -453,4 +588,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-30 15:55:29
+-- Dump completed on 2018-12-01  2:12:03
