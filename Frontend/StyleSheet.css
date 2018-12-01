@@ -49,7 +49,6 @@ header {
     margin:0px auto;
     padding: 0 50px;
     background-color: var(--base-color);
-    z-index: 1000;
 }
 
 .contentContainer {
@@ -88,10 +87,30 @@ header {
   margin: 50px auto;
 }
 
+
+/***************************
+Account buttons
+***************************/
+
+.userAccount {
+  position: fixed;
+  display: block;
+  width: 100%;
+  top: 80px;
+}
+
+#manageButton {
+  float:left;
+}
+
+#accountName {
+  float:right;
+}
+
 /***************************
 NAVIGATION BAR
 ***************************/
-#logButton {
+.blackButton {
 	background-color: var(--dark-color);
 	color: #fff;
 	padding:10px 15px;
@@ -99,7 +118,7 @@ NAVIGATION BAR
 	text-decoration:none;
 	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
-#logButton:hover {
+.blackButton:hover {
 	background-color: var(--mid-color);
 	color: #000;
 }
@@ -186,12 +205,13 @@ MAIN PAGE
 ***************************/
 .imageContainer {
   position:relative;
-  top: 70px;
+  top: 80px;
   width:100%;
   height: 400px;
   background-image: url("bread.jpg");
   background-size: cover;
   background-position: center;
+  z-index: -1;
 }
 /* search bar */
 #searchbar {

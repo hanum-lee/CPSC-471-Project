@@ -1,0 +1,28 @@
+userLogin
+  - true
+  - false
+
+user
+  - username
+
+loginMessage
+  - message for loginpage (since page refreshes every time click submit)
+
+recipePg
+  - ADD RECIPE
+  - EDIT RECIPE
+
+listPg
+  - SEARCH RESULTS
+  - MY RECIPES
+  - MY FAVOURITES
+  - RECIPES REVIEWED
+
+recipeSelected
+  - recipenum
+
+userSearch
+  - user input in search bar
+
+userSearchType
+  - type of search do

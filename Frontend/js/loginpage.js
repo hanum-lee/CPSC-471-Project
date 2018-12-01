@@ -19,7 +19,7 @@ function userLog() {
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
-        logSuccess = JSON.parse(req.responseText);
+        logSuccess = JSON.parse(req.responseText);  //RETURNDATA
       }
   };
   req.send(logInfoString);
@@ -63,24 +63,25 @@ function userReg() {
 
   // sending information to server
   var req = new XMLHttpRequest();
-  req.open('GET', '/login', false);
+  req.open('GET', '/register', false);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
-        logSuccess = JSON.parse(req.responseText);
+        logSuccess = JSON.parse(req.responseText);  //RETURNDATA
       }
   };
   req.send(logInfoString);
 
   // dealing with info from server
   if (logSuccess.userexists == "false") {
-      sessionStorage.setItem("loginMessage","invalid username or password");
-  }
-  else if (logSuccess.userexists == "true") {
     sessionStorage.setItem("userLogin", "true");
     sessionStorage.setItem("user", $("#logUsername").val());
     window.location.href = 'managepage.html';
+
+  }
+  else if (logSuccess.userexists == "true") {
+    sessionStorage.setItem("loginMessage","username taken");
   }
   else {
     sessionStorage.setItem("loginMessage","login failed");
