@@ -16,8 +16,32 @@ app.get('/', function (req, res) {
     res.send('Hello World!');
   });
 
-app.post('/login*',function(req,res){
+app.get('/login',function(req,res){
     res.send("Login request");
+});
+
+app.get('/numOfRecipe',function(req,res){
+
+});
+
+app.get('/editRecipe',function(req,res){
+
+});
+
+app.post('/recipeUpdate',function(req,res){
+
+});
+
+app.get('/recipeAdd',function(req,res){
+
+});
+
+app.get('/register',function(req,res){
+
+});
+
+app.get('/recipeData',function(req,res){
+
 });
 
 
