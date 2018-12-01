@@ -536,6 +536,49 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `search_ingredient` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_ingredient`(ing_list varchar(16000))
+BEGIN
+	declare i int;
+    declare ing varchar(45);
+    declare break int;
+    
+    if right(ing_list, 1) <> ',' then
+		set ing_list = concat(ing_list, ',');
+	end if;
+    
+    drop table if exists tempingtable;
+    create temporary table tempingtable (ingname char(45));
+    set break = 0;
+    
+    while (break < 50) && (length(ing_list) > 1) do
+		set break = break +  1;
+        set i = instr(ing_list, ',');
+        set ing = left(ing_list, i - 1);
+        insert into tempingtable values(ing);
+	end while;
+    
+    select NUM, user_id, rname, time_taken 
+    from recipe 
+    where NUM in (select recipe_no
+					from consists_of_ing
+                    where ing_name in (select *
+										from tempingtable)); 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `search_recipe` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -588,4 +631,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-01  2:12:03
+-- Dump completed on 2018-12-01 13:41:42
