@@ -1,0 +1,167 @@
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_user`(userid char(45))
+BEGIN
+	select rname, time_taken, NUM 
+    from recipe
+    where user_id = userid;
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_recipe`(rn char(45))
+BEGIN
+	select NUM, user_id, rname, time_taken 
+    from recipe 
+    where rname = rn;
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_ingredient`(ing_list varchar(16000))
+BEGIN
+	declare i int;
+    declare ing varchar(45);
+    declare break int;
+    
+    if right(ing_list, 1) <> ',' then
+		set ing_list = concat(ing_list, ',');
+	end if;
+    
+    drop table if exists tempingtable;
+    create temporary table tempingtable (ingname char(45));
+    set break = 0;
+    
+    while (break < 50) && (length(ing_list) > 1) do
+		set break = break +  1;
+        set i = instr(ing_list, ',');
+        set ing = left(ing_list, i - 1);
+        insert into tempingtable values(ing);
+	end while;
+    
+    select NUM, user_id, rname, time_taken 
+    from recipe 
+    where NUM in (select recipe_no
+					from consists_of_ing
+                    where ing_name in (select *
+										from tempingtable)); 
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_food`(aname char(45))
+BEGIN
+	select NUM, user_id, rname, time_taken 
+    from recipe as R
+    where NUM IN (select r_no
+					from food
+                    where fname = aname);
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_favorites`(id char(45))
+BEGIN
+	select NUM, user_id, rname, time_taken 
+    from recipe
+    where NUM IN (select r_no
+					from favorites
+					where user_id = id);
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_cookware`(cookware_arr varchar(16000))
+BEGIN
+	declare i int;
+    declare cookware varchar(45);
+    declare break int;
+    
+    if right(cookware_arr, 1) <> ',' then
+		set cookware_arr = concat(cookware_arr, ',');
+	end if;
+    
+    drop table if exists tempcookware;
+    create temporary table tempcookware (cookware char(45));
+    set break = 0;
+    
+    while (break < 50) && (length(cookware_arr) > 1) do
+		set break = break +  1;
+        set i = instr(cookware_arr, ',');
+        set cookware = left(cookware_arr, i - 1);
+        insert into tempcookware values(cookware);
+	end while;
+	select NUM, user_id, rname, time_taken 
+    from recipe 
+    where NUM in (select r_no
+					from cookware_used
+                    where cookware in (tempcookware));
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
+BEGIN
+	delete from favorites
+    where user_id = id AND r_no = rnum;
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `log_in`(id char(45), pass char(45))
+BEGIN
+	select ID
+    from user_recipesearcher
+    where ID = id
+		AND
+			pswd = pass;
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `get_full_recipe`(rnum smallint(11))
+BEGIN
+	select rname, time_taken, directions
+    from recipe
+    where NUM = rnum;
+    
+    select cookware
+    from cookware_used
+    where r_no = rnum;
+    
+    select ing_name, amount
+    from consists_of_ing
+    where recipe_no = rnum;
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `delete_review`(rno smallint(11), id char(45))
+BEGIN
+	delete from review
+    where r_no = rno 
+		AND
+        u_id = id;
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
+BEGIN
+	delete from recipe
+    where NUM = rno AND user_id = id;
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `addedit_review`(r_no smallint, id char(45), review text)
+BEGIN
+	insert into review(r_no, u_id, rating)
+    value (r_no, id, review)
+    on duplicate key update
+    rating = review;
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `add_user`(id char(45), pass char(45))
+BEGIN
+	insert into user_recipesearcher(ID, password)
+    values(id, pass);
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `add_recipe`(recname char(45), foodname char(45), tt int(11), id char(45), dir text)
+BEGIN
+	insert into recipe(user_id, rname, time_taken, directions)
+    values (id, recname, tt, dir);
+    
+    insert into food(fname, r_no)
+    values (foodname,(select NUM
+						from recipe
+						where (user_id = id 
+							AND rname = recname 
+                            AND timetaken = tt 
+                            AND directions = dir)));
+END
+
+CREATE DEFINER=`sally`@`%` PROCEDURE `add_favorites`(rnum smallint(11), id char(45))
+BEGIN
+	insert into favorites(user_id, r_no, f_name)
+    values(id, rnum, (select fname
+						from food
+						where r_no = rnum));
+END

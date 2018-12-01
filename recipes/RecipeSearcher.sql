@@ -477,13 +477,31 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_cookware`(cookware_arr char)
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_cookware`(cookware_arr varchar(16000))
 BEGIN
+	declare i int;
+    declare cookware varchar(45);
+    declare break int;
+    
+    if right(cookware_arr, 1) <> ',' then
+		set cookware_arr = concat(cookware_arr, ',');
+	end if;
+    
+    drop table if exists tempcookware;
+    create temporary table tempcookware (cookware char(45));
+    set break = 0;
+    
+    while (break < 50) && (length(cookware_arr) > 1) do
+		set break = break +  1;
+        set i = instr(cookware_arr, ',');
+        set cookware = left(cookware_arr, i - 1);
+        insert into tempcookware values(cookware);
+	end while;
 	select NUM, user_id, rname, time_taken 
     from recipe 
     where NUM in (select r_no
 					from cookware_used
-                    where cookware in (cookware_arr));
+                    where cookware in (tempcookware));
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -631,4 +649,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-01 13:41:42
+-- Dump completed on 2018-12-01 13:56:53
