@@ -56,7 +56,7 @@ app.get('/recipeAdd',function(req,res){
 
 });
 
-app.get('/register',function(req,res){
+app.post('/register',function(req,res){
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");

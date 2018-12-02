@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
--- Host: localhost    Database: recipesearcher
+-- Host: 127.0.0.1    Database: recipesearcher
 -- ------------------------------------------------------
 -- Server version	8.0.13
 
@@ -254,7 +254,7 @@ CREATE TABLE `user_recipesearcher` (
 
 LOCK TABLES `user_recipesearcher` WRITE;
 /*!40000 ALTER TABLE `user_recipesearcher` DISABLE KEYS */;
-INSERT INTO `user_recipesearcher` VALUES ('test','test');
+INSERT INTO `user_recipesearcher` VALUES ('a','a'),('test','test'),('test2','a');
 /*!40000 ALTER TABLE `user_recipesearcher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -343,10 +343,28 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `add_user`(id char(45), pass char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `add_user`(username char(45), pass char(45))
 BEGIN
-	insert into user_recipesearcher(ID, password)
-    values(id, pass);
+	declare numuser int;
+    
+	select count(ID) into numuser 
+    from user_recipesearcher
+    where ID = username;
+    
+    select case when
+    count(id) = 1
+		then 'false'
+		else 'true'
+		end as bool
+    from user_recipesearcher
+    where ID = username;
+    
+    if numuser < 1
+    then 
+        insert into user_recipesearcher(ID, pswd)
+        values(username, pass);
+	end if;
+    
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -436,7 +454,12 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`sally`@`%` PROCEDURE `log_in`(id char(45), pass char(45))
 BEGIN
-	select ID
+	select case when
+    count(ID) = 1
+    then 'true'
+    else
+    'false'
+    end as bool
     from user_recipesearcher
     where ID = id
 		AND
@@ -649,4 +672,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-01 13:56:53
+-- Dump completed on 2018-12-02 14:39:40
