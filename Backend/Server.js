@@ -2,12 +2,13 @@ let http = require('http');
 let mysql = require('mysql');
 
 
-var pool = mysql.createPool({
+var connection = mysql.createConnection({
 	host: 'localhost',
-	user: 'auser',
-	password: 'recipesearcher!',
-	database: 'recipesearcher'
-	multipleStatements: true;
+	port: '3306',
+	user: 'root',
+	password: 'mySQL1234!',
+	database: 'recipesearcher',
+	multipleStatements: true
 });
 
 const express = require('express');
@@ -22,28 +23,48 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
+/*
 app.get('/', function (req, res) {
     res.send('Hello World!');
   });
 
+connection.connect(function(err) {
+	if(!err) {
+		console.log("Connected to database...");
+	}else {
+		console.log("Error connecting to database...");
+}});
+app.get("/", function(req,res) {
+	connection.query('Select * from user_recipesearcher', function(err, rows, fields) {
+		connection.end();
+		if(!err)
+			console.log(rows);
+		else
+			console.log('error while performing query.');
+	})
+});
+  */
 app.post('/login',function(req,res){
     let userid = req.body.username;
     let passwd = req.body.password;
     console.log(userid);
     console.log(passwd);
-    pool.getConnection(function (err, connection) {
+    connection.connect(function (err) {
 		if (err) {
+			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL log_in(?, ?)', [user, pswd], function(err, rows, fields) {
-			pool.release(connection);
+		connection.query('CALL log_in(?,?)',[req.body.username, req.body.password], function(err, rows, fields) {
+			connection.end();
+			console.log(rows);
 			if (err) {
+				console.log("Error in query");
 				res.status(400).send(err);
 			}
 			res.status(200).send(rows);
 		});
 	});
+	
 });
 /*
 app.get('/numOfRecipe',function(req,res){
