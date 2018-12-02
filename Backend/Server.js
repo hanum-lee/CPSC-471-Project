@@ -25,7 +25,11 @@ app.get('/', function (req, res) {
     res.send('Hello World!');
   });
 
-app.get('/login',function(req,res){
+app.post('/login',function(req,res){
+    let userid = req.body.username;
+    let passwd = req.body.password;
+    console.log(userid);
+    console.log(passwd);
     pool.getConnection(function (err, connection) {
 		if (err) {
 			res.status(400).send(err);
