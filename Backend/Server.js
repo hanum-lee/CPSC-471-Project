@@ -1,4 +1,12 @@
 let http = require('http');
+let mysql = require('mysql');
+
+var pool = mysql.createPool({
+	host: 'localhost',
+	user: 'auser',
+	password: 'recipesearcher!',
+	database: 'recipesearcher'
+});
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -12,18 +20,30 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
 app.get('/', function (req, res) {
     res.send('Hello World!');
   });
 
 app.get('/login',function(req,res){
-    res.send("Login request");
+    pool.getConnection(function (err, connection) {
+		if (err) {
+			res.status(400).send(err);
+		}
+		connection.query('CALL log_in', function(err, rows, fields) {
+			connection.release();
+			if (err) {
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
 });
-
+/*
 app.get('/numOfRecipe',function(req,res){
 
 });
-
+*/
 app.get('/editRecipe',function(req,res){
 
 });
@@ -43,9 +63,6 @@ app.get('/register',function(req,res){
 app.get('/recipeData',function(req,res){
 
 });
-
-
-
 
 app.listen(port, () => console.log(`Server listening on port ${port}`));
 /*
