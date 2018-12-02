@@ -1,11 +1,13 @@
 let http = require('http');
 let mysql = require('mysql');
 
+
 var pool = mysql.createPool({
 	host: 'localhost',
 	user: 'auser',
 	password: 'recipesearcher!',
 	database: 'recipesearcher'
+	multipleStatements: true;
 });
 
 const express = require('express');
@@ -30,8 +32,8 @@ app.get('/login',function(req,res){
 		if (err) {
 			res.status(400).send(err);
 		}
-		connection.query('CALL log_in', function(err, rows, fields) {
-			connection.release();
+		connection.query('CALL log_in(?, ?)', [user, pswd], function(err, rows, fields) {
+			pool.release(connection);
 			if (err) {
 				res.status(400).send(err);
 			}
