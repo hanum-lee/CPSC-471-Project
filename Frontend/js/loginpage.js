@@ -14,7 +14,7 @@ function userLog() {
   var logInfoString = JSON.stringify(logInfo);
   var req = new XMLHttpRequest();
 
-  req.open('GET', '/login', false);
+  req.open('POST', '/login', false);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
