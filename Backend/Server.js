@@ -45,10 +45,6 @@ app.get("/", function(req,res) {
 });
   */
 app.post('/login',function(req,res){
-    let userid = req.body.username;
-    let passwd = req.body.password;
-    console.log(userid);
-    console.log(passwd);
     connection.connect(function (err) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -66,11 +62,6 @@ app.post('/login',function(req,res){
 	});
 	
 });
-/*
-app.get('/numOfRecipe',function(req,res){
-
-});
-*/
 app.get('/editRecipe',function(req,res){
 
 });
@@ -84,17 +75,157 @@ app.get('/recipeAdd',function(req,res){
 });
 
 app.get('/register',function(req,res){
-
+	connection.connect(function (err) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL add_user(?,?)',[req.body.username, req.body.password], function(err, rows, fields) {
+			connection.end();
+			console.log(rows);
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
 });
 
 app.get('/recipeData',function(req,res){
-
+	
 });
 
+app.get('/searchfavorites', function(req, res) {	//might need to change function name
+	connection.connect(function (err) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL search_favorites(?)',[req.body.username], function(err, rows, fields) {
+			connection.end();
+			console.log(rows);
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
+app.get('/searchuser', function(req, res) {	//might need to change function name - this function is called when someone clicks on edit existing recipes to figure out which recipe they want to edit
+	connection.connect(function (err) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL search_user(?)',[req.body.username], function(err, rows, fields) {
+			connection.end();
+			console.log(rows);
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
+app.get('/searchfood', function(req, res) {	//might need to change function name - function to search by food name
+	connection.connect(function (err) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL search_food(?)',[req.body.foodname], function(err, rows, fields) {
+			connection.end();
+			console.log(rows);
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
+app.get('/removefavorites', function(req, res) {	//might need to change function name - function takes in username and the recipe-no
+	connection.connect(function (err) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL remove_favorites(?,?)',[req.body.username, req.body.rno], function(err) {
+			connection.end();
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
+app.get('/deletereview', function(req, res) {	//might need to change function name
+	connection.connect(function (err) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL delete_review(?,?)',[req.body.rno,req.body.username], function(err) {
+			connection.end();
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
+app.get('/deleterecipe', function(req, res) {	//might need to change function name
+	connection.connect(function (err) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL delete_recipe(?,?)',[req.body.rno,req.body.username], function(err) {
+			connection.end();
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
+app.get('/addeditreview', function(req, res) {	//might need to change function name
+	connection.connect(function (err) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL addedit_review(?,?,?)',[req.body.rno,req.body.username,req.body.review], function(err) {
+			connection.end();
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
+app.get('/addfavorites', function(req, res) {	//might need to change function name
+	connection.connect(function (err) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL add_favorites(?,?)',[req.body.rno, req.body.username], function(err, rows, fields) {
+			connection.end();
+			console.log(rows);
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
 app.listen(port, () => console.log(`Server listening on port ${port}`));
-/*
-http.createServer(function (req, res) {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.end('Hello World!');
-}).listen(8080);
-*/
