@@ -2,7 +2,7 @@ let http = require('http');
 let mysql = require('mysql');
 
 
-var connection = mysql.createConnection({
+var pool = mysql.createPool({
 	host: 'localhost',
 	port: '3306',
 	user: 'root',
@@ -45,16 +45,17 @@ app.get("/", function(req,res) {
 });
   */
 app.post('/login',function(req,res){
-    connection.connect(function (err) {
+    pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
 		connection.query('CALL log_in(?,?)',[req.body.username, req.body.password], function(err, rows, fields) {
-			connection.end();
+			connection.release();
 			console.log(rows);
 			if (err) {
 				console.log("Error in query");
+				console.log(err);
 				res.status(400).send(err);
 			}
 			res.status(200).send(rows);
