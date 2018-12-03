@@ -46,7 +46,7 @@ function getRecipe() {
   var recipeSelectString = JSON.stringify(recipeSelected);
   // get recipe data from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/editRecipe', false);
+  req.open('POST', '/editRecipe', false);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
@@ -81,7 +81,7 @@ function sendDelete() {
   var recipeSelectString = JSON.stringify(recipeSelected);
   // get recipe data from server
   var req = new XMLHttpRequest();
-  req.open('POST', '/deleteRecipe', false);
+  req.open('DELETE', '/deleteRecipe', false);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {

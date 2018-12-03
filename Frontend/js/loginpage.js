@@ -14,7 +14,7 @@ function userLog() {
   var logInfoString = JSON.stringify(logInfo);
   var req = new XMLHttpRequest();
 
-  req.open('GET', '/login', false);
+  req.open('POST', '/login', false);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
@@ -63,7 +63,7 @@ function userReg() {
 
   // sending information to server
   var req = new XMLHttpRequest();
-  req.open('GET', '/register', false);
+  req.open('POST', '/register', false);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
@@ -74,13 +74,13 @@ function userReg() {
   req.send(logInfoString);
 
   // dealing with info from server
-  if (logSuccess.userexists == "false") {
+  if (logSuccess.userexists == "true") {
     sessionStorage.setItem("userLogin", "true");
     sessionStorage.setItem("user", $("#logUsername").val());
     window.location.href = 'managepage.html';
 
   }
-  else if (logSuccess.userexists == "true") {
+  else if (logSuccess.userexists == "false") {
     sessionStorage.setItem("loginMessage","username taken");
   }
   else {

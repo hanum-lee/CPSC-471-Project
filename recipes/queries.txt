@@ -1,0 +1,87 @@
+ADD STORED PROCEDURES:
+
+addedit_cookware (cookw json, rnum smallint(11))
+	Takes in a json array filled with cookware
+	and the recipe num
+	- Deletes original list of all the cookware for said recipe before adding them all
+	
+add_favorites(rnum smallint(11), id char(45))
+	Takes in the recipe number and the username
+	on duplicate, just do nothing
+
+add_foodtype(foodname varchar(45), foodtype varchar(45))
+	either add type to particular foodname or update current type
+
+addedit_ingredients(ing_array json, rnum smallint(11))
+	Takes in json array filled with [ingredients, ingredient_type, ingredient_amount]
+	and the recipe num
+	- Deletes original list of all the ingredients part of the recipe before readding all
+	
+add_recipe(recname char(45), foodname char(45), tt int(11), id char(45), dir text)
+	Takes in Recipe name, food name, time taken, username, direction
+
+add_user(username char(45), pass char(45))
+	Will return false if there is a username already present
+	Else return true for success
+
+addedit_review(r_no smallint(11), id char(45), review text)
+	Will either insert or replace whatever the current review by the user on that recipe
+	
+edit_recipe(rnum smallint(11), recname char(45), foodtype varchar(45), foodname varchar(45), tt int(11), dir text)
+
+//////////////////////////////////////////////////////////////////////////////////////
+DELETE/REMOVE STORED PROCEDURES
+
+delete_recipe(rno smallint(11), id char(45))
+	Takes in the username, and the recipe number
+	Will only delete if rno and username matches
+	
+delete_review(rno smallint(11), id char(45))
+	Takes in the username, and the recipe number
+	Deletes the review made by username with matching recipe number
+
+remove_favorites(id char(45), rnum smallint(11))
+	Takes in the username, and the recipe number
+	Deletes from table keeping track of everyone's favorites based off of recipe num and username
+	
+remove_ingredient(rnum smallint(11), ingname varchar(45))
+	Do no require this function as add/edit ingredients should be called instead and will do this.
+
+///////////////////////////////////////////////////////////////////////////////////////
+SEARCH STORED PROCEDURES:
+	Search functions returns recipe_num, username, recipename, timetaken
+	
+search_cookware(cookw json)
+	Takes in a json array filled with cookware
+	
+search_ingredients(ing_list json)
+	Takes in a json array filled with ingredients
+
+search_favorites(id char(45))
+	Takes in a username
+	
+search_food(aname char(45))
+	Takes in foodname 
+	
+serach_recipe(rn char(45))
+	Takes in a recipe name
+	
+search_user(id char(45))
+	Takes in a username - used to return all the recipes said user made
+	
+///////////////////////////////////////////////////////////////////////////////////////
+OTHER STORED PROCEDURES
+
+log_in(id char(45), pass char(45))
+	Takes in id n pswd
+	Returns true if sucess or false in table format.
+
+get_full_recipe(rnum smallint(11), id varchar(45))
+	Takes in recipe number and a username
+	Returns:
+		Row entry of recipe = [NUM, user_id, rname, time_taken, directions]
+		Row entries of cookware 
+		Row entries of f_type
+		Row entries of [ingredients, amount]
+		Boolean if if favorited(true) or not(false) in table format
+		
