@@ -1,5 +1,6 @@
 function userLog() {
   var logSuccess;
+
   /* logSuccess form
   logSuccess = {
     userexists: <true or false value>
@@ -33,7 +34,7 @@ function userLog() {
 	  console.error("or this?");
     sessionStorage.setItem("userLogin", "true");
     sessionStorage.setItem("user", $("#logUsername").val());
-    window.location.href = 'managepage.html';
+    window.location.set('managepage.html');
   }
   else {
     sessionStorage.setItem("loginMessage","login failed");
