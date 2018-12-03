@@ -19,12 +19,28 @@ function selectOption() {
   sessionStorage.setItem("userSearchType", $(this).text());
 }
 
+function loginout() {
+  if (sessionStorage.getItem("userLogin") == "false") {
+    window.location.href = "loginpage.html";
+  }
+  else if (sessionStorage.getItem("userLogin") == "true") {
+    sessionStorage.setItem("userLogin", "false");
+    window.location.href = "frontpage.html";
+  }
+  else {
+    console.error("userLogin value null or invalid");
+  }
+}
+
 $(document).ready(function(){
   if (sessionStorage.getItem("userLogin") == null) {
     sessionStorage.setItem("userLogin", "false");
   }
+<<<<<<< HEAD
 //sessionStorage.setItem("userLogin", "true");//test ignore
 //sessionStorage.setItem("user", "I am user");// test ignore
+=======
+>>>>>>> sunah
 
   // display login or logout
   if (sessionStorage.getItem("userLogin") == "true") {
@@ -38,6 +54,8 @@ $(document).ready(function(){
     $("#manageButton").hide();
     $("#accountName").hide();
   }
+
+  $("#logButton").click(loginout);
 
   /***********************
   Searchbar
