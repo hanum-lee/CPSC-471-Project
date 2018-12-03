@@ -52,7 +52,8 @@ function userReg() {
   }
   var logInfoString = JSON.stringify(logInfo);
 
-  if (logInfo.username == '' || logInfo.password == ''){
+/*
+  if (logInfo.username === '' || logInfo.password === ''){
     sessionStorage.setItem("loginMessage","username or password cannot be empty");
     return;
   }
@@ -60,7 +61,7 @@ function userReg() {
     sessionStorage.setItem("loginMessage","username and password cannot contain a space");
     return;
   }
-
+*/
   // sending information to server
   var req = new XMLHttpRequest();
   req.open('POST', '/register', false);
