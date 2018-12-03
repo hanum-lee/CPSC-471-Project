@@ -47,8 +47,8 @@ function userReg() {
   */
 
   var logInfo = {
-    username: $("#logUsername").val(),
-    password: $("#logPassword").val()
+    username: $("#regUsername").val(),
+    password: $("#regPassword").val()
   }
   var logInfoString = JSON.stringify(logInfo);
 
