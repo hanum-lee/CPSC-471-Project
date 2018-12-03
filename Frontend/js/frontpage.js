@@ -36,7 +36,7 @@ $(document).ready(function(){
   if (sessionStorage.getItem("userLogin") == null) {
     sessionStorage.setItem("userLogin", "false");
   }
-
+  
   // display login or logout
   if (sessionStorage.getItem("userLogin") == "true") {
     $("#logButton").text('Logout');
