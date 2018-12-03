@@ -30,7 +30,7 @@ function getNumOfRecipe() {
   */
 
   var req = new XMLHttpRequest();
-  req.open('GET', '/numOfRecipe', false);
+  req.open('GET', '/numOfRecipe', true);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
@@ -47,7 +47,7 @@ function getRecipe() {
   var recipeSelectString = JSON.stringify(recipeSelected);
   // get recipe data from server
   var req = new XMLHttpRequest();
-  req.open('POST', '/editRecipe', false);
+  req.open('POST', '/editRecipe', true);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
@@ -63,10 +63,10 @@ function sendData() {
   // get recipe data from server
   var req = new XMLHttpRequest();
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
-      req.open('POST', '/recipeUpdate', false);
+      req.open('POST', '/recipeUpdate', true);
   }
   else {
-      req.open('POST', '/recipeAdd', false);
+      req.open('POST', '/recipeAdd', true);
   }
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
@@ -82,7 +82,7 @@ function sendDelete() {
   var recipeSelectString = JSON.stringify(recipeSelected);
   // get recipe data from server
   var req = new XMLHttpRequest();
-  req.open('DELETE', '/deleteRecipe', false);
+  req.open('DELETE', '/deleteRecipe', true);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {

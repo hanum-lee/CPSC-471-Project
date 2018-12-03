@@ -30,7 +30,7 @@ function getData() {
 
   // get recipe data from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/recipeData', false);
+  req.open('GET', '/recipeData', true);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {

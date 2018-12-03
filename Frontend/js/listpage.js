@@ -25,7 +25,7 @@ function getList(){
   var userSearchString = JSON.stringify(userSearch);
   // get list of recipes from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/login', false);
+  req.open('GET', '/login', true);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
