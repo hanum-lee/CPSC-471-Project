@@ -23,7 +23,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
 app.post('/login',function(req,res){
 	
     pool.getConnection(function (err,connection) {
@@ -208,13 +207,24 @@ app.post('/register',function(req,res){
 		}
 		connection.query('CALL recipesearcher.add_user(?,?)',[req.body.username, req.body.password], function(err, rows, fields) {
 			connection.release();
+			console.log(rows[0])
 			var myval = JSON.parse(JSON.stringify(rows[0]));
+			var bool_value = myval[0].userexists == 'true';
+			var aval;
+			console.log(bool_value);
+			if (bool_value) {
+				aval = {userexists: "true"};
+			}
+			else {
+				aval = {userexists: "false"};
+			}
+			console.log(aval);
 			if (err) {
-				console.log(err);
 				console.log("Error in query");
+				console.log(err);
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows[0]));
+			res.status(200).send(JSON.stringify(aval));
 		});
 	});
 });
