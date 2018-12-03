@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: recipesearcher
+-- Host: localhost    Database: recipesearcher
 -- ------------------------------------------------------
 -- Server version	8.0.13
 
@@ -254,7 +254,7 @@ CREATE TABLE `user_recipesearcher` (
 
 LOCK TABLES `user_recipesearcher` WRITE;
 /*!40000 ALTER TABLE `user_recipesearcher` DISABLE KEYS */;
-INSERT INTO `user_recipesearcher` VALUES ('a','a'),('test','test'),('test2','a');
+INSERT INTO `user_recipesearcher` VALUES ('a','a'),('anothertest','tester'),('test','test'),('test2','a'),('testa','test'),('tester','tester');
 /*!40000 ALTER TABLE `user_recipesearcher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -468,7 +468,7 @@ BEGIN
     count(id) = 1
 		then 'false'
 		else 'true'
-		end as bool
+		end as boolval
     from user_recipesearcher
     where ID = username;
     
@@ -610,18 +610,18 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `log_in`(id char(45), pass char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `log_in`(p_id char(45), p_pswd char(45))
 BEGIN
 	select case when
     count(ID) = 1
     then 'true'
     else
     'false'
-    end as bool
+    end as boolval
     from user_recipesearcher
-    where ID = id
+    where ID = p_id
 		AND
-			pswd = pass;
+			pswd = p_pswd;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -845,4 +845,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-03  3:50:24
+-- Dump completed on 2018-12-03 14:04:58

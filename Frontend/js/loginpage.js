@@ -23,7 +23,6 @@ function userLog() {
       }
   };
   req.send(logInfoString);
-
   // dealing with info from server
   if (logSuccess.userexists == "false") {
       sessionStorage.setItem("loginMessage","invalid username or password");
