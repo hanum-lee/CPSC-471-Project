@@ -190,7 +190,6 @@ app.get('/recipeAdd',function(req,res){
 });
 
 app.post('/register',function(req,res){
-	console.log(req.body.username, req.body.password);
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
