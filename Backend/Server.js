@@ -42,18 +42,42 @@ app.post('/login',function(req,res){
 			res.status(200).send(rows);
 		});
 	});
-	
+
 });
 app.get('/editRecipe',function(req,res){
-
+	let recTitle = req.body.title;
+	let recNum = req.body.number;
+	let recDec = req.body.description;
+	let recFoodType = req.body.foodType;
+	let recIngr = req.body.ingredients;
+	let recCook = req.body.cookware;
+	let recSteps = req.body.steps;
+	let rec.fav = req.body.favourite;
+	let username = req.body.username;
 });
 
 app.post('/recipeUpdate',function(req,res){
-
+	let recTitle = req.body.title;
+	let recNum = req.body.number;
+	let recDec = req.body.description;
+	let recFoodType = req.body.foodType;
+	let recIngr = req.body.ingredients;
+	let recCook = req.body.cookware;
+	let recSteps = req.body.steps;
+	let rec.fav = req.body.favourite;
+	let username = req.body.username;
 });
 
 app.get('/recipeAdd',function(req,res){
-
+	let recTitle = req.body.title;
+	let recNum = req.body.number;
+	let recDec = req.body.description;
+	let recFoodType = req.body.foodType;
+	let recIngr = req.body.ingredients;
+	let recCook = req.body.cookware;
+	let recSteps = req.body.steps;
+	let rec.fav = req.body.favourite;
+	let username = req.body.username;
 });
 
 app.post('/register',function(req,res){
@@ -76,7 +100,16 @@ app.post('/register',function(req,res){
 });
 
 app.get('/recipeData',function(req,res){
-	
+	let recTitle = req.body.title;
+	let recNum = req.body.number;
+	let recDec = req.body.description;
+	let recFoodType = req.body.foodType;
+	let recIngr = req.body.ingredients;
+	let recCook = req.body.cookware;
+	let recSteps = req.body.steps;
+	let rec.fav = req.body.favourite;
+	let username = req.body.username;
+
 });
 
 app.get('/searchfavorites', function(req, res) {	//might need to change function name
@@ -162,7 +195,7 @@ app.get('/deletereview', function(req, res) {	//might need to change function na
 		});
 	});
 });
-app.get('/deleterecipe', function(req, res) {	//might need to change function name
+app.delete('/deleterecipe', function(req, res) {	//might need to change function name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
