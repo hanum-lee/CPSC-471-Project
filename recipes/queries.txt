@@ -1,167 +1,87 @@
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_user`(userid char(45))
-BEGIN
-	select rname, time_taken, NUM 
-    from recipe
-    where user_id = userid;
-END
+ADD STORED PROCEDURES:
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_recipe`(rn char(45))
-BEGIN
-	select NUM, user_id, rname, time_taken 
-    from recipe 
-    where rname = rn;
-END
+addedit_cookware (cookw json, rnum smallint(11))
+	Takes in a json array filled with cookware
+	and the recipe num
+	- Deletes original list of all the cookware for said recipe before adding them all
+	
+add_favorites(rnum smallint(11), id char(45))
+	Takes in the recipe number and the username
+	on duplicate, just do nothing
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_ingredient`(ing_list varchar(16000))
-BEGIN
-	declare i int;
-    declare ing varchar(45);
-    declare break int;
-    
-    if right(ing_list, 1) <> ',' then
-		set ing_list = concat(ing_list, ',');
-	end if;
-    
-    drop table if exists tempingtable;
-    create temporary table tempingtable (ingname char(45));
-    set break = 0;
-    
-    while (break < 50) && (length(ing_list) > 1) do
-		set break = break +  1;
-        set i = instr(ing_list, ',');
-        set ing = left(ing_list, i - 1);
-        insert into tempingtable values(ing);
-	end while;
-    
-    select NUM, user_id, rname, time_taken 
-    from recipe 
-    where NUM in (select recipe_no
-					from consists_of_ing
-                    where ing_name in (select *
-										from tempingtable)); 
-END
+add_foodtype(foodname varchar(45), foodtype varchar(45))
+	either add type to particular foodname or update current type
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_food`(aname char(45))
-BEGIN
-	select NUM, user_id, rname, time_taken 
-    from recipe as R
-    where NUM IN (select r_no
-					from food
-                    where fname = aname);
-END
+addedit_ingredients(ing_array json, rnum smallint(11))
+	Takes in json array filled with [ingredients, ingredient_type, ingredient_amount]
+	and the recipe num
+	- Deletes original list of all the ingredients part of the recipe before readding all
+	
+add_recipe(recname char(45), foodname char(45), tt int(11), id char(45), dir text)
+	Takes in Recipe name, food name, time taken, username, direction
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_favorites`(id char(45))
-BEGIN
-	select NUM, user_id, rname, time_taken 
-    from recipe
-    where NUM IN (select r_no
-					from favorites
-					where user_id = id);
-END
+add_user(username char(45), pass char(45))
+	Will return false if there is a username already present
+	Else return true for success
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_cookware`(cookware_arr varchar(16000))
-BEGIN
-	declare i int;
-    declare cookware varchar(45);
-    declare break int;
-    
-    if right(cookware_arr, 1) <> ',' then
-		set cookware_arr = concat(cookware_arr, ',');
-	end if;
-    
-    drop table if exists tempcookware;
-    create temporary table tempcookware (cookware char(45));
-    set break = 0;
-    
-    while (break < 50) && (length(cookware_arr) > 1) do
-		set break = break +  1;
-        set i = instr(cookware_arr, ',');
-        set cookware = left(cookware_arr, i - 1);
-        insert into tempcookware values(cookware);
-	end while;
-	select NUM, user_id, rname, time_taken 
-    from recipe 
-    where NUM in (select r_no
-					from cookware_used
-                    where cookware in (tempcookware));
-END
+addedit_review(r_no smallint(11), id char(45), review text)
+	Will either insert or replace whatever the current review by the user on that recipe
+	
+edit_recipe(rnum smallint(11), recname char(45), foodtype varchar(45), foodname varchar(45), tt int(11), dir text)
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
-BEGIN
-	delete from favorites
-    where user_id = id AND r_no = rnum;
-END
+//////////////////////////////////////////////////////////////////////////////////////
+DELETE/REMOVE STORED PROCEDURES
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `log_in`(id char(45), pass char(45))
-BEGIN
-	select ID
-    from user_recipesearcher
-    where ID = id
-		AND
-			pswd = pass;
-END
+delete_recipe(rno smallint(11), id char(45))
+	Takes in the username, and the recipe number
+	Will only delete if rno and username matches
+	
+delete_review(rno smallint(11), id char(45))
+	Takes in the username, and the recipe number
+	Deletes the review made by username with matching recipe number
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `get_full_recipe`(rnum smallint(11))
-BEGIN
-	select rname, time_taken, directions
-    from recipe
-    where NUM = rnum;
-    
-    select cookware
-    from cookware_used
-    where r_no = rnum;
-    
-    select ing_name, amount
-    from consists_of_ing
-    where recipe_no = rnum;
-END
+remove_favorites(id char(45), rnum smallint(11))
+	Takes in the username, and the recipe number
+	Deletes from table keeping track of everyone's favorites based off of recipe num and username
+	
+remove_ingredient(rnum smallint(11), ingname varchar(45))
+	Do no require this function as add/edit ingredients should be called instead and will do this.
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `delete_review`(rno smallint(11), id char(45))
-BEGIN
-	delete from review
-    where r_no = rno 
-		AND
-        u_id = id;
-END
+///////////////////////////////////////////////////////////////////////////////////////
+SEARCH STORED PROCEDURES:
+	Search functions returns recipe_num, username, recipename, timetaken
+	
+search_cookware(cookw json)
+	Takes in a json array filled with cookware
+	
+search_ingredients(ing_list json)
+	Takes in a json array filled with ingredients
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
-BEGIN
-	delete from recipe
-    where NUM = rno AND user_id = id;
-END
+search_favorites(id char(45))
+	Takes in a username
+	
+search_food(aname char(45))
+	Takes in foodname 
+	
+serach_recipe(rn char(45))
+	Takes in a recipe name
+	
+search_user(id char(45))
+	Takes in a username - used to return all the recipes said user made
+	
+///////////////////////////////////////////////////////////////////////////////////////
+OTHER STORED PROCEDURES
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `addedit_review`(r_no smallint, id char(45), review text)
-BEGIN
-	insert into review(r_no, u_id, rating)
-    value (r_no, id, review)
-    on duplicate key update
-    rating = review;
-END
+log_in(id char(45), pass char(45))
+	Takes in id n pswd
+	Returns true if sucess or false in table format.
 
-CREATE DEFINER=`sally`@`%` PROCEDURE `add_user`(id char(45), pass char(45))
-BEGIN
-	insert into user_recipesearcher(ID, password)
-    values(id, pass);
-END
-
-CREATE DEFINER=`sally`@`%` PROCEDURE `add_recipe`(recname char(45), foodname char(45), tt int(11), id char(45), dir text)
-BEGIN
-	insert into recipe(user_id, rname, time_taken, directions)
-    values (id, recname, tt, dir);
-    
-    insert into food(fname, r_no)
-    values (foodname,(select NUM
-						from recipe
-						where (user_id = id 
-							AND rname = recname 
-                            AND timetaken = tt 
-                            AND directions = dir)));
-END
-
-CREATE DEFINER=`sally`@`%` PROCEDURE `add_favorites`(rnum smallint(11), id char(45))
-BEGIN
-	insert into favorites(user_id, r_no, f_name)
-    values(id, rnum, (select fname
-						from food
-						where r_no = rnum));
-END
+get_full_recipe(rnum smallint(11), id varchar(45))
+	Takes in recipe number and a username
+	Returns:
+		Row entry of recipe = [NUM, user_id, rname, time_taken, directions]
+		Row entries of cookware 
+		Row entries of f_type
+		Row entries of [ingredients, amount]
+		Boolean if if favorited(true) or not(false) in table format
+		

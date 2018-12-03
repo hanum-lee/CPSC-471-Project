@@ -261,6 +261,36 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'recipesearcher'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `addedit_cookware` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addedit_cookware`(cookw json, rnum smallint(11))
+BEGIN
+	declare json_ind int default json_length(cookw);
+    declare _ind int default 0;
+    
+    delete from cookware_used
+    where r_no = rnum;
+    
+    while _ind < json_ind do
+		insert into cookware_used(cookware, r_no)
+		value (json_extract(ind_array, concat('$[',`_ind`, '].cookware')),
+				rnum);
+		set _ind := _ind + 1;
+	end while;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `addedit_food` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -283,6 +313,44 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `addedit_ingredients` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addedit_ingredients`(ing_array json, rnum smallint(11))
+BEGIN
+	
+	declare json_ing int default json_length(ing_array);
+    declare _ind int default 0;
+    
+    delete from consists_of_ing
+    where recipe_no = rnum;
+    
+    while _ind < json_ing do
+		insert into ingredients(iname, itype)
+		value (json_extract(ing_array, concat('$[',`_ind`, '].ingredients')),
+				json_extract(ing_array, concat('$[',`_ind`, '].ingtype')))
+		on duplicate key update
+		itype = json_extract(ing_array, concat('$[',`_ind`, '].ingtype'));
+	
+		insert into consists_of_ing(ing_name, amount, recipe_no)
+		value (json_extract(ing_array, concat('$[',`_ind`, '].ingredients')),
+			json_extract(ing_array, concat('$[',`_ind`, '].ingamount')),
+			rnum);
+		set _ind := _ind + 1;
+	end while;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `addedit_review` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -293,32 +361,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `addedit_review`(r_no smallint, id char(45), review text)
+CREATE DEFINER=`sally`@`%` PROCEDURE `addedit_review`(r_no smallint(11), id char(45), review text)
 BEGIN
 	insert into review(r_no, u_id, rating)
     value (r_no, id, review)
     on duplicate key update
     rating = review;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `add_cookware` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `add_cookware`(cookw varchar(45), rnum smallint(11))
-BEGIN
-	insert into cookware_used(cookware, r_no)
-    value (cookw, rnum);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -340,7 +388,9 @@ BEGIN
 	insert into favorites(user_id, r_no, f_name)
     values(id, rnum, (select fname
 						from food
-						where r_no = rnum));
+						where r_no = rnum))
+	on duplicate key update
+    user_id = id;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -360,32 +410,9 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `add_foodtype`(foodname varchar(45), foodtype varchar(45))
 BEGIN
 	insert into food_type(f_name, f_type)
-    value (foodname, foodtype);
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `add_ingredients` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `add_ingredients`(ingname varchar(45),ingtype varchar(45), amt varchar(45), rnum smallint(11))
-BEGIN
-	insert into ingredients(iname, itype)
-    value (ingname, ingtype)
+    value (foodname, foodtype)
     on duplicate key update
-    itype = ingtype;
-    
-	insert into consists_of_ing(ing_name, amount, recipe_no)
-    value (ingname, amt, rnum);
+    f_type = foodtype;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -407,8 +434,7 @@ BEGIN
 	insert into recipe(user_id, rname, time_taken, directions)
     values (id, recname, tt, dir);
     
-    insert into food(fname, r_no)
-    values (foodname,(select NUM
+    call addedit_food (foodname,(select NUM
 						from recipe
 						where (user_id = id 
 							AND rname = recname 
@@ -500,6 +526,36 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `edit_recipe` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `edit_recipe`(rnum smallint(11), recname char(45),foodtype varchar(45), foodname char(45), tt int(11), dir text)
+BEGIN
+	update recipe
+    set rname = recname, time_taken = tt, directions = dir
+    where NUM = rnum;
+    
+    update food
+    set fname = foodname
+    where r_no = rnum;
+    
+    update food_type
+    set f_type = foodtype
+    where f_name = foodname;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `get_full_recipe` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -510,9 +566,9 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `get_full_recipe`(rnum smallint(11))
+CREATE DEFINER=`sally`@`%` PROCEDURE `get_full_recipe`(rnum smallint(11),id varchar(45))
 BEGIN
-	select rname, time_taken, directions
+	select *
     from recipe
     where NUM = rnum;
     
@@ -520,9 +576,24 @@ BEGIN
     from cookware_used
     where r_no = rnum;
     
+    select f_type
+    from food_type
+    where f_name in (select fname
+					from food
+					where r_no = rnum);
+    
     select ing_name, amount
     from consists_of_ing
     where recipe_no = rnum;
+    
+    select case when count(user_id)=1
+		then 'true'
+		else 'false'
+		end as bool
+    from favorites
+    where user_id = id 
+		AND
+        r_no = rnum;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -609,31 +680,28 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_cookware`(cookware_arr varchar(16000))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_cookware`(cookw json)
 BEGIN
-	declare i int;
-    declare cookware varchar(45);
-    declare break int;
+	declare json_ind int default json_length(cookw);
+    declare _ind int default 0;
     
-    if right(cookware_arr, 1) <> ',' then
-		set cookware_arr = concat(cookware_arr, ',');
-	end if;
+    drop temporary table if exists jsontemp;
     
-    drop table if exists tempcookware;
-    create temporary table tempcookware (cookware char(45));
-    set break = 0;
+    create temporary table if not exists jsontemp
+    (cookware varchar(45) not null);
     
-    while (break < 50) && (length(cookware_arr) > 1) do
-		set break = break +  1;
-        set i = instr(cookware_arr, ',');
-        set cookware = left(cookware_arr, i - 1);
-        insert into tempcookware values(cookware);
+    while _ind < json_ind do
+		insert into jsontemp(cookware)
+		value (json_extract(ind_array, concat('$[',`_ind`, '].cookware')));
+		set _ind := _ind + 1;
 	end while;
+    
 	select NUM, user_id, rname, time_taken 
     from recipe 
     where NUM in (select r_no
 					from cookware_used
-                    where cookware in (tempcookware));
+                    where cookware in (select *
+										from jsontemp));
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -696,33 +764,29 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_ingredient`(ing_list varchar(16000))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_ingredient`(ing_list json)
 BEGIN
-	declare i int;
-    declare ing varchar(45);
-    declare break int;
+	declare json_ind int default json_length(ing_list);
+    declare _ind int default 0;
     
-    if right(ing_list, 1) <> ',' then
-		set ing_list = concat(ing_list, ',');
-	end if;
+    drop temporary table if exists jsontemp;
     
-    drop table if exists tempingtable;
-    create temporary table tempingtable (ingname char(45));
-    set break = 0;
+    create temporary table if not exists jsontemp
+    (ingname varchar(45) not null);
     
-    while (break < 50) && (length(ing_list) > 1) do
-		set break = break +  1;
-        set i = instr(ing_list, ',');
-        set ing = left(ing_list, i - 1);
-        insert into tempingtable values(ing);
+    while _ind < json_ind do
+		insert into jsontemp(ingname)
+		value (json_extract(ind_array, concat('$[',`_ind`, '].ingredients')));
+		set _ind := _ind + 1;
 	end while;
+    
     
     select NUM, user_id, rname, time_taken 
     from recipe 
     where NUM in (select recipe_no
 					from consists_of_ing
                     where ing_name in (select *
-										from tempingtable)); 
+										from jsontemp)); 
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -781,4 +845,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-02 15:00:14
+-- Dump completed on 2018-12-03  3:50:24
