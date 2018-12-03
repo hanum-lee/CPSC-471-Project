@@ -13,21 +13,24 @@ function userLog() {
   }
   var logInfoString = JSON.stringify(logInfo);
   var req = new XMLHttpRequest();
-
   req.open('POST', '/login', false);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         logSuccess = JSON.parse(req.responseText);  //RETURNDATA
+		console.error(logSuccess.userexists);
       }
   };
   req.send(logInfoString);
+
   // dealing with info from server
   if (logSuccess.userexists == "false") {
+	  console.error("Does this run?");
       sessionStorage.setItem("loginMessage","invalid username or password");
   }
   else if (logSuccess.userexists == "true") {
+	  console.error("or this?");
     sessionStorage.setItem("userLogin", "true");
     sessionStorage.setItem("user", $("#logUsername").val());
     window.location.href = 'managepage.html';

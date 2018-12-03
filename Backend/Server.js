@@ -33,15 +33,24 @@ app.post('/login',function(req,res){
 		}
 		connection.query('CALL recipesearcher.log_in(?,?)',[req.body.username, req.body.password], function(err, rows, fields) {
 			connection.release();
+			console.log(rows[0])
 			var myval = JSON.parse(JSON.stringify(rows[0]));
-			var bool_value = myval[0].boolval == 'true';
+			var bool_value = myval[0].userexists == 'true';
+			var aval;
 			console.log(bool_value);
+			if (bool_value) {
+				aval = {userexists: "true"};
+			}
+			else {
+				aval = {userexists: "false"};
+			}
+			console.log(aval);
 			if (err) {
 				console.log("Error in query");
 				console.log(err);
 				res.status(400).send(err);
 			}
-			res.status(200).send(bool_value);
+			res.status(200).send(JSON.stringify(aval));
 		});
 	});
 
@@ -201,14 +210,12 @@ app.post('/register',function(req,res){
 		connection.query('CALL recipesearcher.add_user(?,?)',[req.body.username, req.body.password], function(err, rows, fields) {
 			connection.release();
 			var myval = JSON.parse(JSON.stringify(rows[0]));
-			var bool_value = myval[0].boolval == 'true';
-			console.log(bool_value);
 			if (err) {
 				console.log(err);
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(bool_value);
+			res.status(200).send(JSON.stringify(rows[0]));
 		});
 	});
 });

@@ -23,8 +23,8 @@ $(document).ready(function(){
   if (sessionStorage.getItem("userLogin") == null) {
     sessionStorage.setItem("userLogin", "false");
   }
-sessionStorage.setItem("userLogin", "true");//test ignore
-sessionStorage.setItem("user", "I am user");// test ignore
+//sessionStorage.setItem("userLogin", "true");//test ignore
+//sessionStorage.setItem("user", "I am user");// test ignore
 
   // display login or logout
   if (sessionStorage.getItem("userLogin") == "true") {
