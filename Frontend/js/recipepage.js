@@ -3,6 +3,7 @@ var counterI = 1;
 var counterC = 1;
 var recipeNum = sessionStorage.getItem("recipeSelected");
 var recipeSelected = {
+  username: sessionStorage.getItem("user");
   recipeNum: recipeNum;
 }
 // variable for data returned by server
