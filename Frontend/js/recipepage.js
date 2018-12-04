@@ -86,7 +86,7 @@ function addIngredient() {
   counterI++;
   if(counterI>20){
     alert("Only 20 Ingredients allowed");
-    return false;
+    return false;-
   }
 
   $('#ingredients').append("Ingredient " + counterI + ": ", $("<input id='ing" + counterI + "' class='recipeInfo'>"));
