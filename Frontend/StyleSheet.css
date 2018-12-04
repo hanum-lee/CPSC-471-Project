@@ -211,7 +211,6 @@ MAIN PAGE
   background-image: url("bread.jpg");
   background-size: cover;
   background-position: center;
-  z-index: -1;
 }
 /* search bar */
 #searchbar {
