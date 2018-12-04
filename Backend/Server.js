@@ -294,12 +294,14 @@ app.post('/searchfoodname', function(req, res) {	//might need to change function
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_food(?)',[req.body.foodname], function(err, rows, fields) {
+		console.log(req.body.searchInput);
+		connection.query('CALL recipesearcher.search_food(?)',req.body.searchInput, function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
+			console.log(JSON.stringify(rows));
 			res.status(200).send(JSON.stringify(rows));
 		});
 	});
@@ -310,7 +312,7 @@ app.post('/searchfoodtype', function(req, res) {	//might need to change function
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_food(?)',[req.body.foodname], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_food(?)',[req.body.foodtype], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
@@ -344,10 +346,11 @@ app.post('/searchingredients', function(req, res) {	//might need to change funct
 			res.status(400).send(err);
 		}
 		console.log(req.body);
-		connection.query('CALL recipesearcher.search_ingredient(?)',[req.body.ingredients], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_ingredient(?)', req.body, function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
+				console.log(err);
 				res.status(400).send(err);
 			}
 			res.status(200).send(JSON.stringify(rows));
