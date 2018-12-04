@@ -371,7 +371,7 @@ app.post('/searchrecipe', function(req, res) {	//might need to change function n
 		});
 	});
 });
-app.get('/removefavorites', function(req, res) {	//might need to change function name - function takes in username and the recipe-no
+app.delete('/removefavorites', function(req, res) {	//might need to change function name - function takes in username and the recipe-no
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -387,7 +387,7 @@ app.get('/removefavorites', function(req, res) {	//might need to change function
 		});
 	});
 });
-app.get('/deletereview', function(req, res) {	//might need to change function name
+app.delete('/deletereview', function(req, res) {	//might need to change function name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -419,7 +419,7 @@ app.delete('/deleterecipe', function(req, res) {	//might need to change function
 		});
 	});
 });
-app.get('/addeditreview', function(req, res) {	//might need to change function name
+app.post('/addeditreview', function(req, res) {	//might need to change function name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -435,7 +435,7 @@ app.get('/addeditreview', function(req, res) {	//might need to change function n
 		});
 	});
 });
-app.get('/addfavorites', function(req, res) {	//might need to change function name
+app.post('/addfavorites', function(req, res) {	//might need to change function name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
