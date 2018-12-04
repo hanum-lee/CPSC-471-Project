@@ -1,5 +1,5 @@
 var userSearch = {
-  searchInput: sessionStorage.getItem("userSearch"); // input in the search bar
+  searchInput: sessionStorage.getItem("userSearch") // input in the search bar
 }
 var userSearchString = JSON.stringify(userSearch);
 var recipeList;
@@ -195,6 +195,7 @@ $(document).ready(function(){
       break;
     default:
       console.error("invalid list page type or null");
+	  console.error(sessionStorage.getItem("listPg"));
   }
 
   // use recipeList to create new elements (div) in html

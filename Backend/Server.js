@@ -256,7 +256,23 @@ app.get('/recipeData',function(req,res){
 
 });
 
-app.get('/searchfavorites', function(req, res) {	//might need to change function name
+app.get('/searchmyrecipes', function(req, res) {	//might need to change function name
+	pool.getConnection(function (err,connection) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL recipesearcher.search_user(?)',[req.body.username], function(err, rows, fields) {
+			connection.release();
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(JSON.stringify(rows));
+		});
+	});
+});
+app.get('/searchmyfavourites', function(req, res) {	//might need to change function name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -272,7 +288,23 @@ app.get('/searchfavorites', function(req, res) {	//might need to change function
 		});
 	});
 });
-app.get('/searchfood', function(req, res) {	//might need to change function name - function to search by food name
+app.get('/searchfoodname', function(req, res) {	//might need to change function name - function to search by food name
+	pool.getConnection(function (err,connection) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL recipesearcher.search_food(?)',[req.body.foodname], function(err, rows, fields) {
+			connection.release();
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(JSON.stringify(rows));
+		});
+	});
+});
+app.get('/searchfoodtype', function(req, res) {	//might need to change function name - function to search by food name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -311,6 +343,7 @@ app.get('/searchingredients', function(req, res) {	//might need to change functi
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
+		console.log(req.body);
 		connection.query('CALL recipesearcher.search_ingredient(?)',[req.body.ingredients], function(err, rows, fields) {
 			connection.release();
 			if (err) {
