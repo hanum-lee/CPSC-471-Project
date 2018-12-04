@@ -1,5 +1,5 @@
 var userSearch = {
-  searchInput: sessionStorage.getItem("userSearch") // input in the search bar
+  searchInput: sessionStorage.getItem("navSearch") // input in the search bar
 }
 var userSearchString = JSON.stringify(userSearch);
 var recipeList;
@@ -14,20 +14,20 @@ function searchByIngredient() {
 
   // get list of recipes from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/searchingredients', true);
+  req.open('POST', '/searchingredients', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
       }
   };
-  req.send();
+  req.send(userSearchString);
 }
 
 function searchByFoodType() {
   // get list of recipes from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/searchfoodtype', true);
+  req.open('POST', '/searchfoodtype', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
@@ -40,7 +40,7 @@ function searchByFoodType() {
 function searchByFoodName() {
   // get list of recipes from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/searchfoodname', true);
+  req.open('POST', '/searchfoodname', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
@@ -53,7 +53,7 @@ function searchByFoodName() {
 function searchByRecipeName() {
   // get list of recipes from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/searchrecipe', true);
+  req.open('POST', '/searchrecipe', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
@@ -66,7 +66,7 @@ function searchByRecipeName() {
 function searchByCookware() {
   // get list of recipes from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/searchcookware', true);
+  req.open('POST', '/searchcookware', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
@@ -107,7 +107,7 @@ function getMyRecipes() {
   var username = JSON.stringify(user);
   // get list of recipes from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/searchmyrecipes', true);
+  req.open('POST', '/searchmyrecipes', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
@@ -125,7 +125,7 @@ function getMyFavourites() {
   var username = JSON.stringify(user);
   // get list of recipes from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/searchmyfavourites', true);
+  req.open('POST', '/searchmyfavourites', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
@@ -143,7 +143,7 @@ function getRecipesReviewed() {
   var username = JSON.stringify(user);
   // get list of recipes from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/searchrecipesreviewed', true);
+  req.open('POST', '/searchrecipesreviewed', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
@@ -166,7 +166,7 @@ function getList(){
   var userSearchString = JSON.stringify(userSearch);
   // get list of recipes from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/login', true);
+  req.open('POST', '/login', true);
   req.setRequestHeader("Content-Type", "application/json");
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {

@@ -256,7 +256,7 @@ app.get('/recipeData',function(req,res){
 
 });
 
-app.get('/searchmyrecipes', function(req, res) {	//might need to change function name
+app.post('/searchmyrecipes', function(req, res) {	//might need to change function name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -272,7 +272,7 @@ app.get('/searchmyrecipes', function(req, res) {	//might need to change function
 		});
 	});
 });
-app.get('/searchmyfavourites', function(req, res) {	//might need to change function name
+app.post('/searchmyfavourites', function(req, res) {	//might need to change function name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -288,7 +288,7 @@ app.get('/searchmyfavourites', function(req, res) {	//might need to change funct
 		});
 	});
 });
-app.get('/searchfoodname', function(req, res) {	//might need to change function name - function to search by food name
+app.post('/searchfoodname', function(req, res) {	//might need to change function name - function to search by food name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -304,7 +304,7 @@ app.get('/searchfoodname', function(req, res) {	//might need to change function 
 		});
 	});
 });
-app.get('/searchfoodtype', function(req, res) {	//might need to change function name - function to search by food name
+app.post('/searchfoodtype', function(req, res) {	//might need to change function name - function to search by food name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -320,7 +320,7 @@ app.get('/searchfoodtype', function(req, res) {	//might need to change function 
 		});
 	});
 });
-app.get('/searchcookware', function(req, res) {	//might need to change function name - function to search by food name
+app.post('/searchcookware', function(req, res) {	//might need to change function name - function to search by food name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -337,7 +337,7 @@ app.get('/searchcookware', function(req, res) {	//might need to change function 
 	});
 });
 
-app.get('/searchingredients', function(req, res) {	//might need to change function name - function to search by food name
+app.post('/searchingredients', function(req, res) {	//might need to change function name - function to search by food name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -355,7 +355,7 @@ app.get('/searchingredients', function(req, res) {	//might need to change functi
 	});
 });
 
-app.get('/searchrecipe', function(req, res) {	//might need to change function name - function to search by food name
+app.post('/searchrecipe', function(req, res) {	//might need to change function name - function to search by food name
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
