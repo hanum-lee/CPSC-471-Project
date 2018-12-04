@@ -1,5 +1,5 @@
 var userSearch = {
-  searchInput: sessionStorage.getItem("navSearch") // input in the search bar
+  searchInput: sessionStorage.getItem("userSearch") // input in the search bar
 }
 var userSearchString = JSON.stringify(userSearch);
 var recipeList;
@@ -9,7 +9,7 @@ recipeList = {
   number: [<num>, <num>, ....]  //index corresponding to title
 }
 */
-
+console.log(sessionStorage.getItem("navSearch"));
 function searchByIngredient() {
 
   // get list of recipes from server
