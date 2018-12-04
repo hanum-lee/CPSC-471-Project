@@ -74,7 +74,6 @@ function placeRecipeInForm() {
     }
     $("#cookw"+(i+1)).val(recipeData.cookware[i]);
   }
-
 }
 
 function sendData() {
@@ -98,8 +97,15 @@ function sendData() {
 }
 
 function getRecipeInput() {
+  var ftArray = [];
+  var ingArray = [];
+  var ingAmountArray = [];
+  var ingTypeArray = [];
+  var cookArray = [];
+
   recipeData.title = $("#inputRecipeTitle").val();
   recipeData.author = sessionStorage.getItem("user");
+  recipeData.steps = $("#stepsInput").val();
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
     recipeData.number = recipeSelected.recipeNum;
   }
@@ -107,6 +113,23 @@ function getRecipeInput() {
     recipeData.number = null;
   }
 
+  for (i=0; i<counterF; i++) {
+    ftArray.push($("#fType"+(i+1)).val());
+  }
+  for (i=0; i<counterI; i++) {
+    ingArray.push($("#ing"+(i+1)).val());
+    ingAmountArray.push($("#ingAmount"+(i+1)).val());
+    ingTypeArray.push($("#ingType"+(i+1)).val());
+  }
+  for (i=0; i<counterC; i++) {
+    cookArray.push($("#cookw"+(i+1)).val());
+  }
+
+  recipeData.foodType = ftArray;
+  recipeData.ingredients = ingArray;
+  recipeData.ingAmount = ingAmountArray;
+  recipeData.ingType = ingTypeArray;
+  recipeData.cookware = cookArray;
 }
 
 function sendDelete() {
