@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="StyleSheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Recipe Website-AddRecipe</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src = "js/viewrecipepage.js"></script>
@@ -26,7 +27,6 @@
               <button class="navDropOption">Cookware</button>
             </div>
           </div>
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
           <input id="navSearch" type = "text" placeholder="Search...">
           <button id = "navSearchBttn"><i class="fa fa-search"></i></button>
           <div class="rightContain">
@@ -41,14 +41,28 @@
   <div id="viewRecipePageTitle" class="titleContainer">
   </div>
   <div class="contentContainer">
+    <button id="favButton">Favourite</i></button>
      <p id="recipeTitle"> Recipe Title </p>
-     <p id="recipeDesc"> Recipe description </p>
-     <p class="ingredient"> ingredient 1 </p>
-     <p class="cookware"> cookware </p>
-     <p calss="steps"> steps </p>
+     <p id="recipeAuthor"> Made By who </p>
+     <!--<p id="recipeDesc"> Recipe description </p>-->
+     <div id="ingredients">
+       <p> Ingredients </p>
+    </div>
+    <div id = "cookware">
+     <p> Cookware </p>
+   </div>
+     <p id="instructions"> Instructions </p> <br>
+     <p id="steps"> Instructions </p>
   </div>
   <div class="reviewContainer">
+    <table id="reviews">
+    </table>
     Reviews
+  </div>
+  <div class="addReviewContainer">
+    <textarea id="userReview"> </textarea>
+    <button id="addReview">ENTER</i></button>
+    <button id="deleteReview">DELETE</i></button>
   </div>
 </body>
 </html>
