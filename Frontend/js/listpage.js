@@ -46,6 +46,7 @@ function searchByFoodName() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
+        showRecipes();
       }
   };
   console.log(userSearchString)
@@ -181,12 +182,13 @@ function getList(){
 
 function showRecipes() {
   // hard coded values for testing
+  /*
   recipeList = {
     title: ["R1", "R2", "R3", "R4", "R5"],
     number: [1, 2, 3, 4, 5],
     username: ["one", "two", "three", "four", "five"]
   }
-
+*/
   for (i=0; i <( recipeList.title.length); i++) {
     $('.contentContainer').append("<button id='" + recipeList.number[i] + "'>" + recipeList.title[i] + "\tBy: " + recipeList.username[i] + "</button> <br>");
     $('#'+i).click(selectRecipe);
