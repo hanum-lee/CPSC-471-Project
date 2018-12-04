@@ -93,7 +93,7 @@ Account buttons
 ***************************/
 
 .userAccount {
-  position: fixed;
+  position: static;
   display: block;
   width: 100%;
   top: 80px;

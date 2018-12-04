@@ -1,5 +1,6 @@
 var recipeNum = sessionStorage.getItem("recipeSelected");
 var recipeSelected = {
+  username: sessionStorage.getItem("user"),
   recipeNum: recipeNum
 }
 var recipeData;
@@ -30,104 +31,54 @@ recipeReviewData = {
 */
 
 var userReviewData;
-/* reviewData form
+/* userReviewData form
 
-uwerReviewData = {
+userReviewData = {
+  recipe: <recipe name>,
   author: <username>,
   text: <review text>,
   point: <out of 5>
 }
 */
-var addOrEdit; // ADD if new review, EDIT if review exists
 
+function favButtonClicked() {
+  if (recipeData.favourite == "false") {
+    recipeData.favourite = "true";
+    addFavourite();
+  }
+  else if (recipeData.favourite == "true") {
+    recipeData.favourite = "false";
+    deleteFavourite();
+  }
+}
 function addFavourite() {
-
-}
-
-function addOrEdit() {
-  if (addOrEdit == "ADD") {
-    addReview();
-  }
-  else if (addOrEdit == "EDIT") {
-    editReview();
-  }
-  else {
-    console.log("error in determining add or edit review");
-  }
-}
-
-function addReview() {
   var recipeSelectString = JSON.stringify(recipeSelected);
 
   // get recipe data from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/recipeData', true);
+  req.open('GET', '/addfavourite', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
-        recipeData = JSON.parse(req.responseText); //RETURNDATA
+        console.log("favourite add send successful");
       }
   };
   req.send(recipeSelectString);
 }
 
-function editReview() {
+function deleteFavourite() {
   var recipeSelectString = JSON.stringify(recipeSelected);
 
   // get recipe data from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/recipeData', true);
+  req.open('GET', '/deletefavourite', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
-        recipeData = JSON.parse(req.responseText); //RETURNDATA
+        console.log("favourite delete send successful")
       }
   };
   req.send(recipeSelectString);
-}
-
-function deleteReview() {
-
-}
-
-function getRecipeData() {
-  var recipeSelectString = JSON.stringify(recipeSelected);
-
-  // get recipe data from server
-  var req = new XMLHttpRequest();
-  req.open('GET', '/recipeData', true);
-  req.setRequestHeader("Content-Type", "application/json");
-  req.onreadystatechange = function () {
-      if (req.readyState === 4 && req.status === 200) {
-        recipeData = JSON.parse(req.responseText); //RETURNDATA
-      }
-  };
-  req.send(recipeSelectString);
-}
-
-function showRecipe() {
-  recipeData = {
-    title: "My Recipe",
-    author: "John", //username
-    number: 1,
-    foodType: ["noodle", "fushion", "dinner"],
-    ingredients: ["bacon", "carrot", "onion"],
-    ingAmount: ["4", "1 cup", "1"],
-    ingType: ["meat", "vegi", "vegi"],
-    cookware: ["pot", "spoon"],
-    steps: "Cook the bacon in the pot and add carrots and onions stir with spoooon",
-    favourite: "true"
-  }
-
-  $("#recipeTitle").text(recipeData.title);
-  $("#recipeAuthor").text("Made by: " + recipeData.author);
-  $("#steps").text(recipeData.steps);
-  for (i=0;i<recipeData.ingredients.length;i++) {
-    $("#ingredients").append(recipeData.ingredients[i] + " " + recipeData.ingAmount[i] + "<br>");
-  }
-  for (i=0;i<recipeData.cookware.length;i++) {
-    $("#cookware").append(recipeData.cookware[i] + "<br>");
-  }
 }
 
 function getReviews() {
@@ -141,30 +92,130 @@ function getReviews() {
       if (req.readyState === 4 && req.status === 200) {
         recipeReviewData = JSON.parse(req.responseText); //RETURNDATA
       }
+      showReviews();
   };
   req.send(recipeSelectString);
 }
 
 function showReviews() {
+  /* // hard coded values for testing
+  recipeReviewData = {
+    author: ["user1", "user2", "user3", "user4"],
+    text: ["this is the best recipe EVER", "eh ok", "yo so easy to make", "yummy"],
+    point:[5,3,4,4]
+  }
+  */
+
+  for (i=0;i<recipeReviewData.author.length;i++) {
+    if (recipeReviewData.author[i] == sessionStorage.getItem("user")){
+      $("#userReview").val(recipeReviewData.text[i]);
+      $("#deleteReview").show();
+      $("#deleteReview").click(deleteReview);
+    }
+    else {
+      console.log("add review");
+      $("#reviews").append("<tr>");
+      $("#reviews").append("<p class='reviewAuthor'>" + recipeReviewData.author[i] + "</p>");
+      $("#reviews").append("<p class='reviewText'>" + recipeReviewData.text[i] + "</p>");
+      $("#reviews").append("</tr>");
+    }
+  }
+
 // determine addOrEdit review
 // if EDIT review, show user review in the user reivew input box, show delete review button
+}
+
+function addEditReview() {
+  var userReviewString = JSON.stringify(userReviewData);
+
+  // get recipe data from server
+  var req = new XMLHttpRequest();
+  req.open('GET', '/addeditreview', true);
+  req.setRequestHeader("Content-Type", "application/json");
+  req.onreadystatechange = function () {
+      if (req.readyState === 4 && req.status === 200) {
+        console.log("add/edit review data send successful");
+      }
+  };
+  req.send(userReviewString);
+}
+
+function deleteReview() {
+  var userReviewString = JSON.stringify(userReviewData);
+
+  // get recipe data from server
+  var req = new XMLHttpRequest();
+  req.open('GET', '/deletereview', true);
+  req.setRequestHeader("Content-Type", "application/json");
+  req.onreadystatechange = function () {
+      if (req.readyState === 4 && req.status === 200) {
+        console.log("delete review send successful");
+      }
+  };
+  req.send(userReviewString);
+}
+
+function getRecipeData() {
+  var recipeSelectString = JSON.stringify(recipeSelected);
+
+  // get recipe data from server
+  var req = new XMLHttpRequest();
+  req.open('GET', '/recipeData', true);
+  req.setRequestHeader("Content-Type", "application/json");
+  req.onreadystatechange = function () {
+      if (req.readyState === 4 && req.status === 200) {
+        recipeData = JSON.parse(req.responseText); //RETURNDATA
+      }
+      showRecipe();
+  };
+  req.send(recipeSelectString);
+}
+
+function showRecipe() {
+  /* //hard coded values for testing
+  recipeData = {
+    title: "My Recipe",
+    author: "John", //username
+    number: 1,
+    foodType: ["noodle", "fushion", "dinner"],
+    ingredients: ["bacon", "carrot", "onion"],
+    ingAmount: ["4", "1 cup", "1"],
+    ingType: ["meat", "vegi", "vegi"],
+    cookware: ["pot", "spoon"],
+    steps: "Cook the bacon in the pot and add carrots and onions stir with spoooon",
+    favourite: "true"
+  }
+  */
+
+  $("#recipeTitle").text(recipeData.title);
+  $("#recipeAuthor").text("Made by: " + recipeData.author);
+  $("#steps").text(recipeData.steps);
+  for (i=0;i<recipeData.ingredients.length;i++) {
+    $("#ingredients").append(recipeData.ingredients[i] + " " + recipeData.ingAmount[i] + "<br>");
+  }
+  for (i=0;i<recipeData.cookware.length;i++) {
+    $("#cookware").append(recipeData.cookware[i] + "<br>");
+  }
 }
 
 $(document).ready(function(){
   $("#deleteReview").hide();
   getRecipeData();
-  showRecipe();
   getReviews();
-  showReviews();
-
 
   if (sessionStorage.getItem("userLogin") == "true") {
     $("#favButton").show();
+    $("#favButton").click(favButtonClicked);
     $(".addReviewContainer").show();
     // allow add favourite when clicked
     // show add comment button
     // allow add comment
-    $("#addReview").click(addOrEdit);
+    if ($.trim($("#userReview").val())) {
+      $("#addReview").click(addEditReview);
+    }
+    else {
+      console.log("empty user review text area");
+    }
 
   }
   else {

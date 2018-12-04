@@ -208,6 +208,12 @@ function showRecipes() {
 function selectRecipe() {
   var selectRecipeNum = $(this).attr("id");
   sessionStorage.setItem("recipeSelected", selectRecipeNum);
+  if (sessionStorage.getItem("listPg") == "MY RECIPES") {
+    window.location.href = "recipepage.html";
+  }
+  else {
+    window.location.href = "viewrecipepage.html";
+  }
 }
 
 $(document).ready(function(){

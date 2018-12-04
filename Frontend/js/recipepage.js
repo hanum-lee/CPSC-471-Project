@@ -90,7 +90,7 @@ function sendData() {
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
-        console.log("sent");
+        console.log("recipe data send successful");
       }
   };
   req.send(recipeDataString);
@@ -141,7 +141,7 @@ function sendDelete() {
   // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
-        console.log("sent");
+        console.log("delete recipe send successful");
       }
   };
   req.send(recipeSelectString);
