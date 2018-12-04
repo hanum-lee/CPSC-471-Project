@@ -7,6 +7,7 @@ var recipeList;
 recipeList = {
   title: [<title>, <title>, ....],
   number: [<num>, <num>, ....]  //index corresponding to title
+  username: [<name>, <name>, ...]
 }
 */
 console.log(sessionStorage.getItem("navSearch"));
@@ -177,9 +178,30 @@ function getList(){
   req.send(userSearchString);
 }
 
+function showRecipes() {
+  // hard coded values for testing
+  recipeList = {
+    title: ["R1", "R2", "R3", "R4", "R5"],
+    number: [1, 2, 3, 4, 5],
+    username: ["one", "two", "three", "four", "five"]
+  }
+
+  for (i=0; i <( recipeList.title.length); i++) {
+    $('.contentContainer').append("<button id='" + recipeList.number[i] + "'>" + recipeList.title[i] + "\tBy: " + recipeList.username[i] + "</button> <br>");
+    $('#'+i).click(selectRecipe);
+  }
+
+
+}
+
+function selectRecipe() {
+  var selectRecipeNum = $(this).attr("id");
+  sessionStorage.setItem("recipeSelected", selectRecipeNum);
+}
+
 $(document).ready(function(){
   $("#listPageTitle").text(sessionStorage.getItem("listPg"));
-
+/*
   switch(sessionStorage.getItem("listPg")) {
     case "SEARCH RESULTS":
       getSearchResult();
@@ -197,8 +219,9 @@ $(document).ready(function(){
       console.error("invalid list page type or null");
 	  console.error(sessionStorage.getItem("listPg"));
   }
-
+*/
   // use recipeList to create new elements (div) in html
+  showRecipes();
   // if user clicks div get num of recipe and link to viewrecipepage or recipepage
 
 });
