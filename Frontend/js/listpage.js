@@ -48,6 +48,7 @@ function searchByFoodName() {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
       }
   };
+  console.log(userSearchString)
   req.send(userSearchString);
 }
 
@@ -201,7 +202,7 @@ function selectRecipe() {
 
 $(document).ready(function(){
   $("#listPageTitle").text(sessionStorage.getItem("listPg"));
-/*
+
   switch(sessionStorage.getItem("listPg")) {
     case "SEARCH RESULTS":
       getSearchResult();
@@ -219,7 +220,7 @@ $(document).ready(function(){
       console.error("invalid list page type or null");
 	  console.error(sessionStorage.getItem("listPg"));
   }
-*/
+
   // use recipeList to create new elements (div) in html
   showRecipes();
   // if user clicks div get num of recipe and link to viewrecipepage or recipepage

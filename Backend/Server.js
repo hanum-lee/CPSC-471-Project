@@ -4,8 +4,8 @@ let mysql = require('mysql');
 
 var pool = mysql.createPool({
 	host: 'localhost',
-	port: '3306',
-	user: 'root',
+	port: '3307',
+	user: 'testing',
 	password: 'mySQL1234!',
 	database: 'recipesearcher',
 	multipleStatements: true
@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.post('/login',function(req,res){
-	
+
     pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -302,7 +302,18 @@ app.post('/searchfoodname', function(req, res) {	//might need to change function
 				res.status(400).send(err);
 			}
 			console.log(JSON.stringify(rows));
-			res.status(200).send(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows.length-1; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });

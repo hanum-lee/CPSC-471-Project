@@ -361,7 +361,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `addedit_review`(r_no smallint(11), id char(45), review text)
+CREATE  PROCEDURE `addedit_review`(r_no smallint(11), id char(45), review text)
 BEGIN
 	insert into review(r_no, u_id, rating)
     value (r_no, id, review)
@@ -383,7 +383,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `add_favorites`(rnum smallint(11), id char(45))
+CREATE  PROCEDURE `add_favorites`(rnum smallint(11), id char(45))
 BEGIN
 	insert into favorites(user_id, r_no, f_name)
     values(id, rnum, (select fname
@@ -429,7 +429,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `add_recipe`(recname char(45), foodname char(45), tt int(11), id char(45), dir text)
+CREATE  PROCEDURE `add_recipe`(recname char(45), foodname char(45), tt int(11), id char(45), dir text)
 BEGIN
 	insert into recipe(user_id, rname, time_taken, directions)
     values (id, recname, tt, dir);
@@ -456,7 +456,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `add_user`(p_username char(45), p_pass char(45))
+CREATE  PROCEDURE `add_user`(p_username char(45), p_pass char(45))
 BEGIN
 	declare numuser int;
     
@@ -494,7 +494,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
+CREATE  PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
 BEGIN
 	delete from recipe
     where NUM = rno AND user_id = id;
@@ -514,7 +514,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `delete_review`(rno smallint(11), id char(45))
+CREATE  PROCEDURE `delete_review`(rno smallint(11), id char(45))
 BEGIN
 	delete from review
     where r_no = rno 
@@ -566,7 +566,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `get_full_recipe`(rnum smallint(11),id varchar(45))
+CREATE  PROCEDURE `get_full_recipe`(rnum smallint(11),id varchar(45))
 BEGIN
 	select *
     from recipe
@@ -610,7 +610,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `log_in`(p_id char(45), p_pswd char(45))
+CREATE  PROCEDURE `log_in`(p_id char(45), p_pswd char(45))
 BEGIN
 	select case when
     count(ID) = 1
@@ -638,7 +638,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
+CREATE  PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
 BEGIN
 	delete from favorites
     where user_id = id AND r_no = rnum;
@@ -680,7 +680,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_cookware`(cookw json)
+CREATE  PROCEDURE `search_cookware`(cookw json)
 BEGIN
 	declare json_ind int default json_length(cookw);
     declare _ind int default 0;
@@ -718,7 +718,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_favorites`(id char(45))
+CREATE  PROCEDURE `search_favorites`(id char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe
@@ -741,7 +741,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_food`(aname char(45))
+CREATE  PROCEDURE `search_food`(aname char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe as R
@@ -764,7 +764,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_ingredient`(ing_list json)
+CREATE  PROCEDURE `search_ingredient`(ing_list json)
 BEGIN
 	declare json_ind int default json_length(ing_list);
     declare _ind int default 0;
@@ -803,7 +803,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_recipe`(rn char(45))
+CREATE  PROCEDURE `search_recipe`(rn char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe 
@@ -824,7 +824,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `search_user`(userid char(45))
+CREATE  PROCEDURE `search_user`(userid char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe
