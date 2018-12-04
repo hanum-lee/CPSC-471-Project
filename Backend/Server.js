@@ -53,7 +53,7 @@ app.post('/login',function(req,res){
 	});
 
 });
-//I assume edit recipe is to return a list of all the recipes the particular user has made
+//Call for what is present
 app.get('/editRecipe',function(req,res){
 	pool.getConnection(function (err,connection) {
 		if (err) {
@@ -61,7 +61,7 @@ app.get('/editRecipe',function(req,res){
 			res.status(400).send(err);
 		}
 		console.log(req.body.username, req.body.password);
-		connection.query('CALL recipesearcher.searchuser(?)',[req.body.username], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.get_full_recipe(?,?)',[req.body.rno,req.body.username], function(err, rows, fields) {
 			connection.release();
 			console.log(rows);
 			if (err) {
@@ -83,7 +83,7 @@ app.get('/editRecipe',function(req,res){
 	let username = req.body.username;*/
 
 });
-
+//Update recipe
 app.post('/recipeUpdate',function(req,res){
 	/*let recTitle = req.body.title;
 	let recNum = req.body.number;
@@ -261,7 +261,7 @@ app.post('/searchmyrecipes', function(req, res) {	//might need to change functio
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_user(?)',[req.body.username], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_user(?)',[req.body.searchInput], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
@@ -277,7 +277,7 @@ app.post('/searchmyfavourites', function(req, res) {	//might need to change func
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_favorites(?)',[req.body.username], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_favorites(?)',[req.body.searchInput], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
