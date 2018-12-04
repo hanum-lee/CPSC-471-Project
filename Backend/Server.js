@@ -3,8 +3,8 @@ let mysql = require('mysql');
 
 var pool = mysql.createPool({
 	host: 'localhost',
-	port: '3307',
-	user: 'testing',
+	port: '3306',
+	user: 'root',
 	password: 'mySQL1234!',
 	database: 'recipesearcher',
 	multipleStatements: true
@@ -267,7 +267,19 @@ app.post('/searchmyrecipes', function(req, res) {	//might need to change functio
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
@@ -283,7 +295,19 @@ app.post('/searchmyfavourites', function(req, res) {	//might need to change func
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
@@ -328,7 +352,19 @@ app.post('/searchfoodtype', function(req, res) {	//might need to change function
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
@@ -344,7 +380,19 @@ app.post('/searchcookware', function(req, res) {	//might need to change function
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
@@ -360,10 +408,21 @@ app.post('/searchingredients', function(req, res) {	//might need to change funct
 			connection.release();
 			if (err) {
 				console.log("Error in query");
-				console.log(err);
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
@@ -380,7 +439,19 @@ app.post('/searchrecipe', function(req, res) {	//might need to change function n
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
