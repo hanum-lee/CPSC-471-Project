@@ -291,6 +291,59 @@ app.get('/searchfood', function(req, res) {	//might need to change function name
 		});
 	});
 });
+app.get('/searchcookware', function(req, res) {	//might need to change function name - function to search by food name
+	pool.getConnection(function (err,connection) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL recipesearcher.search_cookware(?)',[req.body.cookware], function(err, rows, fields) {
+			connection.release();
+			console.log(rows);
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
+
+app.get('/searchingredients', function(req, res) {	//might need to change function name - function to search by food name
+	pool.getConnection(function (err,connection) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL recipesearcher.search_ingredient(?)',[req.body.ingredients], function(err, rows, fields) {
+			connection.release();
+			console.log(rows);
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
+
+app.get('/searchrecipe', function(req, res) {	//might need to change function name - function to search by food name
+	pool.getConnection(function (err,connection) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL recipesearcher.search_recipe(?)',[req.body.recipename], function(err, rows, fields) {
+			connection.release();
+			console.log(rows);
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
 app.get('/removefavorites', function(req, res) {	//might need to change function name - function takes in username and the recipe-no
 	pool.getConnection(function (err,connection) {
 		if (err) {
