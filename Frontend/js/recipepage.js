@@ -21,28 +21,6 @@ recipeData = {
 }
 */
 
-function getNumOfRecipe() {
-  var numOfRecipe;
-  /* numOfRecipe form
-    numOfRecipe = {
-      num: <num>
-    }
-  */
-
-  var req = new XMLHttpRequest();
-  req.open('GET', '/numOfRecipe', true);
-  req.setRequestHeader("Content-Type", "application/json");
-  // get info from server (if user exists/password correct)
-  req.onreadystatechange = function () {
-      if (req.readyState === 4 && req.status === 200) {
-        numOfRecipe = JSON.parse(req.responseText); //RETURNDATA
-      }
-  };
-  req.send();
-
-  recipeNum = toString(parseInt(numOfRecipe.num) + 1);
-}
-
 function getRecipe() {
   var recipeSelectString = JSON.stringify(recipeSelected);
   // get recipe data from server
@@ -123,6 +101,34 @@ function addCookware() {
     return false;
   }
 
+function removeFoodtype() {
+  if (counterF == 1){
+    alert("At least 1 food type required");
+    return;
+  }
+  $("#fType" + counterF).remove();
+  counterF--;
+}
+
+function removeIngredient() {
+  if (counterI == 1){
+    alert("At least 1 ingredient required");
+    return;
+  }
+  $("#ing" + counterI).remove();
+  $("#ingType" + counterI).remove();
+  counterI--;
+}
+
+function removeCookware() {
+  if (counterC == 1){
+    alert("At least 1 cookware required");
+    return;
+  }
+  $("#cookw" + counterC).remove();
+  counterC--;
+}
+
   $('#cookwares').append("Cookware " + counterC + ": ", $("<input id='cookw" + counterC + "' class='recipeInfo'> <br>"));
 }
 
@@ -151,31 +157,9 @@ $(document).ready(function(){
   $('#addIngredient').click(addIngredient);
   $('#addCookware').click(addCookware);
   // remove input box
-  $("#removeFoodtype").click(function() {
-    if (counterF == 1){
-      alert("At least 1 food type required");
-      return;
-    }
-    $("#fType" + counterF).remove();
-    counterF--;
-  });
-  $("#removeIngredient").click(function() {
-    if (counterI == 1){
-      alert("At least 1 ingredient required");
-      return;
-    }
-    $("#ing" + counterI).remove();
-    $("#ingType" + counterI).remove();
-    counterI--;
-  });
-  $("#removeCookware").click(function() {
-    if (counterC == 1){
-      alert("At least 1 cookware required");
-      return;
-    }
-    $("#cookw" + counterC).remove();
-    counterC--;
-  });
+  $("#removeFoodtype").click(removeFoodtype);
+  $("#removeIngredient").click(removeIngredient);
+  $("#removeCookware").click(removeCookware);
 
 
   // send info to server if click save
