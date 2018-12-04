@@ -1,7 +1,6 @@
 let http = require('http');
 let mysql = require('mysql');
 
-
 var pool = mysql.createPool({
 	host: 'localhost',
 	port: '3306',
@@ -288,7 +287,7 @@ app.post('/searchmyfavourites', function(req, res) {	//might need to change func
 		});
 	});
 });
-app.post('/searchfoodname', function(req, res) {	//might need to change function name - function to search by food name
+app.post('/searchfoodname', function(req, res) {	
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -312,7 +311,7 @@ app.post('/searchfoodtype', function(req, res) {	//might need to change function
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_food(?)',[req.body.foodtype], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_food(?)',[req.body.searchInput], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
