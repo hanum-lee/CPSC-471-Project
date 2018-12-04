@@ -237,7 +237,6 @@ app.get('/recipeData',function(req,res){
 		}
 		connection.query('CALL recipesearcher.get_full_recipe(?,?)',[req.body.rno,req.body.username], function(err, rows, fields) {
 			connection.release();
-			console.log(rows);
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
@@ -265,12 +264,11 @@ app.get('/searchfavorites', function(req, res) {	//might need to change function
 		}
 		connection.query('CALL recipesearcher.search_favorites(?)',[req.body.username], function(err, rows, fields) {
 			connection.release();
-			console.log(rows);
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(rows);
+			res.status(200).send(JSON.stringify(rows));
 		});
 	});
 });
@@ -282,12 +280,11 @@ app.get('/searchfood', function(req, res) {	//might need to change function name
 		}
 		connection.query('CALL recipesearcher.search_food(?)',[req.body.foodname], function(err, rows, fields) {
 			connection.release();
-			console.log(rows);
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(rows);
+			res.status(200).send(JSON.stringify(rows));
 		});
 	});
 });
@@ -299,12 +296,11 @@ app.get('/searchcookware', function(req, res) {	//might need to change function 
 		}
 		connection.query('CALL recipesearcher.search_cookware(?)',[req.body.cookware], function(err, rows, fields) {
 			connection.release();
-			console.log(rows);
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(rows);
+			res.status(200).send(JSON.stringify(rows));
 		});
 	});
 });
@@ -317,12 +313,11 @@ app.get('/searchingredients', function(req, res) {	//might need to change functi
 		}
 		connection.query('CALL recipesearcher.search_ingredient(?)',[req.body.ingredients], function(err, rows, fields) {
 			connection.release();
-			console.log(rows);
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(rows);
+			res.status(200).send(JSON.stringify(rows));
 		});
 	});
 });
@@ -335,12 +330,11 @@ app.get('/searchrecipe', function(req, res) {	//might need to change function na
 		}
 		connection.query('CALL recipesearcher.search_recipe(?)',[req.body.recipename], function(err, rows, fields) {
 			connection.release();
-			console.log(rows);
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(rows);
+			res.status(200).send(JSON.stringify(rows));
 		});
 	});
 });
@@ -356,7 +350,7 @@ app.get('/removefavorites', function(req, res) {	//might need to change function
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(rows);
+			res.status(200).send();
 		});
 	});
 });

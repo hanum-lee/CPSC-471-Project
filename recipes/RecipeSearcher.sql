@@ -254,7 +254,7 @@ CREATE TABLE `user_recipesearcher` (
 
 LOCK TABLES `user_recipesearcher` WRITE;
 /*!40000 ALTER TABLE `user_recipesearcher` DISABLE KEYS */;
-INSERT INTO `user_recipesearcher` VALUES ('a','a'),('anothertest','tester'),('test','test'),('test2','a'),('testa','test'),('tester','tester');
+INSERT INTO `user_recipesearcher` VALUES ('',''),('a','a'),('anothertest','tester'),('test','test'),('test2','a'),('testa','test'),('tester','tester');
 /*!40000 ALTER TABLE `user_recipesearcher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -456,27 +456,27 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`sally`@`%` PROCEDURE `add_user`(username char(45), pass char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `add_user`(p_username char(45), p_pass char(45))
 BEGIN
 	declare numuser int;
     
 	select count(ID) into numuser 
     from user_recipesearcher
-    where ID = username;
+    where ID = p_username;
+    
+    if numuser < 1
+    then 
+        insert into user_recipesearcher(ID, pswd)
+        values(p_username, p_pass);
+	end if;
     
     select case when
     count(id) = 1
 		then 'false'
 		else 'true'
-		end as boolval
+		end as userexists
     from user_recipesearcher
-    where ID = username;
-    
-    if numuser < 1
-    then 
-        insert into user_recipesearcher(ID, pswd)
-        values(username, pass);
-	end if;
+    where ID = p_username;
     
 END ;;
 DELIMITER ;
@@ -617,7 +617,7 @@ BEGIN
     then 'true'
     else
     'false'
-    end as boolval
+    end as userexists
     from user_recipesearcher
     where ID = p_id
 		AND
@@ -696,7 +696,7 @@ BEGIN
 		set _ind := _ind + 1;
 	end while;
     
-	select NUM, user_id, rname, time_taken 
+	select NUM, rname as title, user_id as username
     from recipe 
     where NUM in (select r_no
 					from cookware_used
@@ -720,7 +720,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`sally`@`%` PROCEDURE `search_favorites`(id char(45))
 BEGIN
-	select NUM, user_id, rname, time_taken 
+	select NUM, rname as title, user_id as username
     from recipe
     where NUM IN (select r_no
 					from favorites
@@ -743,7 +743,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`sally`@`%` PROCEDURE `search_food`(aname char(45))
 BEGIN
-	select NUM, user_id, rname, time_taken 
+	select NUM, rname as title, user_id as username
     from recipe as R
     where NUM IN (select r_no
 					from food
@@ -781,7 +781,7 @@ BEGIN
 	end while;
     
     
-    select NUM, user_id, rname, time_taken 
+    select NUM, rname as title, user_id as username
     from recipe 
     where NUM in (select recipe_no
 					from consists_of_ing
@@ -805,7 +805,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`sally`@`%` PROCEDURE `search_recipe`(rn char(45))
 BEGIN
-	select NUM, user_id, rname, time_taken 
+	select NUM, rname as title, user_id as username
     from recipe 
     where rname = rn;
 END ;;
@@ -826,7 +826,7 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`sally`@`%` PROCEDURE `search_user`(userid char(45))
 BEGIN
-	select rname, time_taken, NUM 
+	select NUM, rname as title, user_id as username
     from recipe
     where user_id = userid;
 END ;;
@@ -845,4 +845,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-03 14:04:58
+-- Dump completed on 2018-12-03 17:34:06
