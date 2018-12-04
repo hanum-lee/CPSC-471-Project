@@ -41,18 +41,40 @@ function placeRecipeInForm() {
   // hard coded values for testing
   recipeData = {
     title: "My Recipe",
-    author: "John",
+    author: "John", //username
     number: 1,
     foodType: ["noodle", "fushion", "dinner"],
     ingredients: ["bacon", "carrot", "onion"],
     ingAmount: ["4", "1 cup", "1"],
     ingType: ["meat", "vegi", "vegi"],
     cookware: ["pot", "spoon"],
-    steps: "Cook the bacon in the pot and add carrots and onions",
+    steps: "Cook the bacon in the pot and add carrots and onions stir with spoooon",
     favourite: "true"
   }
 
-  
+  $("#inputRecipeTitle").val(recipeData.title);
+  $("#stepsInput").val(recipeData.steps);
+  for (i=0;i<recipeData.foodType.length;i++) {
+    if (i>0) {
+      addFoodtype();
+    }
+    $("#fType"+(i+1)).val(recipeData.foodType[i]);
+  }
+  for (i=0;i<recipeData.ingredients.length;i++) {
+    if (i>0) {
+      addIngredient();
+    }
+    $("#ing"+(i+1)).val(recipeData.ingredients[i]);
+    $("#ingAmount"+(i+1)).val(recipeData.ingAmount[i]);
+    $("#ingType"+(i+1)).val(recipeData.ingType[i]);
+  }
+  for (i=0;i<recipeData.cookware.length;i++) {
+    if (i>0) {
+      addCookware();
+    }
+    $("#cookw"+(i+1)).val(recipeData.cookware[i]);
+  }
+
 }
 
 function sendData() {
@@ -76,6 +98,14 @@ function sendData() {
 }
 
 function getRecipeInput() {
+  recipeData.title = $("#inputRecipeTitle").val();
+  recipeData.author = sessionStorage.getItem("user");
+  if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
+    recipeData.number = recipeSelected.recipeNum;
+  }
+  else {
+    recipeData.number = null;
+  }
 
 }
 
@@ -110,7 +140,7 @@ function addIngredient() {
   counterI++;
   if(counterI>20){
     alert("Only 20 Ingredients allowed");
-    return false;-
+    return false;
   }
 
   $('#ingredients').append("Ingredient " + counterI + ": ", $("<input id='ing" + counterI + "' class='recipeInfo'>"));
@@ -124,6 +154,9 @@ function addCookware() {
     alert("Only 10 Cookwares allowed");
     return false;
   }
+  $('#cookwares').append("Cookware " + counterC + ": ", $("<input id='cookw" + counterC + "' class='recipeInfo'> <br>"));
+}
+
 
 function removeFoodtype() {
   if (counterF == 1){
@@ -152,9 +185,6 @@ function removeCookware() {
   }
   $("#cookw" + counterC).remove();
   counterC--;
-}
-
-  $('#cookwares').append("Cookware " + counterC + ": ", $("<input id='cookw" + counterC + "' class='recipeInfo'> <br>"));
 }
 
 $(document).ready(function(){
