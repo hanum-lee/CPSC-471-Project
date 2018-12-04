@@ -99,7 +99,7 @@ function getSearchResult() {
 
 }
 
-// get list of recipes user added 
+// get list of recipes user added
 function getMyRecipes() {
   var user = {
     username: sessionStorage.getItem("user")
