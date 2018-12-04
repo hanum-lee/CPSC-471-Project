@@ -1,11 +1,10 @@
 let http = require('http');
 let mysql = require('mysql');
 
-
 var pool = mysql.createPool({
 	host: 'localhost',
-	port: '3307',
-	user: 'testing',
+	port: '3306',
+	user: 'root',
 	password: 'mySQL1234!',
 	database: 'recipesearcher',
 	multipleStatements: true
@@ -54,7 +53,7 @@ app.post('/login',function(req,res){
 	});
 
 });
-//I assume edit recipe is to return a list of all the recipes the particular user has made
+//Call for what is present
 app.get('/editRecipe',function(req,res){
 	pool.getConnection(function (err,connection) {
 		if (err) {
@@ -62,7 +61,7 @@ app.get('/editRecipe',function(req,res){
 			res.status(400).send(err);
 		}
 		console.log(req.body.username, req.body.password);
-		connection.query('CALL recipesearcher.searchuser(?)',[req.body.username], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.get_full_recipe(?,?)',[req.body.rno,req.body.username], function(err, rows, fields) {
 			connection.release();
 			console.log(rows);
 			if (err) {
@@ -84,7 +83,7 @@ app.get('/editRecipe',function(req,res){
 	let username = req.body.username;*/
 
 });
-
+//Update recipe
 app.post('/recipeUpdate',function(req,res){
 	/*let recTitle = req.body.title;
 	let recNum = req.body.number;
@@ -262,13 +261,25 @@ app.post('/searchmyrecipes', function(req, res) {	//might need to change functio
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_user(?)',[req.body.username], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_user(?)',[req.body.searchInput], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
@@ -278,17 +289,29 @@ app.post('/searchmyfavourites', function(req, res) {	//might need to change func
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_favorites(?)',[req.body.username], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_favorites(?)',[req.body.searchInput], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
-app.post('/searchfoodname', function(req, res) {	//might need to change function name - function to search by food name
+app.post('/searchfoodname', function(req, res) {	
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -323,13 +346,25 @@ app.post('/searchfoodtype', function(req, res) {	//might need to change function
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_food(?)',[req.body.foodtype], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_food(?)',req.body.searchInput, function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
@@ -339,13 +374,25 @@ app.post('/searchcookware', function(req, res) {	//might need to change function
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_cookware(?)',[req.body.cookware], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_cookware(?)',req.body.searchInput, function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
@@ -357,14 +404,25 @@ app.post('/searchingredients', function(req, res) {	//might need to change funct
 			res.status(400).send(err);
 		}
 		console.log(req.body);
-		connection.query('CALL recipesearcher.search_ingredient(?)', req.body, function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_ingredient(?)', req.body.searchInput, function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
-				console.log(err);
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
@@ -375,13 +433,25 @@ app.post('/searchrecipe', function(req, res) {	//might need to change function n
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_recipe(?)',[req.body.recipename], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_recipe(?)',req.body.searchInput, function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(JSON.stringify(rows));
+			console.log(JSON.stringify(rows));
+			let outputjson = {
+				title:[],
+				number:[],
+				username:[]
+			};
+			for(var i = 0; i < rows[0].length; i++){
+				outputjson['title'].push(rows[0][i].title);
+				outputjson['number'].push(rows[0][i].NUM);
+				outputjson['username'].push(rows[0][i].username);
+			}
+			console.log("out"+JSON.stringify(outputjson));
+			res.status(200).send(JSON.stringify(outputjson));
 		});
 	});
 });
