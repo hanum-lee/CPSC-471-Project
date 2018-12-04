@@ -306,7 +306,7 @@ app.post('/searchfoodname', function(req, res) {
 				number:[],
 				username:[]
 			};
-			for(var i = 0; i < rows.length-1; i++){
+			for(var i = 0; i < rows[0].length; i++){
 				outputjson['title'].push(rows[0][i].title);
 				outputjson['number'].push(rows[0][i].NUM);
 				outputjson['username'].push(rows[0][i].username);
