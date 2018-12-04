@@ -20,8 +20,10 @@ function searchByIngredient() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
+        showRecipes();
       }
   };
+  console.log(userSearchString)
   req.send(userSearchString);
 }
 
@@ -30,11 +32,13 @@ function searchByFoodType() {
   var req = new XMLHttpRequest();
   req.open('POST', '/searchfoodtype', true);
   req.setRequestHeader("Content-Type", "application/json");
-  req.onreadystatechange = function () {
+   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
-      }
+        showRecipes();
+    }
   };
+  console.log(userSearchString)
   req.send(userSearchString);
 }
 
@@ -61,8 +65,10 @@ function searchByRecipeName() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
+        showRecipes();
       }
   };
+  console.log(userSearchString)
   req.send(userSearchString);
 }
 
@@ -74,8 +80,10 @@ function searchByCookware() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
+        showRecipes();
       }
   };
+  console.log(userSearchString)
   req.send(userSearchString);
 }
 

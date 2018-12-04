@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
--- Host: localhost    Database: recipesearcher
+-- Host: 127.0.0.1    Database: recipesearcher
 -- ------------------------------------------------------
 -- Server version	8.0.13
 
@@ -40,7 +40,7 @@ CREATE TABLE `consists_of_ing` (
 
 LOCK TABLES `consists_of_ing` WRITE;
 /*!40000 ALTER TABLE `consists_of_ing` DISABLE KEYS */;
-INSERT INTO `consists_of_ing` VALUES ('Baking powder','3 1/2 Tsp',1),('Butter','3 Tbsp',1),('Eggs','1',1),('Flour','1 1/2 Cup',1),('Milk','1 1/4 Cup',1),('Table Salt','1 Tsp',1),('White Sugar','1 Tbsp',1);
+INSERT INTO `consists_of_ing` VALUES ('Eggs','1',1),('Milk','10',1);
 /*!40000 ALTER TABLE `consists_of_ing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,7 +56,7 @@ CREATE TABLE `cookware_used` (
   `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   KEY `fk_r_no_idx` (`r_no`),
   CONSTRAINT `fk_r_no` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,6 +65,7 @@ CREATE TABLE `cookware_used` (
 
 LOCK TABLES `cookware_used` WRITE;
 /*!40000 ALTER TABLE `cookware_used` DISABLE KEYS */;
+INSERT INTO `cookware_used` VALUES ('\"Whisk\"',1),('\" Pan\"',1);
 /*!40000 ALTER TABLE `cookware_used` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,18 +274,19 @@ UNLOCK TABLES;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addedit_cookware`(cookw json, rnum smallint(11))
 BEGIN
-	declare json_ind int default json_length(cookw);
-    declare _ind int default 0;
-    
+	declare counter int;
+    declare endind int;
+    set counter = 0;
     delete from cookware_used
     where r_no = rnum;
-    
-    while _ind < json_ind do
+   
+    select json_extract(cookw, '$.cookware') into @ar;
+    set endind = json_length(@ar);
+    while counter < endind do
 		insert into cookware_used(cookware, r_no)
-		value (json_extract(ind_array, concat('$[',`_ind`, '].cookware')),
-				rnum);
-		set _ind := _ind + 1;
-	end while;
+        value (json_extract(@ar, concat('$[',counter,']')), rnum);
+        set counter = counter + 1;
+    end while;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -361,7 +363,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `addedit_review`(r_no smallint(11), id char(45), review text)
+CREATE DEFINER=`sally`@`%` PROCEDURE `addedit_review`(r_no smallint(11), id char(45), review text)
 BEGIN
 	insert into review(r_no, u_id, rating)
     value (r_no, id, review)
@@ -383,7 +385,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `add_favorites`(rnum smallint(11), id char(45))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_favorites`(rnum smallint(11), id char(45))
 BEGIN
 	insert into favorites(user_id, r_no, f_name)
     values(id, rnum, (select fname
@@ -429,7 +431,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `add_recipe`(recname char(45), foodname char(45), tt int(11), id char(45), dir text)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_recipe`(recname char(45), foodname char(45), tt int(11), id char(45), dir text)
 BEGIN
 	insert into recipe(user_id, rname, time_taken, directions)
     values (id, recname, tt, dir);
@@ -456,7 +458,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `add_user`(p_username char(45), p_pass char(45))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_user`(p_username char(45), p_pass char(45))
 BEGIN
 	declare numuser int;
     
@@ -494,7 +496,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
 BEGIN
 	delete from recipe
     where NUM = rno AND user_id = id;
@@ -514,7 +516,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `delete_review`(rno smallint(11), id char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `delete_review`(rno smallint(11), id char(45))
 BEGIN
 	delete from review
     where r_no = rno 
@@ -566,7 +568,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `get_full_recipe`(rnum smallint(11),id varchar(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `get_full_recipe`(rnum smallint(11),id varchar(45))
 BEGIN
 	select *
     from recipe
@@ -610,7 +612,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `log_in`(p_id char(45), p_pswd char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `log_in`(p_id char(45), p_pswd char(45))
 BEGIN
 	select case when
     count(ID) = 1
@@ -638,7 +640,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
+CREATE DEFINER=`sally`@`%` PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
 BEGIN
 	delete from favorites
     where user_id = id AND r_no = rnum;
@@ -680,28 +682,29 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_cookware`(cookw json)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_cookware`(cookw json)
 BEGIN
-	declare json_ind int default json_length(cookw);
-    declare _ind int default 0;
+	declare counter int;
+    declare endind int;
+    set counter = 0;
+    create temporary table temp as
+    select cookware from cookware_used where cookware = '';
+    select json_extract(cookw, '$.cookware') into @ar;
+    set endind = json_length(@ar);
+    while counter < endind do
+		insert into temp(cookware)
+        value (json_extract(@ar, concat('$[',counter,']')));
+        set counter = counter + 1;
+    end while;
     
-    drop temporary table if exists jsontemp;
     
-    create temporary table if not exists jsontemp
-    (cookware varchar(45) not null);
-    
-    while _ind < json_ind do
-		insert into jsontemp(cookware)
-		value (json_extract(ind_array, concat('$[',`_ind`, '].cookware')));
-		set _ind := _ind + 1;
-	end while;
-    
-	select NUM, rname as title, user_id as username
+    select NUM, rname as title, user_id as username
     from recipe 
     where NUM in (select r_no
 					from cookware_used
                     where cookware in (select *
-										from jsontemp));
+										from temp));
+	drop temporary table temp;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -718,7 +721,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_favorites`(id char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_favorites`(id char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe
@@ -741,13 +744,38 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_food`(aname char(45))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_food`(aname char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe as R
     where NUM IN (select r_no
 					from food
                     where fname = aname);
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `search_foodtype` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_foodtype`(ftype char(45))
+BEGIN
+	select NUM, rname as title, user_id as username
+    from recipe as R
+    where NUM IN (select r_no
+					from food
+                    where fname IN (select f_name
+								from food_type
+								where f_type = ftype));
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -764,21 +792,20 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_ingredient`(ing_list json)
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_ingredient`(ing_list json)
 BEGIN
-	declare json_ind int default json_length(ing_list);
-    declare _ind int default 0;
-    
-    drop temporary table if exists jsontemp;
-    
-    create temporary table if not exists jsontemp
-    (ingname varchar(45) not null);
-    
-    while _ind < json_ind do
-		insert into jsontemp(ingname)
-		value (json_extract(ind_array, concat('$[',`_ind`, '].ingredients')));
-		set _ind := _ind + 1;
-	end while;
+	declare counter int;
+    declare endind int;
+    set counter = 0;
+    create temporary table temp as
+    select iname from ingredients where iname = '';
+    select json_extract(ing_list, '$.ingredients') into @ar;
+	set endind = json_length(@ar);
+    while counter < endind do
+		insert into temp
+        value (json_extract(@ar, concat('$[',counter,']')));
+        set counter = counter + 1;
+    end while;
     
     
     select NUM, rname as title, user_id as username
@@ -786,7 +813,8 @@ BEGIN
     where NUM in (select recipe_no
 					from consists_of_ing
                     where ing_name in (select *
-										from jsontemp)); 
+										from temp));
+	drop temporary table temp;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -803,7 +831,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_recipe`(rn char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_recipe`(rn char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe 
@@ -824,7 +852,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_user`(userid char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_user`(userid char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe
@@ -845,4 +873,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-03 17:34:06
+-- Dump completed on 2018-12-04  3:23:06

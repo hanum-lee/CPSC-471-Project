@@ -346,7 +346,7 @@ app.post('/searchfoodtype', function(req, res) {	//might need to change function
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_food(?)',req.body.searchInput, function(err, rows, fields) {
+		connection.query('CALL recipesearcher.search_foodtype(?)',req.body.searchInput, function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
@@ -374,10 +374,19 @@ app.post('/searchcookware', function(req, res) {	//might need to change function
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.search_cookware(?)',req.body.searchInput, function(err, rows, fields) {
+		var temp = req.body.searchInput.split(",");
+		let inputjson = {
+			cookware:[]
+		};
+		for (var i = 0; i < temp.length; i++) {
+			inputjson['cookware'].push(temp[i]);
+		}
+		console.log(JSON.stringify(inputjson));
+		connection.query('CALL recipesearcher.search_cookware(?)', JSON.stringify(inputjson), function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
+				console.log(err);
 				res.status(400).send(err);
 			}
 			console.log(JSON.stringify(rows));
@@ -403,11 +412,19 @@ app.post('/searchingredients', function(req, res) {	//might need to change funct
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		console.log(req.body);
-		connection.query('CALL recipesearcher.search_ingredient(?)', req.body.searchInput, function(err, rows, fields) {
+		var temp = req.body.searchInput.split(",");
+		let inputjson = {
+			ingredients:[]
+		};
+		for (var i = 0; i < temp.length; i++) {
+			inputjson['ingredients'].push(temp[i]);
+		}
+		console.log(JSON.stringify(inputjson));
+		connection.query('CALL recipesearcher.search_ingredient(?)', JSON.stringify(inputjson), function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
+				console.log(err);
 				res.status(400).send(err);
 			}
 			console.log(JSON.stringify(rows));
