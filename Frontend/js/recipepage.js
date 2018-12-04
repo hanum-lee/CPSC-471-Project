@@ -13,9 +13,10 @@ recipeData = {
   title: <title>,
   author: <name>,
   number: <num>,
-  description: <d>,
+  description: <d>, (not now)
   foodType: [ft, ft, ....],
   ingredients: [i,i,....i],
+  ingAmount: [ia,ia,ia..]
   cookware: [c,c...c],
   steps: <s>,
   favourite: <true/false>
@@ -36,7 +37,26 @@ function getRecipe() {
   req.send(recipeSelectString);
 }
 
+function placeRecipeInForm() {
+  // hard coded values for testing
+  recipeData = {
+    title: "My Recipe",
+    author: "John",
+    number: 1,
+    foodType: ["noodle", "fushion", "dinner"],
+    ingredients: ["bacon", "carrot", "onion"],
+    ingAmount: ["4", "1 cup", "1"],
+    ingType: ["meat", "vegi", "vegi"],
+    cookware: ["pot", "spoon"],
+    steps: "Cook the bacon in the pot and add carrots and onions",
+    favourite: "true"
+  }
+
+  
+}
+
 function sendData() {
+  getRecipeInput();
   var recipeDataString = JSON.stringify("recipeData");
   // get recipe data from server
   var req = new XMLHttpRequest();
@@ -53,6 +73,10 @@ function sendData() {
       }
   };
   req.send(recipeDataString);
+}
+
+function getRecipeInput() {
+
 }
 
 function sendDelete() {
@@ -143,6 +167,7 @@ $(document).ready(function(){
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
     $('.deleteButton').show();
     getRecipe();
+    placeRecipeInForm();
     // modify input text seen on site
     // modify recipe data
   }
