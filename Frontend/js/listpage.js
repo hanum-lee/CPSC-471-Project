@@ -1,5 +1,5 @@
 var userSearch = {
-  searchInput: sessionStorage.getItem("userSearch"); // input in the search bar
+  searchInput: sessionStorage.getItem("userSearch") // input in the search bar
 }
 var userSearchString = JSON.stringify(userSearch);
 var recipeList;
@@ -99,7 +99,7 @@ function getSearchResult() {
 
 }
 
-// get list of recipes user added 
+// get list of recipes user added
 function getMyRecipes() {
   var user = {
     username: sessionStorage.getItem("user")

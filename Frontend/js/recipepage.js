@@ -3,14 +3,15 @@ var counterI = 1;
 var counterC = 1;
 var recipeNum = sessionStorage.getItem("recipeSelected");
 var recipeSelected = {
-  username: sessionStorage.getItem("user");
-  recipeNum: recipeNum;
+  username: sessionStorage.getItem("user"),
+  recipeNum: recipeNum
 }
 // variable for data returned by server
 var recipeData;
 /* recipeData form
 recipeData = {
   title: <title>,
+  author: <name>,
   number: <num>,
   description: <d>,
   foodType: [ft, ft, ....],
@@ -27,7 +28,6 @@ function getRecipe() {
   var req = new XMLHttpRequest();
   req.open('POST', '/editRecipe', true);
   req.setRequestHeader("Content-Type", "application/json");
-  // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeData = JSON.parse(req.responseText); //RETURNDATA
@@ -47,7 +47,6 @@ function sendData() {
       req.open('POST', '/recipeAdd', true);
   }
   req.setRequestHeader("Content-Type", "application/json");
-  // get info from server (if user exists/password correct)
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         console.log("sent");
@@ -91,6 +90,7 @@ function addIngredient() {
   }
 
   $('#ingredients').append("Ingredient " + counterI + ": ", $("<input id='ing" + counterI + "' class='recipeInfo'>"));
+  $('#ingredients').append("Ingredient Amount  " + counterI + ": ", $("<input id='ingAmount" + counterI + "' class='recipeInfo'> <br>"));
   $('#ingredients').append("Ingredient Type  " + counterI + ": ", $("<input id='ingType" + counterI + "' class='recipeInfo'> <br>"));
 }
 
@@ -117,6 +117,7 @@ function removeIngredient() {
   }
   $("#ing" + counterI).remove();
   $("#ingType" + counterI).remove();
+  $("#ingAmount" + counterI).remove();
   counterI--;
 }
 
