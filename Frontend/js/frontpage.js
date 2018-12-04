@@ -4,14 +4,11 @@ function search() {
   if (searchInput == '') {
     $("#searchMessage").text("aw nothing to search :(");
   }
-  else if (sessionStorage.getItem("userSearchType") == null) {
-    $("#searchMessage").text("please pick a search type");
-  }
   else {
     $("#searchMessage").text("eg. flour, water, sugar");
     sessionStorage.setItem("userSearch", searchInput);
-    sessionStorage.setItem("listPg", "SEARCH RESULTS")
-    window.location.href = 'listpage.html';
+    sessionStorage.setItem("listPg", "SEARCH RESULTS");
+    //window.location.href = 'listpage.html';
   }
 }
 

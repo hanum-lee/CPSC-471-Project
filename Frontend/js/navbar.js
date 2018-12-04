@@ -5,6 +5,7 @@ function search() {
   }
   else {
     sessionStorage.setItem("userSearch", searchInput);
+    sessionStorage.setItem("listPg", "SEARCH RESULTS");
     window.location.href = 'listpage.html';
   }
 }

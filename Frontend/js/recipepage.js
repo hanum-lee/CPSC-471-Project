@@ -90,7 +90,7 @@ function addIngredient() {
   }
 
   $('#ingredients').append("Ingredient " + counterI + ": ", $("<input id='ing" + counterI + "' class='recipeInfo'>"));
-  $('#ingredients').append("Ingredient Amount  " + counterI + ": ", $("<input id='ingAmount" + counterI + "' class='recipeInfo'> <br>"));
+  $('#ingredients').append("Ingredient Amount  " + counterI + ": ", $("<input id='ingAmount" + counterI + "' class='recipeInfo'>"));
   $('#ingredients').append("Ingredient Type  " + counterI + ": ", $("<input id='ingType" + counterI + "' class='recipeInfo'> <br>"));
 }
 
@@ -149,7 +149,6 @@ $(document).ready(function(){
   // case when adding new recipe
   else {
     $('.deleteButton').hide();
-    getNumOfRecipe();
     // get recipe data from user input
   }
 
