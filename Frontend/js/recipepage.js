@@ -82,6 +82,7 @@ function sendData() {
       if (req.readyState === 4 && req.status === 200) {
         console.log("recipe data send successful");
         sessionStorage.setItem("listPg", "MY RECIPES");
+        sessionStorage.setItem("recipePg", "EDIT RECIPES");
         window.location.href = "listpage.html";
       }
   };
