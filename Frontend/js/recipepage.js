@@ -31,6 +31,7 @@ function getRecipe() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeData = JSON.parse(req.responseText); //RETURNDATA
+        placeRecipeInForm();
       }
   };
   console.log(recipeSelectString);
@@ -210,9 +211,6 @@ $(document).ready(function(){
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
     $('#deleteButton').show();
     getRecipe();
-    placeRecipeInForm();
-    // modify input text seen on site
-    // modify recipe data
   }
   // case when adding new recipe
   else {
