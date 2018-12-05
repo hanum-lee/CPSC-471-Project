@@ -81,7 +81,7 @@ function placeRecipeInForm() {
 
 function sendData() {
   getRecipeInput();
-  var recipeDataString = JSON.stringify("recipeData");
+  var recipeDataString = JSON.stringify(recipeData);
   // get recipe data from server
   var req = new XMLHttpRequest();
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
