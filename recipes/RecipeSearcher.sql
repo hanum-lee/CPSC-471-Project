@@ -187,7 +187,7 @@ CREATE TABLE `recipe` (
   `NUM` smallint(11) NOT NULL AUTO_INCREMENT,
   `user_id` char(45) NOT NULL,
   `rname` char(45) NOT NULL,
-  `time_taken` int(11) NOT NULL,
+  `time_taken` char(45) NOT NULL,
   `directions` text NOT NULL,
   PRIMARY KEY (`NUM`),
   UNIQUE KEY `NUM._UNIQUE` (`NUM`),
@@ -201,7 +201,7 @@ CREATE TABLE `recipe` (
 
 LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` DISABLE KEYS */;
-INSERT INTO `recipe` VALUES (1,'test','Pancakes',10,'1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving ');
+INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving ');
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -563,20 +563,37 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `edit_recipe`(rnum smallint(11), recname char(45),foodtype varchar(45), foodname char(45), tt int(11), dir text)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `edit_recipe`(recipedata json, rnum smallint(11))
 BEGIN
-	update recipe
-    set rname = recname, time_taken = tt, directions = dir
-    where NUM = rnum;
+    declare _ind int default 0;
+    declare endind int;
+    select json_extract(recipedata, '$.title') into @title;
+    select json_extract(recipedata, '$.foodType') into @ft;
+    select json_extract(recipedata, '$.title') into @fn;
+    select json_extract(recipedata, '$.timeTake') into @ft;
+    select json_extract(recipedata, '$.steps') into @step;
+    set endind = json_length(@ft);
+	
+    update recipe
+    set rname = json_extract(@ai, concat('$["',`0`, '"].title')),
+		time_taken = json_extract(@ai, concat('$[',`0`, '].timetaken')),
+        directions = json_extract(@ai, concat('$[',`0`, '].steps'))
+	where NUM = rnum;
+		
+		
+    call addedit_food (json_extract(@fn, concat('$[',`0`, '].foodname'), rnum));
+	
+    call addedit_ingredients(recipedata, rnum);
+    call addedit_cookware(recipedata, rnum);
     
-    update food
-    set fname = foodname
-    where r_no = rnum;
+    delete from food_type
+    where f_name = json_extract(@fn, concat('$[',`0`, '].foodname'));
     
-    update food_type
-    set f_type = foodtype
-    where f_name = foodname;
-
+    while _ind < endind do
+		call add_foodtype(json_extract(@fn, concat('$[',`0`, '].foodname')),
+							json_extract(@ft, concat('$[',`_ind`, '].foodType')));
+    end while;
+	
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -914,4 +931,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed
+-- Dump completed on 2018-12-04 22:33:15
