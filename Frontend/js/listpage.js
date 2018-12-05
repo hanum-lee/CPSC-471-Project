@@ -202,17 +202,18 @@ function showRecipes() {
 */
 
   if (recipeList.title.length == 0) {
-    $("#.contentContainer").text("No results");
+    $(".contentContainer").text("No results");
   }
   for (i=0; i <( recipeList.title.length); i++) {
-    $('.contentContainer').append("<button id='" + recipeList.number[i] + "'>" + recipeList.title[i] + "\tBy: " + recipeList.username[i] + "</button> <br>");
-    $('#'+i).click(selectRecipe);
+    $('.contentContainer').append("<button id='" + recipeList.number[i] + "' class='recipeButton'>" + recipeList.title[i] + "\tBy: " + recipeList.username[i] + "</button> <br>");
+    $(".recipeButton").click(selectRecipe);
   }
 
 
 }
 
 function selectRecipe() {
+  console.log("selectRecipe");
   var selectRecipeNum = $(this).attr("id");
   sessionStorage.setItem("recipeSelected", selectRecipeNum);
   if (sessionStorage.getItem("listPg") == "MY RECIPES") {

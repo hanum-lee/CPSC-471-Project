@@ -80,6 +80,7 @@ function placeRecipeInForm() {
 }
 
 function sendData() {
+  console.log("sent data");
   getRecipeInput();
   var recipeDataString = JSON.stringify(recipeData);
   // get recipe data from server
