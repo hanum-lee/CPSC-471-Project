@@ -3,8 +3,8 @@ let mysql = require('mysql');
 
 var pool = mysql.createPool({
 	host: 'localhost',
-	port: '3306',
-	user: 'root',
+	port: '3307',
+	user: 'testing',
 	password: 'mySQL1234!',
 	database: 'recipesearcher',
 	multipleStatements: true
@@ -536,25 +536,38 @@ app.post('/addfavorites', function(req, res) {
 		});
 	});
 });
-app.post('/getRecipe', function(req, res) {
+
+app.post('/getReviews', function(req, res) {
+	//console.log(req.body.recipeNum);
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.get_review(?)',[req.body.rno], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.get_review(?)',[req.body.recipeNum], function(err, rows, fields) {
 			connection.release();
-			console.log(rows);
+			console.log(JSON.stringify(rows));
+
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
 			/*
 			{author
 			description
 			point}
 			*/
-			if (err) {
-				console.log("Error in query");
-				res.status(400).send(err);
+			var outputjson = {
+				author:[],
+				text:[],
+				point:[]
+			};
+			for(var i = 0; i < rows[0].length;i++){
+				outputjson['author'].push(rows[0][i].author);
+				outputjson['text'].push(rows[0][i].description);
+				outputjson['point'].push(rows[0][i].point);
 			}
-			res.status(200).send(rows);
+			res.status(200).send(outputjson);
 		});
 	});
 });
