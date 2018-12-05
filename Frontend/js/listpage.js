@@ -10,7 +10,7 @@ recipeList = {
   username: [<name>, <name>, ...]
 }
 */
-console.log(sessionStorage.getItem("navSearch"));
+console.log(sessionStorage.getItem("userSearch"));
 function searchByIngredient() {
 
   // get list of recipes from server
@@ -190,13 +190,17 @@ function getList(){
 
 function showRecipes() {
   // hard coded values for testing
-  /*
+/*
   recipeList = {
     title: ["R1", "R2", "R3", "R4", "R5"],
     number: [1, 2, 3, 4, 5],
     username: ["one", "two", "three", "four", "five"]
   }
 */
+
+  if (recipeList.title.length == 0) {
+    $("#.contentContainer").text("No results");
+  }
   for (i=0; i <( recipeList.title.length); i++) {
     $('.contentContainer').append("<button id='" + recipeList.number[i] + "'>" + recipeList.title[i] + "\tBy: " + recipeList.username[i] + "</button> <br>");
     $('#'+i).click(selectRecipe);
