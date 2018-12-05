@@ -509,12 +509,14 @@ app.post('/addeditreview', function(req, res) {	//might need to change function 
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.addedit_review(?,?,?)',[req.body.rno,req.body.username,req.body.review], function(err) {
+		connection.query('CALL recipesearcher.addedit_review(?,?,?)',[req.body.recipe,req.body.author,req.body.text,req,body.point], function(err) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
+			
+
 			res.status(200).send(rows);
 		});
 	});
