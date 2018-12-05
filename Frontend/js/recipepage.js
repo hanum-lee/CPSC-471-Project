@@ -7,22 +7,20 @@ var recipeSelected = {
   recipeNum: recipeNum
 }
 // variable for data returned by server
-var recipeData;
-/* recipeData form
-recipeData = {
-  title: <title>,
-  author: <name>,
-  number: <num>,
-  description: <d>, (not now)
-  foodType: [ft, ft, ....],
-  ingredients: [i,i,....i],
-  ingAmount: [ia,ia,ia..]
-  cookware: [c,c...c],
-  timeTake: <t>,
-  steps: <s>,
-  favourite: <true/false>
+var recipeData= {
+  title: "",
+  author: "",
+  number: 0,
+  foodType: [],
+  ingredients: [],
+  ingAmount: [],
+  ingType: [],
+  cookware: [],
+  timeTake: "",
+  steps: "",
+  favourite: "false"
 }
-*/
+
 
 function getRecipe() {
   var recipeSelectString = JSON.stringify(recipeSelected);
@@ -81,6 +79,7 @@ function placeRecipeInForm() {
 }
 
 function sendData() {
+  console.log("sent data");
   getRecipeInput();
   var recipeDataString = JSON.stringify(recipeData);
   // get recipe data from server
@@ -110,7 +109,7 @@ function getRecipeInput() {
   recipeData.title = $("#inputRecipeTitle").val();
   recipeData.author = sessionStorage.getItem("user");
   recipeData.steps = $("#stepsInput").val();
-  recipeData.timeTake = $("$timeTake").val();
+  recipeData.timeTake = $("#timeTake").val();
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
     recipeData.number = recipeSelected.recipeNum;
   }
@@ -220,7 +219,7 @@ $(document).ready(function(){
 
   // case when editing existing recipe
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
-    $('.deleteButton').show();
+    $('#deleteButton').show();
     getRecipe();
     placeRecipeInForm();
     // modify input text seen on site
@@ -228,7 +227,7 @@ $(document).ready(function(){
   }
   // case when adding new recipe
   else {
-    $('.deleteButton').hide();
+    $('#deleteButton').hide();
     // get recipe data from user input
   }
 

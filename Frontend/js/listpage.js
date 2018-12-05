@@ -23,7 +23,7 @@ function searchByIngredient() {
         showRecipes();
       }
   };
-  console.log(userSearchString)
+  console.log(userSearchString);
   req.send(userSearchString);
 }
 
@@ -36,9 +36,9 @@ function searchByFoodType() {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
         showRecipes();
-    }
+	  }
   };
-  console.log(userSearchString)
+  console.log(userSearchString);
   req.send(userSearchString);
 }
 
@@ -53,7 +53,7 @@ function searchByFoodName() {
         showRecipes();
       }
   };
-  console.log(userSearchString)
+  console.log(userSearchString);
   req.send(userSearchString);
 }
 
@@ -68,7 +68,7 @@ function searchByRecipeName() {
         showRecipes();
       }
   };
-  console.log(userSearchString)
+  console.log(userSearchString);
   req.send(userSearchString);
 }
 
@@ -83,7 +83,7 @@ function searchByCookware() {
         showRecipes();
       }
   };
-  console.log(userSearchString)
+  console.log(userSearchString);
   req.send(userSearchString);
 }
 
@@ -123,6 +123,7 @@ function getMyRecipes() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
+        showRecipes();
       }
   };
   req.send(username);
@@ -141,6 +142,7 @@ function getMyFavourites() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
+        showRecipes();
       }
   };
   req.send(username);
@@ -159,6 +161,7 @@ function getRecipesReviewed() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
+        showRecipes();
       }
   };
   req.send(username);
@@ -199,17 +202,18 @@ function showRecipes() {
 */
 
   if (recipeList.title.length == 0) {
-    $("#.contentContainer").text("No results");
+    $(".contentContainer").text("No results");
   }
   for (i=0; i <( recipeList.title.length); i++) {
-    $('.contentContainer').append("<button id='" + recipeList.number[i] + "'>" + recipeList.title[i] + "\tBy: " + recipeList.username[i] + "</button> <br>");
-    $('#'+i).click(selectRecipe);
+    $('.contentContainer').append("<button id='" + recipeList.number[i] + "' class='recipeButton'>" + recipeList.title[i] + "\tBy: " + recipeList.username[i] + "</button> <br>");
+    $(".recipeButton").click(selectRecipe);
   }
 
 
 }
 
 function selectRecipe() {
+  console.log("selectRecipe");
   var selectRecipeNum = $(this).attr("id");
   sessionStorage.setItem("recipeSelected", selectRecipeNum);
   if (sessionStorage.getItem("listPg") == "MY RECIPES") {
@@ -240,9 +244,4 @@ $(document).ready(function(){
       console.error("invalid list page type or null");
 	  console.error(sessionStorage.getItem("listPg"));
   }
-
-  // use recipeList to create new elements (div) in html
-  showRecipes();
-  // if user clicks div get num of recipe and link to viewrecipepage or recipepage
-
 });
