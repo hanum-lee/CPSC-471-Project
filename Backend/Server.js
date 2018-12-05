@@ -72,16 +72,6 @@ app.post('/editRecipe',function(req,res){
 			res.status(200).send(rows);
 		});
 	});
-	/*let recTitle = req.body.title;
-	let recNum = req.body.number;
-	let recDec = req.body.description;
-	let recFoodType = req.body.foodType;
-	let recIngr = req.body.ingredients;
-	let recCook = req.body.cookware;
-	let recSteps = req.body.steps;
-	let rec.fav = req.body.favourite;
-	let username = req.body.username;*/
-
 });
 //Update recipe
 app.post('/recipeUpdate',function(req,res){
@@ -99,37 +89,8 @@ app.post('/recipeUpdate',function(req,res){
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.edit_recipe(?,?,?,?,?)',[req.body.rnum, req.body.title, req.body.foodtpe, req.body.title, req.body.timetaken, req.body.steps], function(err, rows, fields) {
-			connection.release();
-			if (err) {
-				console.log(err);
-				console.log("Error in query");
-				res.status(400).send(err);
-			}
-			res.status(200).send(rows);
-		});
-	});
-	pool.getConnection(function (err,connection) {
-		if (err) {
-			console.log("Error connecting to database");
-			res.status(400).send(err);
-		}
-		connection.query('CALL recipesearcher.addedit_ingredients(?,?)',[req.body.ingredients,req.body.rnum], function(err, rows, fields) {
-			connection.release();
-			if (err) {
-				console.log(err);
-				console.log("Error in query");
-				res.status(400).send(err);
-			}
-			res.status(200).send(rows);
-		});
-	});
-	pool.getConnection(function (err,connection) {
-		if (err) {
-			console.log("Error connecting to database");
-			res.status(400).send(err);
-		}
-		connection.query('CALL recipesearcher.addedit_cookware(?,?)',[req.body.cookware,req.body.rnum], function(err, rows, fields) {
+		console.log(req.body.recipeDataString.author);
+		connection.query('CALL recipesearcher.edit_recipe(?,?)',[req.body.recipeDataString, req.body.recipeDataString.author[0]], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log(err);
