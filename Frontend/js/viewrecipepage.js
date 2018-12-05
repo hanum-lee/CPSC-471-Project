@@ -115,10 +115,9 @@ function showReviews() {
     }
     else {
       console.log("add review");
-      $("#reviews").append("<tr>");
-      $("#reviews").append("<p class='reviewAuthor'>" + recipeReviewData.author[i] + "</p>");
-      $("#reviews").append("<p class='reviewText'>" + recipeReviewData.text[i] + "</p>");
-      $("#reviews").append("</tr>");
+      $("#reviews").append("<tr id='r'"+i+"'></tr>");
+      $("#r"+i).append("<p class='reviewAuthor'>" + recipeReviewData.author[i] + "</p>");
+      $("#r"+i).append("<p class='reviewText'>" + recipeReviewData.text[i] + "</p>");
     }
   }
 
