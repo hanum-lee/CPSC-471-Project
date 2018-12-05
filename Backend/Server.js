@@ -5,7 +5,7 @@ var pool = mysql.createPool({
 	host: 'localhost',
 	port: '3306',
 	user: 'root',
-	password: 'mySQL1234!',
+	password: '123456',
 	database: 'recipesearcher',
 	multipleStatements: true
 });
@@ -232,7 +232,7 @@ app.post('/recipeData',function(req,res){
 
 });
 
-app.post('/searchmyrecipes', function(req, res) {	
+app.post('/searchmyrecipes', function(req, res) {
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -290,7 +290,7 @@ app.post('/searchmyfavourites', function(req, res) {
 		});
 	});
 });
-app.post('/searchfoodname', function(req, res) {	
+app.post('/searchfoodname', function(req, res) {
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -393,7 +393,7 @@ app.post('/searchcookware', function(req, res) {
 	});
 });
 
-app.post('/searchingredients', function(req, res) {	
+app.post('/searchingredients', function(req, res) {
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -459,7 +459,7 @@ app.post('/searchrecipe', function(req, res) {	//search recipe through name
 		});
 	});
 });
-app.delete('/removefavorites', function(req, res) {	
+app.delete('/removefavorites', function(req, res) {
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -523,7 +523,7 @@ app.post('/addeditreview', function(req, res) {	//might need to change function 
 		});
 	});
 });
-app.post('/addfavorites', function(req, res) {	
+app.post('/addfavorites', function(req, res) {
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
