@@ -122,7 +122,7 @@ recipeData = {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		console.log(req.body.author);
+		console.log(req.body);
 		var temp = req.body.author;
 		connection.query('CALL recipesearcher.add_recipe(?,?)',[JSON.stringify(req.body), temp], function(err, rows, fields) {
 			connection.release();

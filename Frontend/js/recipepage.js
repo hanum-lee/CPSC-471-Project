@@ -38,24 +38,10 @@ function getRecipe() {
 }
 
 function placeRecipeInForm() {
-  // hard coded values for testing
-  // recipeData = {
-    // title: "My Recipe",
-    // author: "John", //username
-    // number: 1,
-    // foodType: ["noodle", "fushion", "dinner"],
-    // ingredients: ["bacon", "carrot", "onion"],
-    // ingAmount: ["4", "1 cup", "1"],
-    // ingType: ["meat", "vegi", "vegi"],
-    // cookware: ["pot", "spoon"],
-    // timeTake: "30min",
-    // steps: "Cook the bacon in the pot and add carrots and onions stir with spoooon",
-    // favourite: "true"
-  // }
 
   $("#inputRecipeTitle").val(recipeData.title);
   $("#stepsInput").val(recipeData.steps);
-  $("#timeTake").val(recipeData.timeTake);
+  $("#timeTakeInput").val(recipeData.timeTake);
   for (i=0;i<recipeData.foodType.length;i++) {
     if (i>0) {
       addFoodtype();
@@ -88,6 +74,7 @@ function sendData() {
       req.open('POST', '/recipeUpdate', true);
   }
   else {
+	  console.log(recipeDataString);
       req.open('POST', '/recipeAdd', true);
   }
   req.setRequestHeader("Content-Type", "application/json");
@@ -111,7 +98,7 @@ function getRecipeInput() {
   recipeData.title = $("#inputRecipeTitle").val();
   recipeData.author = sessionStorage.getItem("user");
   recipeData.steps = $("#stepsInput").val();
-  recipeData.timeTake = $("#timeTake").val();
+  recipeData.timeTake = $("#timeTakeInput").val();
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
     recipeData.number = recipeSelected.recipeNum;
   }
