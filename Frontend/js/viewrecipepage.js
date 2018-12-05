@@ -99,13 +99,13 @@ function getReviews() {
 }
 
 function showReviews() {
-  /* // hard coded values for testing
+   // hard coded values for testing
   recipeReviewData = {
     author: ["user1", "user2", "user3", "user4"],
     text: ["this is the best recipe EVER", "eh ok", "yo so easy to make", "yummy"],
     point:[5,3,4,4]
   }
-  */
+
 
   for (i=0;i<recipeReviewData.author.length;i++) {
     if (recipeReviewData.author[i] == sessionStorage.getItem("user")){
@@ -115,7 +115,7 @@ function showReviews() {
     }
     else {
       console.log("add review");
-      $("#reviews").append("<tr id='r'"+i+"'></tr>");
+      $("#reviews").append("<tr id='r"+i+"'></tr>");
       $("#r"+i).append("<p class='reviewAuthor'>" + recipeReviewData.author[i] + "</p>");
       $("#r"+i).append("<p class='reviewText'>" + recipeReviewData.text[i] + "</p>");
     }
@@ -189,8 +189,8 @@ function showRecipe() {
 $(document).ready(function(){
   $("#deleteReview").hide();
   getRecipeData();
-  //getReviews();
-showRecipe();
+  getReviews();
+
   if (sessionStorage.getItem("userLogin") == "true") {
     $("#favButton").show();
     $("#favButton").click(favButtonClicked);
