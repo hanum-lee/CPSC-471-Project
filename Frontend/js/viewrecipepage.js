@@ -15,6 +15,7 @@ recipeData = {
   ingredients: [i,i,....i],
   ingAmount: [ia, ia...],
   cookware: [c,c...c],
+  timeTake: <t>,
   steps: <s>,
   favourite: <true/false>
 }
@@ -172,7 +173,7 @@ function getRecipeData() {
 }
 
 function showRecipe() {
-  /* //hard coded values for testing
+   //hard coded values for testing
   recipeData = {
     title: "My Recipe",
     author: "John", //username
@@ -182,14 +183,16 @@ function showRecipe() {
     ingAmount: ["4", "1 cup", "1"],
     ingType: ["meat", "vegi", "vegi"],
     cookware: ["pot", "spoon"],
+    timeTake: "30min",
     steps: "Cook the bacon in the pot and add carrots and onions stir with spoooon",
     favourite: "true"
   }
-  */
+
 
   $("#recipeTitle").text(recipeData.title);
   $("#recipeAuthor").text("Made by: " + recipeData.author);
   $("#steps").text(recipeData.steps);
+  $("#timeTake").text("Time it takes to prepare food: " + recipeData.timeTake);
   for (i=0;i<recipeData.ingredients.length;i++) {
     $("#ingredients").append(recipeData.ingredients[i] + " " + recipeData.ingAmount[i] + "<br>");
   }
@@ -200,9 +203,9 @@ function showRecipe() {
 
 $(document).ready(function(){
   $("#deleteReview").hide();
-  getRecipeData();
-  getReviews();
-
+  //getRecipeData();
+  //getReviews();
+showRecipe();
   if (sessionStorage.getItem("userLogin") == "true") {
     $("#favButton").show();
     $("#favButton").click(favButtonClicked);

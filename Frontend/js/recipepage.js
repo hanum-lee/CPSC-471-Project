@@ -18,6 +18,7 @@ recipeData = {
   ingredients: [i,i,....i],
   ingAmount: [ia,ia,ia..]
   cookware: [c,c...c],
+  timeTake: <t>,
   steps: <s>,
   favourite: <true/false>
 }
@@ -48,12 +49,14 @@ function placeRecipeInForm() {
     ingAmount: ["4", "1 cup", "1"],
     ingType: ["meat", "vegi", "vegi"],
     cookware: ["pot", "spoon"],
+    timeTake: "30min",
     steps: "Cook the bacon in the pot and add carrots and onions stir with spoooon",
     favourite: "true"
   }
 
   $("#inputRecipeTitle").val(recipeData.title);
   $("#stepsInput").val(recipeData.steps);
+  $("#timeTake").val(recipeData.timeTake);
   for (i=0;i<recipeData.foodType.length;i++) {
     if (i>0) {
       addFoodtype();
@@ -106,6 +109,7 @@ function getRecipeInput() {
   recipeData.title = $("#inputRecipeTitle").val();
   recipeData.author = sessionStorage.getItem("user");
   recipeData.steps = $("#stepsInput").val();
+  recipeData.timeTake = $("$timeTake").val();
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
     recipeData.number = recipeSelected.recipeNum;
   }
