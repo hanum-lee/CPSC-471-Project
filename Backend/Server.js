@@ -3,8 +3,8 @@ let mysql = require('mysql');
 
 var pool = mysql.createPool({
 	host: 'localhost',
-	port: '3307',
-	user: 'testing',
+	port: '3306',
+	user: 'root',
 	password: 'mySQL1234!',
 	database: 'recipesearcher',
 	multipleStatements: true
@@ -461,7 +461,7 @@ app.delete('/removefavorites', function(req, res) {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.remove_favorites(?,?)',[req.body.username, req.body.rno], function(err) {
+		connection.query('CALL recipesearcher.remove_favorites(?,?)',[req.body.username, req.body.recipeNum], function(err) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
@@ -483,7 +483,7 @@ app.delete('/deletereview', function(req, res) {	//might need to change function
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(rows);
+			res.status(200).send();
 		});
 	});
 });
@@ -499,7 +499,7 @@ app.delete('/deleterecipe', function(req, res) {	//might need to change function
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(rows);
+			res.status(200).send();
 		});
 	});
 });
@@ -527,10 +527,11 @@ app.post('/addfavorites', function(req, res) {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.add_favorites(?,?)',[req.body.rno, req.body.username], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.add_favorites(?,?)',[req.body.recipeNum, req.body.username], function(err, rows, fields) {
 			connection.release();
 			console.log(rows);
 			if (err) {
+				console.log(err);
 				console.log("Error in query");
 				res.status(400).send(err);
 			}

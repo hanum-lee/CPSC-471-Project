@@ -39,7 +39,6 @@ function getRecipe() {
 }
 
 function placeRecipeInForm() {
-
   $("#inputRecipeTitle").val(recipeData.title);
   $("#stepsInput").val(recipeData.steps);
   $("#timeTakeInput").val(recipeData.timeTake);

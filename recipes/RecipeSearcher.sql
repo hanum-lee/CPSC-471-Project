@@ -31,7 +31,7 @@ CREATE TABLE `consists_of_ing` (
   KEY `r_no_idx` (`recipe_no`),
   CONSTRAINT `i_name` FOREIGN KEY (`ing_name`) REFERENCES `ingredients` (`iname`),
   CONSTRAINT `r_no_fk3` FOREIGN KEY (`recipe_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `consists_of_ing` (
 
 LOCK TABLES `consists_of_ing` WRITE;
 /*!40000 ALTER TABLE `consists_of_ing` DISABLE KEYS */;
-INSERT INTO `consists_of_ing` VALUES ('Eggs','1',1),('Milk','10',1);
+INSERT INTO `consists_of_ing` VALUES ('[\"Eggs\"]','[\"1\"]',58),('Eggs','1',1),('Milk','10',1);
 /*!40000 ALTER TABLE `consists_of_ing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,7 +56,7 @@ CREATE TABLE `cookware_used` (
   `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   KEY `fk_r_no_idx` (`r_no`),
   CONSTRAINT `fk_r_no` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +65,7 @@ CREATE TABLE `cookware_used` (
 
 LOCK TABLES `cookware_used` WRITE;
 /*!40000 ALTER TABLE `cookware_used` DISABLE KEYS */;
-INSERT INTO `cookware_used` VALUES ('\"Whisk\"',1),('\" Pan\"',1);
+INSERT INTO `cookware_used` VALUES ('\"Whisk\"',1),('\" Pan\"',1),('Frying Pan',58);
 /*!40000 ALTER TABLE `cookware_used` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `food` (
   PRIMARY KEY (`fname`),
   KEY `r_no_idx` (`r_no`),
   CONSTRAINT `r_no_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `food` (
 
 LOCK TABLES `food` WRITE;
 /*!40000 ALTER TABLE `food` DISABLE KEYS */;
-INSERT INTO `food` VALUES ('Pancakes',1),('\"Boiled Eggs\"',7);
+INSERT INTO `food` VALUES ('Pancakes',1),('\"Fried Eggs\"',58);
 /*!40000 ALTER TABLE `food` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,7 +137,7 @@ CREATE TABLE `food_type` (
   `f_name` char(45) NOT NULL,
   `f_type` varchar(45) NOT NULL,
   KEY `r_name_fk_idx` (`f_name`) /*!80000 INVISIBLE */,
-  CONSTRAINT `f_name` FOREIGN KEY (`f_name`) REFERENCES `food` (`fname`)
+  CONSTRAINT `f_name` FOREIGN KEY (`f_name`) REFERENCES `food` (`fname`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -147,7 +147,7 @@ CREATE TABLE `food_type` (
 
 LOCK TABLES `food_type` WRITE;
 /*!40000 ALTER TABLE `food_type` DISABLE KEYS */;
-INSERT INTO `food_type` VALUES ('Pancakes','Cake');
+INSERT INTO `food_type` VALUES ('Pancakes','Cake'),('\"Fried Eggs\"','[\"Breakfast\"]');
 /*!40000 ALTER TABLE `food_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +172,7 @@ CREATE TABLE `ingredients` (
 
 LOCK TABLES `ingredients` WRITE;
 /*!40000 ALTER TABLE `ingredients` DISABLE KEYS */;
-INSERT INTO `ingredients` VALUES ('Artichokes','Vegetable'),('Asparagus','Vegetable'),('Baking powder','Misc'),('Baking soda','Misc'),('Beet','Vegetable'),('Blueberry','Fruit'),('Broccoli','Vegetable'),('Brown Sugar','Sugar'),('Brussels sprouts','Vegetable'),('Butter','Dairy'),('Cabbage','Vegetable'),('Cane Sugar','Sugar'),('Cantaloupe','Fruit'),('Carrot','Vegetable'),('Cauliflower','Vegetable'),('Celery','Vegetable'),('Chedder Cheese','Dairy'),('Chicken(breast)','Poultry'),('Chicken(drumstick)','Poultry'),('Chicken(whole)','Poultry'),('Chicken(wings)','Poultry'),('Chilli peppers','Vegetable'),('Cucumber','Vegetable'),('Eggplant','Vegetable'),('Eggs','Protein'),('Flour','Grain'),('Garlic','Vegetable'),('Green onion','Vegetable'),('Honey','Sugar'),('Honeydew(Melon)','Fruit'),('Kale','Vegetable'),('Milk','Dairy'),('Onion','Vegetable'),('Peas','Vegetable'),('Potatoes','Vegetable'),('Pumpkin','Vegetable'),('Rhubarb','Vegetable'),('Rice','Grain'),('Rice flour','Grain'),('Sea Salt','Salt'),('Spinach','Vegetable'),('Steak(t-bone)','Beef'),('Strawberry','Fruit'),('Sweet Rice','Grain'),('Sweet Rice flour','Grain'),('Table Salt','Salt'),('Tomatoes','Fruit'),('Turkey(whole)','Poultry'),('Water','Misc'),('Watermelon','Fruit'),('White Sugar','Sugar'),('Yams','Vegetable');
+INSERT INTO `ingredients` VALUES ('[\"Eggs\"]','[\"Protein\"]'),('Artichokes','Vegetable'),('Asparagus','Vegetable'),('Baking powder','Misc'),('Baking soda','Misc'),('Beet','Vegetable'),('Blueberry','Fruit'),('Broccoli','Vegetable'),('Brown Sugar','Sugar'),('Brussels sprouts','Vegetable'),('Butter','Dairy'),('Cabbage','Vegetable'),('Cane Sugar','Sugar'),('Cantaloupe','Fruit'),('Carrot','Vegetable'),('Cauliflower','Vegetable'),('Celery','Vegetable'),('Chedder Cheese','Dairy'),('Chicken(breast)','Poultry'),('Chicken(drumstick)','Poultry'),('Chicken(whole)','Poultry'),('Chicken(wings)','Poultry'),('Chilli peppers','Vegetable'),('Cucumber','Vegetable'),('Eggplant','Vegetable'),('Eggs','Protein'),('Flour','Grain'),('Garlic','Vegetable'),('Green onion','Vegetable'),('Honey','Sugar'),('Honeydew(Melon)','Fruit'),('Kale','Vegetable'),('Milk','Dairy'),('Onion','Vegetable'),('Peas','Vegetable'),('Potatoes','Vegetable'),('Pumpkin','Vegetable'),('Rhubarb','Vegetable'),('Rice','Grain'),('Rice flour','Grain'),('Sea Salt','Salt'),('Spinach','Vegetable'),('Steak(t-bone)','Beef'),('Strawberry','Fruit'),('Sweet Rice','Grain'),('Sweet Rice flour','Grain'),('Table Salt','Salt'),('Tomatoes','Fruit'),('Turkey(whole)','Poultry'),('Water','Misc'),('Watermelon','Fruit'),('White Sugar','Sugar'),('Yams','Vegetable');
 /*!40000 ALTER TABLE `ingredients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +192,7 @@ CREATE TABLE `recipe` (
   PRIMARY KEY (`NUM`),
   UNIQUE KEY `NUM._UNIQUE` (`NUM`),
   KEY `u_id_idx` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,7 +201,7 @@ CREATE TABLE `recipe` (
 
 LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` DISABLE KEYS */;
-INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving '),(2,'test','\"Fried Eggs\"','\"5\"','\"Fry the egg\"'),(3,'test','\"Fried Eggs\"','\"5\"','\"Fry the egg\"'),(4,'test','\"Fried Eggs\"','\"5\"','\"Fry the egg\"'),(5,'test','\"Fried Eggs\"','\"5\"','\"Fry the egg\"'),(6,'test','\"boiled eggs\"','\"15 mins\"','\" Fill pot, boil egg.\"'),(7,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"'),(8,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"'),(9,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"'),(10,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"'),(11,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"'),(12,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"');
+INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving '),(58,'test','\"Fried Eggs\"','\"10\"','\" Fry the eggs in the pan\"');
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -213,8 +213,8 @@ DROP TABLE IF EXISTS `review`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `review` (
-  `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
-  `u_id` varchar(45) NOT NULL,
+  `r_no` smallint(11) NOT NULL,
+  `u_id` char(45) NOT NULL,
   `rating` text NOT NULL,
   `stars` smallint(5) NOT NULL,
   UNIQUE KEY `u_id_UNIQUE` (`u_id`),
@@ -231,6 +231,7 @@ CREATE TABLE `review` (
 
 LOCK TABLES `review` WRITE;
 /*!40000 ALTER TABLE `review` DISABLE KEYS */;
+INSERT INTO `review` VALUES (1,'test','asdf',4);
 /*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,7 +285,7 @@ BEGIN
     set endind = json_length(@ar);
     while counter < endind do
 		insert into cookware_used(cookware, r_no)
-        value (json_extract(@ar, concat('$[',counter,']')), rnum);
+        value (json_unquote(json_extract(@ar, concat('$[',counter,']'))), rnum);
         set counter = counter + 1;
     end while;
 END ;;
@@ -334,23 +335,21 @@ BEGIN
     where recipe_no = rnum;
 	
     select json_extract(ing_array, '$.ingredients') into @ai;
-    select json_extract(ing_array, '$.ingtype') into @ait;
-    select json_extract(ing_array, '$.ingamount') into @aa;
    
 	set endind = json_length(@ai);
 
-    while _ind < json_length do
+    while _ind < endind do
 		insert into ingredients(iname, itype)
-		value (json_extract(@ai, concat('$[',`_ind`, '].ingredients')),
-				json_extract(@ait, concat('$[',`_ind`, '].ingtype')))
+		value (json_unquote(json_extract(ing_array, concat('$[ ',`_ind`, ' ].ingredients'))),
+				json_unquote(json_extract(ing_array, concat('$[',`_ind`, '].ingType'))))
 		on duplicate key update
-		itype = json_extract(@ait, concat('$[',`_ind`, '].ingtype'));
+		itype = json_unquote(json_extract(ing_array, concat('$[',`_ind`, '].ingType')));
 	
 		insert into consists_of_ing(ing_name, amount, recipe_no)
-		value (json_extract(@ai, concat('$[',`_ind`, '].ingredients')),
-			json_extract(@aa, concat('$[',`_ind`, '].ingamount')),
+		value (json_unquote(json_extract(ing_array, concat('$[',`_ind`, '].ingredients'))),
+			json_unquote(json_extract(ing_array, concat('$[',`_ind`, '].ingAmount'))),
 			rnum);
-		set _ind := _ind + 1;
+		set _ind = _ind + 1;
 	end while;
 END ;;
 DELIMITER ;
@@ -368,7 +367,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `addedit_review`(r_no smallint(11), id char(45), review text, s smallint(5))
+CREATE DEFINER=`sally`@`%` PROCEDURE `addedit_review`(r_no smallint(11), id char(45), review text, s smallint(5))
 BEGIN
 	insert into review(r_no, u_id, rating, stars)
     value (r_no, id, review, s)
@@ -414,7 +413,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `add_foodtype`(foodname varchar(45), foodtype varchar(45))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_foodtype`(foodname char(45), foodtype char(45))
 BEGIN
 	insert into food_type(f_name, f_type)
     value (foodname, foodtype);
@@ -450,20 +449,15 @@ BEGIN
 	insert into recipe(user_id, rname, time_taken, directions)
     values (id,	@title,	@tt, @step);
    
-    set rnum = (select NUM
-				from recipe
-				where (user_id = id 
-						AND rname = @title 
-						AND time_taken = @tt
-						AND directions = @step));
-      
+    set rnum = (select MAX(NUM)
+					from recipe);
+     
+    call addedit_food (@fn, rnum); 
     while _ind < endind do
-		call add_foodtype(@fn,
-							json_extract(@ft, concat('$[',`_ind`, '].foodType')));
-		set _ind := _ind + 1;
+		call add_foodtype(@fn, json_unquote(json_extract(recipedata, concat('$[',`_ind`, '].foodType'))));
+		set _ind = _ind + 1;
     end while;
     
-    call addedit_food (@fn, rnum);
 	
     call addedit_ingredients(recipedata, rnum);
     call addedit_cookware(recipedata, rnum);
@@ -522,7 +516,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
 BEGIN
 	delete from recipe
     where NUM = rno AND user_id = id;
@@ -542,7 +536,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `delete_review`(rno smallint(11), id char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `delete_review`(rno smallint(11), id char(45))
 BEGIN
 	delete from review
     where r_no = rno 
@@ -611,7 +605,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `get_full_recipe`(rnum smallint(11),id varchar(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `get_full_recipe`(rnum smallint(11),id varchar(45))
 BEGIN
 	select *
     from recipe
@@ -627,9 +621,9 @@ BEGIN
 					from food
 					where r_no = rnum);
     
-    select ing_name, amount
-    from consists_of_ing
-    where recipe_no = rnum;
+    select ing_name, amount, ingredients.itype
+    from (consists_of_ing join ingredients on consists_of_ing.ing_name = ingredients.iname)
+    where consists_of_ing.recipe_no = rnum;
     
     select case when count(user_id)=1
 		then 'true'
@@ -676,7 +670,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `log_in`(p_id char(45), p_pswd char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `log_in`(p_id char(45), p_pswd char(45))
 BEGIN
 	select case when
     count(ID) = 1
@@ -704,7 +698,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
+CREATE DEFINER=`sally`@`%` PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
 BEGIN
 	delete from favorites
     where user_id = id AND r_no = rnum;
@@ -785,7 +779,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_favorites`(id char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_favorites`(id char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe
@@ -872,7 +866,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_ingredient`(ing_list json)
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_ingredient`(ing_list json)
 BEGIN
 	declare counter int;
     declare endind int;
@@ -911,7 +905,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_recipe`(rn char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_recipe`(rn char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe 
@@ -932,7 +926,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_user`(userid char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_user`(userid char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe
@@ -953,4 +947,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-05  0:53:45
+-- Dump completed on 2018-12-05  2:55:03

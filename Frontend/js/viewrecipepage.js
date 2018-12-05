@@ -57,7 +57,7 @@ function addFavourite() {
 
   // get recipe data from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/addfavourite', true);
+  req.open('post', '/addfavorites', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
@@ -72,7 +72,7 @@ function deleteFavourite() {
 
   // get recipe data from server
   var req = new XMLHttpRequest();
-  req.open('GET', '/deletefavourite', true);
+  req.open('delete', '/removefavorites', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
@@ -173,21 +173,6 @@ function getRecipeData() {
 }
 
 function showRecipe() {
-   //hard coded values for testing
-  /*recipeData = {
-    title: "My Recipe",
-    author: "John", //username
-    number: 1,
-    foodType: ["noodle", "fushion", "dinner"],
-    ingredients: ["bacon", "carrot", "onion"],
-    ingAmount: ["4", "1 cup", "1"],
-    ingType: ["meat", "vegi", "vegi"],
-    cookware: ["pot", "spoon"],
-    timeTake: "30min",
-    steps: "Cook the bacon in the pot and add carrots and onions stir with spoooon",
-    favourite: "true"
-  }*/
-
 
   $("#recipeTitle").text(recipeData.title);
   $("#recipeAuthor").text("Made by: " + recipeData.author);
