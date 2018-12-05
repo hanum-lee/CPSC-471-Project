@@ -150,7 +150,8 @@ function addFoodtype() {
     return false;
   }
 
-  $('#foodTypes').append("Food Type " + counterF + ": ", $("<input id='fType" + counterF + "' class='recipeInfo'> <br>"));
+  $('#foodTypes').append("<span id='fTypeBox" + counterF + "'> </span>");
+  $('#fTypeBox'+counterF).append("Food Type " + counterF + ": ", $("<input id='fType" + counterF + "' class='recipeInfo'> <br>"));
 }
 
 function addIngredient() {
@@ -160,18 +161,21 @@ function addIngredient() {
     return false;
   }
 
-  $('#ingredients').append("Ingredient " + counterI + ": ", $("<input id='ing" + counterI + "' class='recipeInfo'>"));
-  $('#ingredients').append("Ingredient Amount  " + counterI + ": ", $("<input id='ingAmount" + counterI + "' class='recipeInfo'>"));
-  $('#ingredients').append("Ingredient Type  " + counterI + ": ", $("<input id='ingType" + counterI + "' class='recipeInfo'> <br>"));
+  $('#ingredients').append("<span id='ingBox" + counterI + "'> </span>");
+  $('#ingBox'+counterI).append("Ingredient " + counterI + ": ", $("<input id='ing" + counterI + "' class='recipeInfo'>"));
+  $('#ingBox'+counterI).append("Ingredient Amount  " + counterI + ": ", $("<input id='ingAmount" + counterI + "' class='recipeInfo'>"));
+  $('#ingBox'+counterI).append("Ingredient Type  " + counterI + ": ", $("<input id='ingType" + counterI + "' class='recipeInfo'> <br>"));
 }
 
 function addCookware() {
+  console.log("add cookware");
   counterC++;
   if(counterC>20){
     alert("Only 10 Cookwares allowed");
     return false;
   }
-  $('#cookwares').append("Cookware " + counterC + ": ", $("<input id='cookw" + counterC + "' class='recipeInfo'> <br>"));
+  $('#cookwares').append("<span id='cookwBox" + counterC + "'> </span>");
+  $('#cookwBox'+counterC).append("Cookware " + counterC + ": ", $("<input id='cookw" + counterC + "' class='recipeInfo'> <br>"));
 }
 
 
@@ -180,7 +184,7 @@ function removeFoodtype() {
     alert("At least 1 food type required");
     return;
   }
-  $("#fType" + counterF).remove();
+  $("#fTypeBox" + counterF).remove();
   counterF--;
 }
 
@@ -189,9 +193,7 @@ function removeIngredient() {
     alert("At least 1 ingredient required");
     return;
   }
-  $("#ing" + counterI).remove();
-  $("#ingType" + counterI).remove();
-  $("#ingAmount" + counterI).remove();
+  $("#ingBox" + counterI).remove();
   counterI--;
 }
 
@@ -200,7 +202,7 @@ function removeCookware() {
     alert("At least 1 cookware required");
     return;
   }
-  $("#cookw" + counterC).remove();
+  $("#cookwBox" + counterC).remove();
   counterC--;
 }
 
