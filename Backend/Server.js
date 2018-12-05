@@ -536,4 +536,26 @@ app.post('/addfavorites', function(req, res) {
 		});
 	});
 });
+app.post('/getRecipe', function(req, res) {
+	pool.getConnection(function (err,connection) {
+		if (err) {
+			console.log("Error connecting to database");
+			res.status(400).send(err);
+		}
+		connection.query('CALL recipesearcher.get_review(?)',[req.body.rno], function(err, rows, fields) {
+			connection.release();
+			console.log(rows);
+			/*
+			{author
+			description
+			point}
+			*/
+			if (err) {
+				console.log("Error in query");
+				res.status(400).send(err);
+			}
+			res.status(200).send(rows);
+		});
+	});
+});
 app.listen(port, () => console.log(`Server listening on port ${port}`));
