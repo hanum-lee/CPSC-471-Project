@@ -23,7 +23,7 @@ function searchByIngredient() {
         showRecipes();
       }
   };
-  console.log(userSearchString)
+  console.log(userSearchString);
   req.send(userSearchString);
 }
 
@@ -36,9 +36,9 @@ function searchByFoodType() {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
         showRecipes();
-    }
+	  }
   };
-  console.log(userSearchString)
+  console.log(userSearchString);
   req.send(userSearchString);
 }
 
@@ -53,7 +53,7 @@ function searchByFoodName() {
         showRecipes();
       }
   };
-  console.log(userSearchString)
+  console.log(userSearchString);
   req.send(userSearchString);
 }
 
@@ -68,7 +68,7 @@ function searchByRecipeName() {
         showRecipes();
       }
   };
-  console.log(userSearchString)
+  console.log(userSearchString);
   req.send(userSearchString);
 }
 
@@ -83,7 +83,7 @@ function searchByCookware() {
         showRecipes();
       }
   };
-  console.log(userSearchString)
+  console.log(userSearchString);
   req.send(userSearchString);
 }
 
