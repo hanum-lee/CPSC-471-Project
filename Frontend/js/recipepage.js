@@ -234,4 +234,8 @@ $(document).ready(function(){
   $("#saveButton").click(sendData);
   // send command to delete if click delete
   $("#deleteButton").click(sendDelete);
+  // dont send to server, go to manage page
+  $("exitButton").click(function() {
+    window.location.href = "managepage.html";
+  });
 });
