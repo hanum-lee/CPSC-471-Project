@@ -215,10 +215,7 @@ function removeCookware() {
 }
 
 $(document).ready(function(){
-
-  sessionStorage.setItem("recipePg", "EDIT RECIPE"); //test case (ignore)
   $("#recipePageTitle").text(sessionStorage.getItem("recipePg"));
-
 
   // case when editing existing recipe
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
