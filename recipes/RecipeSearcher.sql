@@ -113,7 +113,7 @@ CREATE TABLE `food` (
   PRIMARY KEY (`fname`),
   KEY `r_no_idx` (`r_no`),
   CONSTRAINT `r_no_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `food` (
 
 LOCK TABLES `food` WRITE;
 /*!40000 ALTER TABLE `food` DISABLE KEYS */;
-INSERT INTO `food` VALUES ('Pancakes',1);
+INSERT INTO `food` VALUES ('Pancakes',1),('\"Boiled Eggs\"',7);
 /*!40000 ALTER TABLE `food` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +192,7 @@ CREATE TABLE `recipe` (
   PRIMARY KEY (`NUM`),
   UNIQUE KEY `NUM._UNIQUE` (`NUM`),
   KEY `u_id_idx` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,7 +201,7 @@ CREATE TABLE `recipe` (
 
 LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` DISABLE KEYS */;
-INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving ');
+INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving '),(2,'test','\"Fried Eggs\"','\"5\"','\"Fry the egg\"'),(3,'test','\"Fried Eggs\"','\"5\"','\"Fry the egg\"'),(4,'test','\"Fried Eggs\"','\"5\"','\"Fry the egg\"'),(5,'test','\"Fried Eggs\"','\"5\"','\"Fry the egg\"'),(6,'test','\"boiled eggs\"','\"15 mins\"','\" Fill pot, boil egg.\"'),(7,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"'),(8,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"'),(9,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"'),(10,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"'),(11,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"'),(12,'test','\"Boiled Eggs\"','\"10 mins\"','\" Boil the eggs...\"');
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,6 +216,7 @@ CREATE TABLE `review` (
   `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   `u_id` varchar(45) NOT NULL,
   `rating` text NOT NULL,
+  `stars` smallint(5) NOT NULL,
   UNIQUE KEY `u_id_UNIQUE` (`u_id`),
   UNIQUE KEY `r_no_UNIQUE` (`r_no`),
   KEY `recipe_num_fk_idx` (`r_no`),
@@ -367,12 +368,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `addedit_review`(r_no smallint(11), id char(45), review text)
+CREATE DEFINER=`sally`@`%` PROCEDURE `addedit_review`(r_no smallint(11), id char(45), review text, s smallint(5))
 BEGIN
-	insert into review(r_no, u_id, rating)
-    value (r_no, id, review)
+	insert into review(r_no, u_id, rating, stars)
+    value (r_no, id, review, s)
     on duplicate key update
-    rating = review;
+    rating = review, stars = s;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -441,32 +442,32 @@ BEGIN
     select json_extract(recipedata, '$.title') into @title;
     select json_extract(recipedata, '$.foodType') into @ft;
     select json_extract(recipedata, '$.title') into @fn;
-    select json_extract(recipedata, '$.timeTake') into @ft;
+    select json_extract(recipedata, '$.timeTake') into @tt;
     select json_extract(recipedata, '$.steps') into @step;
+    
     set endind = json_length(@ft);
+    
 	insert into recipe(user_id, rname, time_taken, directions)
-    values (id,
-		json_extract(@ai, concat('$["',`0`, '"].title')),
-		json_extract(@ai, concat('$[',`0`, '].timetaken')),
-		json_extract(@ai, concat('$[',`0`, '].steps')));
-        
+    values (id,	@title,	@tt, @step);
+   
     set rnum = (select NUM
 				from recipe
 				where (user_id = id 
-						AND rname = json_extract(@ai, concat('$[',`0`, '].title')) 
-						AND timetaken = json_extract(@ai, concat('$[',`0`, '].timetaken')) 
-						AND directions = json_extract(@ai, concat('$[',`0`, '].steps'))));
+						AND rname = @title 
+						AND time_taken = @tt
+						AND directions = @step));
+      
+    while _ind < endind do
+		call add_foodtype(@fn,
+							json_extract(@ft, concat('$[',`_ind`, '].foodType')));
+		set _ind := _ind + 1;
+    end while;
     
-    call addedit_food (json_extract(@fn, concat('$[',`0`, '].foodname'), rnum));
+    call addedit_food (@fn, rnum);
 	
     call addedit_ingredients(recipedata, rnum);
     call addedit_cookware(recipedata, rnum);
-    
-    while _ind < endind do
-		call add_foodtype(json_extract(@fn, concat('$[',`0`, '].foodname')),
-							json_extract(@ft, concat('$[',`_ind`, '].foodType')));
-    end while;
-    
+      
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -521,7 +522,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `delete_recipe`(rno smallint(11), id char(45))
 BEGIN
 	delete from recipe
     where NUM = rno AND user_id = id;
@@ -541,7 +542,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `delete_review`(rno smallint(11), id char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `delete_review`(rno smallint(11), id char(45))
 BEGIN
 	delete from review
     where r_no = rno 
@@ -610,7 +611,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `get_full_recipe`(rnum smallint(11),id varchar(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `get_full_recipe`(rnum smallint(11),id varchar(45))
 BEGIN
 	select *
     from recipe
@@ -644,6 +645,27 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_review` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_review`(rnum smallint(11))
+BEGIN
+	select u_id as author, rating as description, stars as point
+    from review
+    where r_no = rnum;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `log_in` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -654,7 +676,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `log_in`(p_id char(45), p_pswd char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `log_in`(p_id char(45), p_pswd char(45))
 BEGIN
 	select case when
     count(ID) = 1
@@ -682,7 +704,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
+CREATE DEFINER=`sally`@`%` PROCEDURE `remove_favorites`(id char(45), rnum smallint(11))
 BEGIN
 	delete from favorites
     where user_id = id AND r_no = rnum;
@@ -763,7 +785,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_favorites`(id char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_favorites`(id char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe
@@ -850,7 +872,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_ingredient`(ing_list json)
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_ingredient`(ing_list json)
 BEGIN
 	declare counter int;
     declare endind int;
@@ -889,7 +911,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_recipe`(rn char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_recipe`(rn char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe 
@@ -910,7 +932,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE  PROCEDURE `search_user`(userid char(45))
+CREATE DEFINER=`sally`@`%` PROCEDURE `search_user`(userid char(45))
 BEGIN
 	select NUM, rname as title, user_id as username
     from recipe
@@ -931,4 +953,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-04 22:33:15
+-- Dump completed on 2018-12-05  0:53:45
