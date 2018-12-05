@@ -54,7 +54,7 @@ app.post('/login',function(req,res){
 
 });
 //Call for what is present
-app.get('/editRecipe',function(req,res){
+app.post('/editRecipe',function(req,res){
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -141,52 +141,29 @@ app.post('/recipeUpdate',function(req,res){
 	});
 });
 
-app.get('/recipeAdd',function(req,res){
-	/*let recTitle = req.body.title;
-	let recNum = req.body.number;
-	let recDec = req.body.description;
-	let recFoodType = req.body.foodType;
-	let recIngr = req.body.ingredients;
-	let recCook = req.body.cookware;
-	let recSteps = req.body.steps;
-	let rec.fav = req.body.favourite;
-	let username = req.body.username;*/
+app.post('/recipeAdd',function(req,res){
+	/* recipeData form
+recipeData = {
+  title: <title>,
+  author: <name>,
+  number: <num>,
+  description: <d>, (not now)
+  foodType: [ft, ft, ....],
+  ingredients: [i,i,....i],
+  ingAmount: [ia,ia,ia..]
+  cookware: [c,c...c],
+  timeTake: <t>,
+  steps: <s>
+}
+*/
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.add_recipe(?,?,?,?,?)',[req.body.title, req.body.title, req.body.timetaken, req.body.username, req.body.steps], function(err, rows, fields) {
-			connection.release();
-			if (err) {
-				console.log(err);
-				console.log("Error in query");
-				res.status(400).send(err);
-			}
-			res.status(200).send(rows);
-		});
-	});
-	pool.getConnection(function (err,connection) {
-		if (err) {
-			console.log("Error connecting to database");
-			res.status(400).send(err);
-		}
-		connection.query('CALL recipesearcher.addedit_ingredients(?,?)',[req.body.ingredients,req.body.rnum], function(err, rows, fields) {
-			connection.release();
-			if (err) {
-				console.log(err);
-				console.log("Error in query");
-				res.status(400).send(err);
-			}
-			res.status(200).send(rows);
-		});
-	});
-	pool.getConnection(function (err,connection) {
-		if (err) {
-			console.log("Error connecting to database");
-			res.status(400).send(err);
-		}
-		connection.query('CALL recipesearcher.addedit_cookware(?,?)',[req.body.cookware,req.body.rnum], function(err, rows, fields) {
+		//console.log(req.body.recipeDataString);
+		console.log(req.body.recipeDataString.author);
+		connection.query('CALL recipesearcher.add_recipe(?,?)',[req.body.recipeDataString, req.body.recipeDataString.author[0]], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log(err);
@@ -228,7 +205,7 @@ app.post('/register',function(req,res){
 	});
 });
 
-app.get('/recipeData',function(req,res){
+app.post('/recipeData',function(req,res){
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
@@ -546,7 +523,7 @@ app.post('/addeditreview', function(req, res) {	//might need to change function 
 		});
 	});
 });
-app.post('/addfavorites', function(req, res) {	//might need to change function name
+app.post('/addfavorites', function(req, res) {	
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");

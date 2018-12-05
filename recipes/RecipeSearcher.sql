@@ -136,7 +136,6 @@ DROP TABLE IF EXISTS `food_type`;
 CREATE TABLE `food_type` (
   `f_name` char(45) NOT NULL,
   `f_type` varchar(45) NOT NULL,
-  PRIMARY KEY (`f_name`),
   KEY `r_name_fk_idx` (`f_name`) /*!80000 INVISIBLE */,
   CONSTRAINT `f_name` FOREIGN KEY (`f_name`) REFERENCES `food` (`fname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -327,23 +326,28 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addedit_ingredients`(ing_array json, rnum smallint(11))
 BEGIN
-	
-	declare json_ing int default json_length(ing_array);
     declare _ind int default 0;
+    declare endind int;
     
     delete from consists_of_ing
     where recipe_no = rnum;
-    
-    while _ind < json_ing do
+	
+    select json_extract(ing_array, '$.ingredients') into @ai;
+    select json_extract(ing_array, '$.ingtype') into @ait;
+    select json_extract(ing_array, '$.ingamount') into @aa;
+   
+	set endind = json_length(@ai);
+
+    while _ind < json_length do
 		insert into ingredients(iname, itype)
-		value (json_extract(ing_array, concat('$[',`_ind`, '].ingredients')),
-				json_extract(ing_array, concat('$[',`_ind`, '].ingtype')))
+		value (json_extract(@ai, concat('$[',`_ind`, '].ingredients')),
+				json_extract(@ait, concat('$[',`_ind`, '].ingtype')))
 		on duplicate key update
-		itype = json_extract(ing_array, concat('$[',`_ind`, '].ingtype'));
+		itype = json_extract(@ait, concat('$[',`_ind`, '].ingtype'));
 	
 		insert into consists_of_ing(ing_name, amount, recipe_no)
-		value (json_extract(ing_array, concat('$[',`_ind`, '].ingredients')),
-			json_extract(ing_array, concat('$[',`_ind`, '].ingamount')),
+		value (json_extract(@ai, concat('$[',`_ind`, '].ingredients')),
+			json_extract(@aa, concat('$[',`_ind`, '].ingamount')),
 			rnum);
 		set _ind := _ind + 1;
 	end while;
@@ -412,9 +416,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `add_foodtype`(foodname varchar(45), foodtype varchar(45))
 BEGIN
 	insert into food_type(f_name, f_type)
-    value (foodname, foodtype)
-    on duplicate key update
-    f_type = foodtype;
+    value (foodname, foodtype);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -431,17 +433,40 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `add_recipe`(recname char(45), foodname char(45), tt int(11), id char(45), dir text)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_recipe`(recipedata json, id varchar(45))
 BEGIN
+	declare rnum smallint(11);
+    declare _ind int default 0;
+    declare endind int;
+    select json_extract(recipedata, '$.title') into @title;
+    select json_extract(recipedata, '$.foodType') into @ft;
+    select json_extract(recipedata, '$.title') into @fn;
+    select json_extract(recipedata, '$.timeTake') into @ft;
+    select json_extract(recipedata, '$.steps') into @step;
+    set endind = json_length(@ft);
 	insert into recipe(user_id, rname, time_taken, directions)
-    values (id, recname, tt, dir);
+    values (id,
+		json_extract(@ai, concat('$["',`0`, '"].title')),
+		json_extract(@ai, concat('$[',`0`, '].timetaken')),
+		json_extract(@ai, concat('$[',`0`, '].steps')));
+        
+    set rnum = (select NUM
+				from recipe
+				where (user_id = id 
+						AND rname = json_extract(@ai, concat('$[',`0`, '].title')) 
+						AND timetaken = json_extract(@ai, concat('$[',`0`, '].timetaken')) 
+						AND directions = json_extract(@ai, concat('$[',`0`, '].steps'))));
     
-    call addedit_food (foodname,(select NUM
-						from recipe
-						where (user_id = id 
-							AND rname = recname 
-                            AND timetaken = tt 
-                            AND directions = dir)));
+    call addedit_food (json_extract(@fn, concat('$[',`0`, '].foodname'), rnum));
+	
+    call addedit_ingredients(recipedata, rnum);
+    call addedit_cookware(recipedata, rnum);
+    
+    while _ind < endind do
+		call add_foodtype(json_extract(@fn, concat('$[',`0`, '].foodname')),
+							json_extract(@ft, concat('$[',`_ind`, '].foodType')));
+    end while;
+    
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -767,15 +792,31 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `search_foodtype`(ftype char(45))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `search_foodtype`(ftype json)
 BEGIN
-	select NUM, rname as title, user_id as username
-    from recipe as R
-    where NUM IN (select r_no
+	declare counter int;
+    declare endind int;
+    set counter = 0;
+    create temporary table temp as
+    select f_type from food_type where f_type = '';
+    select json_extract(ftype, '$.foodtype') into @aft;
+	set endind = json_length(@aft);
+    while counter < endind do
+		insert into temp
+        value (json_extract(@aft, concat('$[',counter,']')));
+        set counter = counter + 1;
+    end while;
+    
+    
+    select NUM, rname as title, user_id as username
+    from recipe 
+    where NUM in (select r_no
 					from food
                     where fname IN (select f_name
 								from food_type
-								where f_type = ftype));
+								where f_type in (select *
+													from temp)));
+	drop temporary table temp;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -873,4 +914,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-04  3:23:06
+-- Dump completed
