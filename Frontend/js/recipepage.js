@@ -7,22 +7,20 @@ var recipeSelected = {
   recipeNum: recipeNum
 }
 // variable for data returned by server
-var recipeData;
-/* recipeData form
-recipeData = {
-  title: <title>,
-  author: <name>,
-  number: <num>,
-  description: <d>, (not now)
-  foodType: [ft, ft, ....],
-  ingredients: [i,i,....i],
-  ingAmount: [ia,ia,ia..]
-  cookware: [c,c...c],
-  timeTake: <t>,
-  steps: <s>,
-  favourite: <true/false>
+var recipeData= {
+  title: "",
+  author: "",
+  number: 0,
+  foodType: [],
+  ingredients: [],
+  ingAmount: [],
+  ingType: [],
+  cookware: [],
+  timeTake: "",
+  steps: "",
+  favourite: "false"
 }
-*/
+
 
 function getRecipe() {
   var recipeSelectString = JSON.stringify(recipeSelected);
@@ -110,7 +108,7 @@ function getRecipeInput() {
   recipeData.title = $("#inputRecipeTitle").val();
   recipeData.author = sessionStorage.getItem("user");
   recipeData.steps = $("#stepsInput").val();
-  recipeData.timeTake = $("$timeTake").val();
+  recipeData.timeTake = $("#timeTake").val();
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
     recipeData.number = recipeSelected.recipeNum;
   }
