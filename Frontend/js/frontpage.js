@@ -8,7 +8,7 @@ function search() {
     $("#searchMessage").text("eg. flour, water, sugar");
     sessionStorage.setItem("userSearch", searchInput);
     sessionStorage.setItem("listPg", "SEARCH RESULTS");
-    //window.location.href = 'listpage.html';
+    window.location.href = 'listpage.html';
   }
 }
 
