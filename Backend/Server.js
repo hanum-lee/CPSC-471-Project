@@ -3,8 +3,13 @@ let mysql = require('mysql');
 
 var pool = mysql.createPool({
 	host: 'localhost',
+<<<<<<< HEAD
+	port: '3306',
+	user: 'root',
+=======
 	port: '3307',
 	user: 'testing',
+>>>>>>> e66118b418bc097d975ba65f3a880406b11a43c6
 	password: 'mySQL1234!',
 	database: 'recipesearcher',
 	multipleStatements: true
@@ -90,8 +95,7 @@ app.post('/recipeUpdate',function(req,res){
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		console.log(req.body.recipeDataString.author);
-		connection.query('CALL recipesearcher.edit_recipe(?,?)',[req.body.recipeDataString, req.body.recipeDataString.author[0]], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.edit_recipe(?,?)',[req.body, req.body.author[0]], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log(err);
@@ -123,9 +127,9 @@ recipeData = {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		//console.log(req.body.recipeDataString);
-		console.log(req.body.recipeDataString.author);
-		connection.query('CALL recipesearcher.add_recipe(?,?)',[req.body.recipeDataString, req.body.recipeDataString.author[0]], function(err, rows, fields) {
+		console.log(req.body.author);
+		var temp = req.body.author;
+		connection.query('CALL recipesearcher.add_recipe(?,?)',[JSON.stringify(req.body), temp], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log(err);
