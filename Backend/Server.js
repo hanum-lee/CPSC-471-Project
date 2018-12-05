@@ -3,13 +3,8 @@ let mysql = require('mysql');
 
 var pool = mysql.createPool({
 	host: 'localhost',
-<<<<<<< HEAD
 	port: '3306',
 	user: 'root',
-=======
-	port: '3307',
-	user: 'testing',
->>>>>>> e66118b418bc097d975ba65f3a880406b11a43c6
 	password: 'mySQL1234!',
 	database: 'recipesearcher',
 	multipleStatements: true
@@ -187,17 +182,17 @@ app.post('/recipeData',function(req,res){
 			}
 			console.log(JSON.stringify(rows));
 			outputjson = {
-				title: rows[0].rname,
-				author: rows[0].user_id,
-				number: rows[0].NUM,
+				title: rows[0][0].rname,
+				author: rows[0][0].user_id,
+				number: rows[0][0].NUM,
 				foodType:[],
 				ingredients:[],
 				ingAmount:[],
 				ingType:[],
 				cookware:[],
-				timeTake: rows[0].time_taken,
-				steps: rows[0].directions,
-				favourite: rows[4].bool
+				timeTake: rows[0][0].time_taken,
+				steps: rows[0][0].directions,
+				favourite: rows[4][0].bool
 			};
 			console.log("first"+ JSON.stringify(outputjson));
 			for(var i = 0; i < rows[2].length;i++){

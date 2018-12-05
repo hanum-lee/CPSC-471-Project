@@ -175,19 +175,19 @@ function getRecipeData() {
 
 function showRecipe() {
    //hard coded values for testing
-  recipeData = {
-    title: "My Recipe",
-    author: "John", //username
-    number: 1,
-    foodType: ["noodle", "fushion", "dinner"],
-    ingredients: ["bacon", "carrot", "onion"],
-    ingAmount: ["4", "1 cup", "1"],
-    ingType: ["meat", "vegi", "vegi"],
-    cookware: ["pot", "spoon"],
-    timeTake: "30min",
-    steps: "Cook the bacon in the pot and add carrots and onions stir with spoooon",
-    favourite: "true"
-  }
+  // recipeData = {
+    // title: "My Recipe",
+    // author: "John", //username
+    // number: 1,
+    // foodType: ["noodle", "fushion", "dinner"],
+    // ingredients: ["bacon", "carrot", "onion"],
+    // ingAmount: ["4", "1 cup", "1"],
+    // ingType: ["meat", "vegi", "vegi"],
+    // cookware: ["pot", "spoon"],
+    // timeTake: "30min",
+    // steps: "Cook the bacon in the pot and add carrots and onions stir with spoooon",
+    // favourite: "true"
+  // }
 
 
   $("#recipeTitle").text(recipeData.title);
