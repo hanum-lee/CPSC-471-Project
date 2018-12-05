@@ -93,6 +93,8 @@ function sendData() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         console.log("recipe data send successful");
+        sessionStorage.setItem("listPg", "MY RECIPES");
+        window.location.href = "listpage.html";
       }
   };
   req.send(recipeDataString);
