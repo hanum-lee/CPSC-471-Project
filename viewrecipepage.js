@@ -161,7 +161,7 @@ function getRecipeData() {
 
   // get recipe data from server
   var req = new XMLHttpRequest();
-  req.open('POST', '/recipeData', true);
+  req.open('GET', '/recipeData', true);
   req.setRequestHeader("Content-Type", "application/json");
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
@@ -169,7 +169,6 @@ function getRecipeData() {
       }
       showRecipe();
   };
-  console.log(recipeSelectString);
   req.send(recipeSelectString);
 }
 
@@ -204,7 +203,7 @@ function showRecipe() {
 
 $(document).ready(function(){
   $("#deleteReview").hide();
-  getRecipeData();
+  //getRecipeData();
   //getReviews();
 showRecipe();
   if (sessionStorage.getItem("userLogin") == "true") {

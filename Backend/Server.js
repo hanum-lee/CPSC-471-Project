@@ -3,9 +3,9 @@ let mysql = require('mysql');
 
 var pool = mysql.createPool({
 	host: 'localhost',
-	port: '3306',
-	user: 'root',
-	password: '123456',
+	port: '3307',
+	user: 'testing',
+	password: 'mySQL1234!',
 	database: 'recipesearcher',
 	multipleStatements: true
 });
@@ -55,13 +55,14 @@ app.post('/login',function(req,res){
 });
 //Call for what is present
 app.post('/editRecipe',function(req,res){
+
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
 		console.log(req.body.username, req.body.password);
-		connection.query('CALL recipesearcher.get_full_recipe(?,?)',[req.body.rno,req.body.username], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.get_full_recipe(?,?)',[req.body.recipeNum,req.body.username], function(err, rows, fields) {
 			connection.release();
 			console.log(rows);
 			if (err) {
@@ -72,16 +73,6 @@ app.post('/editRecipe',function(req,res){
 			res.status(200).send(rows);
 		});
 	});
-	/*let recTitle = req.body.title;
-	let recNum = req.body.number;
-	let recDec = req.body.description;
-	let recFoodType = req.body.foodType;
-	let recIngr = req.body.ingredients;
-	let recCook = req.body.cookware;
-	let recSteps = req.body.steps;
-	let rec.fav = req.body.favourite;
-	let username = req.body.username;*/
-
 });
 //Update recipe
 app.post('/recipeUpdate',function(req,res){
@@ -99,37 +90,8 @@ app.post('/recipeUpdate',function(req,res){
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.edit_recipe(?,?,?,?,?)',[req.body.rnum, req.body.title, req.body.foodtpe, req.body.title, req.body.timetaken, req.body.steps], function(err, rows, fields) {
-			connection.release();
-			if (err) {
-				console.log(err);
-				console.log("Error in query");
-				res.status(400).send(err);
-			}
-			res.status(200).send(rows);
-		});
-	});
-	pool.getConnection(function (err,connection) {
-		if (err) {
-			console.log("Error connecting to database");
-			res.status(400).send(err);
-		}
-		connection.query('CALL recipesearcher.addedit_ingredients(?,?)',[req.body.ingredients,req.body.rnum], function(err, rows, fields) {
-			connection.release();
-			if (err) {
-				console.log(err);
-				console.log("Error in query");
-				res.status(400).send(err);
-			}
-			res.status(200).send(rows);
-		});
-	});
-	pool.getConnection(function (err,connection) {
-		if (err) {
-			console.log("Error connecting to database");
-			res.status(400).send(err);
-		}
-		connection.query('CALL recipesearcher.addedit_cookware(?,?)',[req.body.cookware,req.body.rnum], function(err, rows, fields) {
+		console.log(req.body.recipeDataString.author);
+		connection.query('CALL recipesearcher.edit_recipe(?,?)',[req.body.recipeDataString, req.body.recipeDataString.author[0]], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log(err);
@@ -206,20 +168,55 @@ app.post('/register',function(req,res){
 });
 
 app.post('/recipeData',function(req,res){
+	var username = 'test';
+	var rno = 1;
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.get_full_recipe(?,?)',[req.body.rno,req.body.username], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.get_full_recipe(?,?)',[1,'test'], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
 				res.status(400).send(err);
 			}
-			res.status(200).send(rows);
+			console.log(JSON.stringify(rows));
+			outputjson = {
+				title: rows[0].rname,
+				author: rows[0].user_id,
+				number: rows[0].NUM,
+				foodType:[],
+				ingredients:[],
+				ingAmount:[],
+				ingType:[],
+				cookware:[],
+				timeTake: rows[0].time_taken,
+				steps: rows[0].directions,
+				favourite: rows[4].bool
+			};
+			console.log("first"+ JSON.stringify(outputjson));
+			for(var i = 0; i < rows[2].length;i++){
+				outputjson['foodType'].push(rows[2][i].f_type);
+			}
+			for(var i = 0 ; i < rows[3].length; i ++){
+				outputjson['ingredients'].push(rows[3][i].ing_name);
+				outputjson['ingAmount'].push(rows[3][i].amount);
+				outputjson['ingType'].push(rows[3][i]).ing_type;
+			}
+		
+			for(var i = 0; i < rows[1].length;i++){
+				outputjson['cookware'].push(rows[1][i].cookware);
+			}
+			console.log(JSON.stringify(outputjson));
+			console.log(rows.length);
+			res.status(200).send(outputjson);
 		});
+
 	});
+	
+	
+
 	/*let recTitle = req.body.title;
 	let recNum = req.body.number;
 	let recDec = req.body.description;

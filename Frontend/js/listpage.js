@@ -36,7 +36,7 @@ function searchByFoodType() {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
         showRecipes();
-    }
+	  }
   };
   console.log(userSearchString);
   req.send(userSearchString);

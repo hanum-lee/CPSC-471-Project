@@ -33,6 +33,7 @@ function getRecipe() {
         recipeData = JSON.parse(req.responseText); //RETURNDATA
       }
   };
+  console.log(recipeSelectString);
   req.send(recipeSelectString);
 }
 
