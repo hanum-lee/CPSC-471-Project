@@ -123,6 +123,7 @@ function getMyRecipes() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
+        showRecipes();
       }
   };
   req.send(username);
@@ -141,6 +142,7 @@ function getMyFavourites() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
+        showRecipes();
       }
   };
   req.send(username);
@@ -159,6 +161,7 @@ function getRecipesReviewed() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         recipeList = JSON.parse(req.responseText); //RETURNDATA
+        showRecipes();
       }
   };
   req.send(username);
@@ -240,9 +243,4 @@ $(document).ready(function(){
       console.error("invalid list page type or null");
 	  console.error(sessionStorage.getItem("listPg"));
   }
-
-  // use recipeList to create new elements (div) in html
-  showRecipes();
-  // if user clicks div get num of recipe and link to viewrecipepage or recipepage
-
 });

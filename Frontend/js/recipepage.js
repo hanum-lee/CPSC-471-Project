@@ -219,7 +219,7 @@ $(document).ready(function(){
 
   // case when editing existing recipe
   if (sessionStorage.getItem("recipePg") == "EDIT RECIPE") {
-    $('.deleteButton').show();
+    $('#deleteButton').show();
     getRecipe();
     placeRecipeInForm();
     // modify input text seen on site
@@ -227,7 +227,7 @@ $(document).ready(function(){
   }
   // case when adding new recipe
   else {
-    $('.deleteButton').hide();
+    $('#deleteButton').hide();
     // get recipe data from user input
   }
 
