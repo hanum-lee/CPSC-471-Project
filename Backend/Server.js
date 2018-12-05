@@ -122,7 +122,8 @@ recipeData = {
 			res.status(400).send(err);
 		}
 		console.log(req.body.author);
-		connection.query('CALL recipesearcher.add_recipe(?,?)',[JSON.stringify(req.body), req.body.author], function(err, rows, fields) {
+		var temp = req.body.author;
+		connection.query('CALL recipesearcher.add_recipe(?,?)',[JSON.stringify(req.body), temp], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log(err);
