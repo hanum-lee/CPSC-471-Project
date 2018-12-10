@@ -25,13 +25,12 @@ DROP TABLE IF EXISTS `consists_of_ing`;
 CREATE TABLE `consists_of_ing` (
   `ing_name` char(45) NOT NULL,
   `amount` char(45) NOT NULL,
-  `recipe_no` smallint(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ing_name`),
+  `recipe_no` smallint(11) NOT NULL,
   KEY `i_name_idx` (`ing_name`),
   KEY `r_no_idx` (`recipe_no`),
   CONSTRAINT `i_name` FOREIGN KEY (`ing_name`) REFERENCES `ingredients` (`iname`),
   CONSTRAINT `r_no_fk3` FOREIGN KEY (`recipe_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +39,7 @@ CREATE TABLE `consists_of_ing` (
 
 LOCK TABLES `consists_of_ing` WRITE;
 /*!40000 ALTER TABLE `consists_of_ing` DISABLE KEYS */;
-INSERT INTO `consists_of_ing` VALUES ('[\"Eggs\"]','[\"1\"]',58),('Eggs','1',1),('Milk','10',1);
+INSERT INTO `consists_of_ing` VALUES ('[\"Eggs\"]','[\"1\"]',58),('[\"Milk\", \"Salt\"]','[\"A cup full\", \"A pinch\"]',59),('[\"Milk\"]','[\"A cup full\"]',61),('Eggs','1',1),('Milk','10',1),('[\"Eggs\"]','[\"1\"]',63);
 /*!40000 ALTER TABLE `consists_of_ing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,7 +55,7 @@ CREATE TABLE `cookware_used` (
   `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   KEY `fk_r_no_idx` (`r_no`),
   CONSTRAINT `fk_r_no` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +64,7 @@ CREATE TABLE `cookware_used` (
 
 LOCK TABLES `cookware_used` WRITE;
 /*!40000 ALTER TABLE `cookware_used` DISABLE KEYS */;
-INSERT INTO `cookware_used` VALUES ('\"Whisk\"',1),('\" Pan\"',1),('Frying Pan',58);
+INSERT INTO `cookware_used` VALUES ('\"Whisk\"',1),('\" Pan\"',1),('Frying Pan',58),('Cup',61),('Bowl',63);
 /*!40000 ALTER TABLE `cookware_used` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +112,7 @@ CREATE TABLE `food` (
   PRIMARY KEY (`fname`),
   KEY `r_no_idx` (`r_no`),
   CONSTRAINT `r_no_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +121,7 @@ CREATE TABLE `food` (
 
 LOCK TABLES `food` WRITE;
 /*!40000 ALTER TABLE `food` DISABLE KEYS */;
-INSERT INTO `food` VALUES ('Pancakes',1),('\"Fried Eggs\"',58);
+INSERT INTO `food` VALUES ('Pancakes',1),('\"Fried Eggs\"',58),('\"Warm milk\"',59),('Eggs',62),('Milk',64);
 /*!40000 ALTER TABLE `food` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +146,7 @@ CREATE TABLE `food_type` (
 
 LOCK TABLES `food_type` WRITE;
 /*!40000 ALTER TABLE `food_type` DISABLE KEYS */;
-INSERT INTO `food_type` VALUES ('Pancakes','Cake'),('\"Fried Eggs\"','[\"Breakfast\"]');
+INSERT INTO `food_type` VALUES ('Pancakes','Cake'),('\"Fried Eggs\"','[\"Breakfast\"]'),('\"Warm milk\"','[\"Comfort\"]'),('\"Warm milk\"','[\"Comfort\"]'),('\"Warm milk\"','[\"Comfort\"]'),('Eggs','[\"Eggs\"]'),('Eggs','[\"Eggs\"]'),('Milk','[\"Drink\"]');
 /*!40000 ALTER TABLE `food_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +171,7 @@ CREATE TABLE `ingredients` (
 
 LOCK TABLES `ingredients` WRITE;
 /*!40000 ALTER TABLE `ingredients` DISABLE KEYS */;
-INSERT INTO `ingredients` VALUES ('[\"Eggs\"]','[\"Protein\"]'),('Artichokes','Vegetable'),('Asparagus','Vegetable'),('Baking powder','Misc'),('Baking soda','Misc'),('Beet','Vegetable'),('Blueberry','Fruit'),('Broccoli','Vegetable'),('Brown Sugar','Sugar'),('Brussels sprouts','Vegetable'),('Butter','Dairy'),('Cabbage','Vegetable'),('Cane Sugar','Sugar'),('Cantaloupe','Fruit'),('Carrot','Vegetable'),('Cauliflower','Vegetable'),('Celery','Vegetable'),('Chedder Cheese','Dairy'),('Chicken(breast)','Poultry'),('Chicken(drumstick)','Poultry'),('Chicken(whole)','Poultry'),('Chicken(wings)','Poultry'),('Chilli peppers','Vegetable'),('Cucumber','Vegetable'),('Eggplant','Vegetable'),('Eggs','Protein'),('Flour','Grain'),('Garlic','Vegetable'),('Green onion','Vegetable'),('Honey','Sugar'),('Honeydew(Melon)','Fruit'),('Kale','Vegetable'),('Milk','Dairy'),('Onion','Vegetable'),('Peas','Vegetable'),('Potatoes','Vegetable'),('Pumpkin','Vegetable'),('Rhubarb','Vegetable'),('Rice','Grain'),('Rice flour','Grain'),('Sea Salt','Salt'),('Spinach','Vegetable'),('Steak(t-bone)','Beef'),('Strawberry','Fruit'),('Sweet Rice','Grain'),('Sweet Rice flour','Grain'),('Table Salt','Salt'),('Tomatoes','Fruit'),('Turkey(whole)','Poultry'),('Water','Misc'),('Watermelon','Fruit'),('White Sugar','Sugar'),('Yams','Vegetable');
+INSERT INTO `ingredients` VALUES ('[\"Eggs\"]','[\"Protein\"]'),('[\"Milk\", \"Salt\"]','[\"Dairy\", \"Misc\"]'),('[\"Milk\"]','[\"Dairy\"]'),('Artichokes','Vegetable'),('Asparagus','Vegetable'),('Baking powder','Misc'),('Baking soda','Misc'),('Beet','Vegetable'),('Blueberry','Fruit'),('Broccoli','Vegetable'),('Brown Sugar','Sugar'),('Brussels sprouts','Vegetable'),('Butter','Dairy'),('Cabbage','Vegetable'),('Cane Sugar','Sugar'),('Cantaloupe','Fruit'),('Carrot','Vegetable'),('Cauliflower','Vegetable'),('Celery','Vegetable'),('Chedder Cheese','Dairy'),('Chicken(breast)','Poultry'),('Chicken(drumstick)','Poultry'),('Chicken(whole)','Poultry'),('Chicken(wings)','Poultry'),('Chilli peppers','Vegetable'),('Cucumber','Vegetable'),('Eggplant','Vegetable'),('Eggs','Protein'),('Flour','Grain'),('Garlic','Vegetable'),('Green onion','Vegetable'),('Honey','Sugar'),('Honeydew(Melon)','Fruit'),('Kale','Vegetable'),('Milk','Dairy'),('Onion','Vegetable'),('Peas','Vegetable'),('Potatoes','Vegetable'),('Pumpkin','Vegetable'),('Rhubarb','Vegetable'),('Rice','Grain'),('Rice flour','Grain'),('Sea Salt','Salt'),('Spinach','Vegetable'),('Steak(t-bone)','Beef'),('Strawberry','Fruit'),('Sweet Rice','Grain'),('Sweet Rice flour','Grain'),('Table Salt','Salt'),('Tomatoes','Fruit'),('Turkey(whole)','Poultry'),('Water','Misc'),('Watermelon','Fruit'),('White Sugar','Sugar'),('Yams','Vegetable');
 /*!40000 ALTER TABLE `ingredients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +191,7 @@ CREATE TABLE `recipe` (
   PRIMARY KEY (`NUM`),
   UNIQUE KEY `NUM._UNIQUE` (`NUM`),
   KEY `u_id_idx` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,7 +200,7 @@ CREATE TABLE `recipe` (
 
 LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` DISABLE KEYS */;
-INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving '),(58,'test','\"Fried Eggs\"','\"10\"','\" Fry the eggs in the pan\"');
+INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving '),(58,'test','\"Fried Eggs\"','\"10\"','\" Fry the eggs in the pan\"'),(59,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(60,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(61,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(62,'a','Eggs','1min','i don\'t know it\'s just eggs '),(63,'a','Eggs','1min','i don\'t know it\'s just eggs '),(64,'a','Milk','1min','pour milk into cup. drink ');
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -335,19 +334,21 @@ BEGIN
     where recipe_no = rnum;
 	
     select json_extract(ing_array, '$.ingredients') into @ai;
+    select json_extract(ing_array, '$.ingType') into @ait;
+    select json_extract(ing_array, '$.ingAmount') into @ait;
    
 	set endind = json_length(@ai);
 
     while _ind < endind do
 		insert into ingredients(iname, itype)
-		value (json_unquote(json_extract(ing_array, concat('$[ ',`_ind`, ' ].ingredients'))),
-				json_unquote(json_extract(ing_array, concat('$[',`_ind`, '].ingType'))))
+		value (json_unquote(json_extract(@ai, concat('$[ ',`_ind`, ' ].ingredients'))),
+				json_unquote(json_extract(@ait, concat('$[',`_ind`, '].ingType'))))
 		on duplicate key update
-		itype = json_unquote(json_extract(ing_array, concat('$[',`_ind`, '].ingType')));
+		itype = json_unquote(json_extract(@ait, concat('$[',`_ind`, '].ingType')));
 	
 		insert into consists_of_ing(ing_name, amount, recipe_no)
-		value (json_unquote(json_extract(ing_array, concat('$[',`_ind`, '].ingredients'))),
-			json_unquote(json_extract(ing_array, concat('$[',`_ind`, '].ingAmount'))),
+		value (json_unquote(json_extract(@ai, concat('$[',`_ind`, '].ingredients'))),
+			json_unquote(json_extract(@aa, concat('$[',`_ind`, '].ingAmount'))),
 			rnum);
 		set _ind = _ind + 1;
 	end while;
@@ -447,14 +448,14 @@ BEGIN
     set endind = json_length(@ft);
     
 	insert into recipe(user_id, rname, time_taken, directions)
-    values (id,	@title,	@tt, @step);
+    values (id,	json_unquote(@title),	json_unquote(@tt), json_unquote(@step));
    
     set rnum = (select MAX(NUM)
 					from recipe);
      
-    call addedit_food (@fn, rnum); 
+    call addedit_food (json_unquote(@fn), rnum); 
     while _ind < endind do
-		call add_foodtype(@fn, json_unquote(json_extract(recipedata, concat('$[',`_ind`, '].foodType'))));
+		call add_foodtype(json_unquote(@fn), json_unquote(json_extract(recipedata, concat('$[',`_ind`, '].foodType'))));
 		set _ind = _ind + 1;
     end while;
     
@@ -565,14 +566,14 @@ BEGIN
     select json_extract(recipedata, '$.title') into @title;
     select json_extract(recipedata, '$.foodType') into @ft;
     select json_extract(recipedata, '$.title') into @fn;
-    select json_extract(recipedata, '$.timeTake') into @ft;
+    select json_extract(recipedata, '$.timeTake') into @tt;
     select json_extract(recipedata, '$.steps') into @step;
     set endind = json_length(@ft);
 	
     update recipe
-    set rname = json_extract(@ai, concat('$["',`0`, '"].title')),
-		time_taken = json_extract(@ai, concat('$[',`0`, '].timetaken')),
-        directions = json_extract(@ai, concat('$[',`0`, '].steps'))
+    set rname = json_extract(@title, concat('$["',`0`, '"].title')),
+		time_taken = json_extract(@tt, concat('$[',`0`, '].timetaken')),
+        directions = json_extract(@step, concat('$[',`0`, '].steps'))
 	where NUM = rnum;
 		
 		
@@ -947,4 +948,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-05  2:55:03
+-- Dump completed on 2018-12-10 13:23:45

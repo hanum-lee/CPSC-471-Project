@@ -70,27 +70,47 @@ app.post('/editRecipe',function(req,res){
 				console.log(err);
 				res.status(400).send(err);
 			}
-			res.status(200).send(rows);
+			outputjson = {
+				title: rows[0][0].rname,
+				author: rows[0][0].user_id,
+				number: rows[0][0].NUM,
+				foodType:[],
+				ingredients:[],
+				ingAmount:[],
+				ingType:[],
+				cookware:[],
+				timeTake: rows[0][0].time_taken,
+				steps: rows[0][0].directions,
+				favourite: rows[4][0].bool
+			};
+			console.log("first"+ JSON.stringify(outputjson));
+			for(var i = 0; i < rows[2].length;i++){
+				outputjson['foodType'].push(rows[2][i].f_type);
+			}
+			for(var i = 0 ; i < rows[3].length; i ++){
+				outputjson['ingredients'].push(rows[3][i].ing_name);
+				outputjson['ingAmount'].push(rows[3][i].amount);
+				outputjson['ingType'].push(rows[3][i]).ing_type;
+			}
+		
+			for(var i = 0; i < rows[1].length;i++){
+				outputjson['cookware'].push(rows[1][i].cookware);
+			}
+			console.log(JSON.stringify(outputjson));
+			console.log(rows.length);
+			res.status(200).send(outputjson);
+			
 		});
 	});
 });
 //Update recipe
 app.post('/recipeUpdate',function(req,res){
-	/*let recTitle = req.body.title;
-	let recNum = req.body.number;
-	let recDec = req.body.description;
-	let recFoodType = req.body.foodType;
-	let recIngr = req.body.ingredients;
-	let recCook = req.body.cookware;
-	let recSteps = req.body.steps;
-	let rec.fav = req.body.favourite;
-	let username = req.body.username;*/
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.edit_recipe(?,?)',[req.body, req.body.author[0]], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.edit_recipe(?,?)',[JSON.stringify(req.body), req.body.author[0]], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log(err);
@@ -167,14 +187,12 @@ app.post('/register',function(req,res){
 });
 
 app.post('/recipeData',function(req,res){
-	var username = 'test';
-	var rno = 1;
 	pool.getConnection(function (err,connection) {
 		if (err) {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.get_full_recipe(?,?)',[1,'test'], function(err, rows, fields) {
+		connection.query('CALL recipesearcher.get_full_recipe(?,?)',[req.body.recipeNum,req.body.username], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log("Error in query");
