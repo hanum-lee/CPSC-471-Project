@@ -195,10 +195,10 @@ function showRecipe() {
   $("#steps").text(recipeData.steps);
   $("#timeTake").text("Time it takes to prepare food: " + recipeData.timeTake);
   for (i=0;i<recipeData.ingredients.length;i++) {
-    $("#ingList").append(recipeData.ingredients[i] + " " + recipeData.ingAmount[i] + "<br>");
+    $("#ingList").append("<li>" + recipeData.ingredients[i] + " " + recipeData.ingAmount[i] + "</li>");
   }
   for (i=0;i<recipeData.cookware.length;i++) {
-    $("#cookware").append(recipeData.cookware[i] + "<br>");
+    $("#cwList").append("<li>" + recipeData.cookware[i] + "</li>");
   }
 }
 
