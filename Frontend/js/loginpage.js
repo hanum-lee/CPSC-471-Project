@@ -24,14 +24,16 @@ function userLog() {
       }
       // dealing with info from server
       if (logSuccess.userexists == "false") {
+			alert("Invalid username or password");
           sessionStorage.setItem("loginMessage","invalid username or password");
       }
       else if (logSuccess.userexists == "true") {
         sessionStorage.setItem("userLogin", "true");
         sessionStorage.setItem("user", $("#logUsername").val());
-        window.location.href = 'managepage.html';
+        window.location.href = '/managepage.html';
       }
       else {
+		alert("Login failed");
         sessionStorage.setItem("loginMessage","login failed");
       }
   };
@@ -39,15 +41,16 @@ function userLog() {
 
   // dealing with info from server
   if (logSuccess.userexists == "false") {
+	  alert("Invalid username or password");
       sessionStorage.setItem("loginMessage","invalid username or password");
   }
   else if (logSuccess.userexists == "true") {
-	  console.error("or this?");
     sessionStorage.setItem("userLogin", "true");
     sessionStorage.setItem("user", $("#logUsername").val());
     window.location.set('/managepage.html');
   }
   else {
+	  alert("Login failed");
     sessionStorage.setItem("loginMessage","login failed");
   }
 }
@@ -88,15 +91,18 @@ function userReg() {
 	  }
       // dealing with info from server
       if (logSuccess.userexists == "true") {
+		alert("Register Successful");
         sessionStorage.setItem("userLogin", "true");
         sessionStorage.setItem("user", $("#logUsername").val());
         window.location.href = 'managepage.html';
 
       }
       else if (logSuccess.userexists == "false") {
+		alert("Username taken");
         sessionStorage.setItem("loginMessage","username taken");
       }
       else {
+		  alert("Register failed");
         sessionStorage.setItem("loginMessage","Register failed");
       }
   };

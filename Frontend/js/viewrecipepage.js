@@ -137,6 +137,7 @@ function addEditReview() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         console.log("add/edit review data send successful");
+		alert("Added Review");
       }
   };
   req.send(userReviewString);

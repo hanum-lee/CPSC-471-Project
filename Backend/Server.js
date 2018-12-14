@@ -168,7 +168,6 @@ app.post('/register',function(req,res){
 			var myval = JSON.parse(JSON.stringify(rows[0]));
 			var bool_value = myval[0].userexists == 'true';
 			var aval;
-			console.log(bool_value);
 			if (bool_value) {
 				aval = {userexists: "true"};
 			}
@@ -534,7 +533,6 @@ app.post('/addeditreview', function(req, res) {	//might need to change function 
 				res.status(400).send(err);
 			}
 			
-
 			res.status(200).send(rows);
 		});
 	});
