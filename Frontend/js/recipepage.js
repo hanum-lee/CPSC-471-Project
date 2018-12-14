@@ -136,6 +136,8 @@ function sendDelete() {
   req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status === 200) {
         console.log("delete recipe send successful");
+        alert("Recipe deleted");
+        window.location.href = "managepage.html";
       }
   };
   req.send(recipeSelectString);
@@ -235,7 +237,7 @@ $(document).ready(function(){
   // send command to delete if click delete
   $("#deleteButton").click(sendDelete);
   // dont send to server, go to manage page
-  $("exitButton").click(function() {
+  $("#exitButton").click(function() {
     window.location.href = "managepage.html";
   });
 });

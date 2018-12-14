@@ -144,6 +144,8 @@ function addEditReview() {
         if (req.readyState === 4 && req.status === 200) {
           console.log("add/edit review data send successful");
       alert("Added Review");
+      $("#deleteReview").show();
+      $("#deleteReview").click(deleteReview);
         }
     };
     req.send(userReviewString);
@@ -193,7 +195,7 @@ function showRecipe() {
   $("#steps").text(recipeData.steps);
   $("#timeTake").text("Time it takes to prepare food: " + recipeData.timeTake);
   for (i=0;i<recipeData.ingredients.length;i++) {
-    $("#ingredients").append(recipeData.ingredients[i] + " " + recipeData.ingAmount[i] + "<br>");
+    $("#ingList").append(recipeData.ingredients[i] + " " + recipeData.ingAmount[i] + "<br>");
   }
   for (i=0;i<recipeData.cookware.length;i++) {
     $("#cookware").append(recipeData.cookware[i] + "<br>");
