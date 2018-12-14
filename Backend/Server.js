@@ -110,7 +110,8 @@ app.post('/recipeUpdate',function(req,res){
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		connection.query('CALL recipesearcher.edit_recipe(?,?)',[JSON.stringify(req.body), req.body.author[0]], function(err, rows, fields) {
+		var temp = req.body.author;
+		connection.query('CALL recipesearcher.edit_recipe(?,?)',[JSON.stringify(req.body), temp], function(err, rows, fields) {
 			connection.release();
 			if (err) {
 				console.log(err);
@@ -142,7 +143,6 @@ recipeData = {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
-		console.log(req.body);
 		var temp = req.body.author;
 		connection.query('CALL recipesearcher.add_recipe(?,?)',[JSON.stringify(req.body), temp], function(err, rows, fields) {
 			connection.release();
@@ -545,6 +545,8 @@ app.post('/addfavorites', function(req, res) {
 			console.log("Error connecting to database");
 			res.status(400).send(err);
 		}
+		console.log(req.body.recipeNum);
+		console.log(req.body.username);
 		connection.query('CALL recipesearcher.add_favorites(?,?)',[req.body.recipeNum, req.body.username], function(err, rows, fields) {
 			connection.release();
 			console.log(rows);

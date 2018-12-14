@@ -45,10 +45,12 @@ userReviewData = {
 function favButtonClicked() {
   if (recipeData.favourite == "false") {
     recipeData.favourite = "true";
+    alert("Favorited");
     addFavourite();
   }
   else if (recipeData.favourite == "true") {
     recipeData.favourite = "false";
+    alert("Removed Favorite");
     deleteFavourite();
   }
 }

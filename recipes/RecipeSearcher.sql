@@ -79,14 +79,13 @@ CREATE TABLE `favorites` (
   `user_id` char(45) NOT NULL,
   `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   `f_name` char(45) NOT NULL,
-  PRIMARY KEY (`user_id`),
   KEY `r_no_idx` (`r_no`),
   KEY `u_id_idx` (`user_id`),
   KEY `f_name_fk_idx` (`f_name`),
   CONSTRAINT `food_name_fk` FOREIGN KEY (`f_name`) REFERENCES `food` (`fname`),
   CONSTRAINT `r_no_fk2` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE,
   CONSTRAINT `u_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user_recipesearcher` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,7 +111,7 @@ CREATE TABLE `food` (
   PRIMARY KEY (`fname`),
   KEY `r_no_idx` (`r_no`),
   CONSTRAINT `r_no_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +145,7 @@ CREATE TABLE `food_type` (
 
 LOCK TABLES `food_type` WRITE;
 /*!40000 ALTER TABLE `food_type` DISABLE KEYS */;
-INSERT INTO `food_type` VALUES ('Pancakes','Cake'),('\"Fried Eggs\"','[\"Breakfast\"]'),('\"Warm milk\"','[\"Comfort\"]'),('\"Warm milk\"','[\"Comfort\"]'),('\"Warm milk\"','[\"Comfort\"]'),('Eggs','[\"Eggs\"]'),('Eggs','[\"Eggs\"]'),('Milk','[\"Drink\"]');
+INSERT INTO `food_type` VALUES ('Pancakes','Cake'),('\"Fried Eggs\"','[\"Breakfast\"]'),('\"Warm milk\"','[\"Comfort\"]'),('\"Warm milk\"','[\"Comfort\"]'),('\"Warm milk\"','[\"Comfort\"]'),('Eggs','[\"Eggs\"]'),('Eggs','[\"Eggs\"]'),('Milk','[\"Drink\"]'),('Eggs','[\"Snack\"]');
 /*!40000 ALTER TABLE `food_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,7 +190,7 @@ CREATE TABLE `recipe` (
   PRIMARY KEY (`NUM`),
   UNIQUE KEY `NUM._UNIQUE` (`NUM`),
   KEY `u_id_idx` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +199,7 @@ CREATE TABLE `recipe` (
 
 LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` DISABLE KEYS */;
-INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving '),(58,'test','\"Fried Eggs\"','\"10\"','\" Fry the eggs in the pan\"'),(59,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(60,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(61,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(62,'a','Eggs','1min','i don\'t know it\'s just eggs '),(63,'a','Eggs','1min','i don\'t know it\'s just eggs '),(64,'a','Milk','1min','pour milk into cup. drink ');
+INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving '),(58,'test','\"Fried Eggs\"','\"10\"','\" Fry the eggs in the pan\"'),(59,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(60,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(61,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(62,'a','Eggs','1min','i don\'t know it\'s just eggs '),(63,'a','Eggs','1min','i don\'t know it\'s just eggs '),(64,'a','Milk','1min','pour milk into cup. drink '),(65,'test','Eggs','15',' Boil the egg in water');
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,7 +254,7 @@ CREATE TABLE `user_recipesearcher` (
 
 LOCK TABLES `user_recipesearcher` WRITE;
 /*!40000 ALTER TABLE `user_recipesearcher` DISABLE KEYS */;
-INSERT INTO `user_recipesearcher` VALUES ('',''),('a','a'),('anothertest','tester'),('test','test'),('test2','a'),('testa','test'),('tester','tester');
+INSERT INTO `user_recipesearcher` VALUES ('',''),('a','a'),('anothertest','tester'),('asdfasdf','asdf'),('test','test'),('test2','a'),('testa','test'),('tester','tester'),('user','a'),('user2','a'),('users','t');
 /*!40000 ALTER TABLE `user_recipesearcher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -335,7 +334,7 @@ BEGIN
 	
     select json_extract(ing_array, '$.ingredients') into @ai;
     select json_extract(ing_array, '$.ingType') into @ait;
-    select json_extract(ing_array, '$.ingAmount') into @ait;
+    select json_extract(ing_array, '$.ingAmount') into @aa;
    
 	set endind = json_length(@ai);
 
@@ -948,4 +947,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-10 13:23:45
+-- Dump completed on 2018-12-13 19:48:48
