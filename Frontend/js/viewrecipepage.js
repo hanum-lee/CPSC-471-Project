@@ -102,11 +102,13 @@ function getReviews() {
 
 function showReviews() {
    // hard coded values for testing
+   /*
   recipeReviewData = {
     author: ["user1", "user2", "user3", "user4"],
     text: ["this is the best recipe EVER", "eh ok", "yo so easy to make", "yummy"],
     point:[5,3,4,4]
   }
+  */
 
 
   for (i=0;i<recipeReviewData.author.length;i++) {
@@ -128,19 +130,28 @@ function showReviews() {
 }
 
 function addEditReview() {
-  var userReviewString = JSON.stringify(userReviewData);
+  console.log("review added");
+  // if not empty review box
+  if ($.trim($("#userReview").val())) {
+    console.log("review not empty");
+    var userReviewString = JSON.stringify(userReviewData);
 
-  // get recipe data from server
-  var req = new XMLHttpRequest();
-  req.open('POST', '/addeditreview', true);
-  req.setRequestHeader("Content-Type", "application/json");
-  req.onreadystatechange = function () {
-      if (req.readyState === 4 && req.status === 200) {
-        console.log("add/edit review data send successful");
-		alert("Added Review");
-      }
-  };
-  req.send(userReviewString);
+    // get recipe data from server
+    var req = new XMLHttpRequest();
+    req.open('POST', '/addeditreview', true);
+    req.setRequestHeader("Content-Type", "application/json");
+    req.onreadystatechange = function () {
+        if (req.readyState === 4 && req.status === 200) {
+          console.log("add/edit review data send successful");
+      alert("Added Review");
+        }
+    };
+    req.send(userReviewString);
+
+  }
+  else {
+    console.log("empty user review text area");
+  }
 }
 
 function deleteReview() {
@@ -201,12 +212,8 @@ $(document).ready(function(){
     // allow add favourite when clicked
     // show add comment button
     // allow add comment
-    if ($.trim($("#userReview").val())) {
-      $("#addReview").click(addEditReview);
-    }
-    else {
-      console.log("empty user review text area");
-    }
+
+    $("#addReview").click(addEditReview);
 
   }
   else {
