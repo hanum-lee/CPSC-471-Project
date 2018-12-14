@@ -28,8 +28,8 @@ CREATE TABLE `consists_of_ing` (
   `recipe_no` smallint(11) NOT NULL,
   KEY `i_name_idx` (`ing_name`),
   KEY `r_no_idx` (`recipe_no`),
-  CONSTRAINT `i_name` FOREIGN KEY (`ing_name`) REFERENCES `ingredients` (`iname`),
-  CONSTRAINT `r_no_fk3` FOREIGN KEY (`recipe_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
+  CONSTRAINT `i_name` FOREIGN KEY (`ing_name`) REFERENCES `ingredients` (`iname`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `r_no_fk3` FOREIGN KEY (`recipe_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -39,7 +39,7 @@ CREATE TABLE `consists_of_ing` (
 
 LOCK TABLES `consists_of_ing` WRITE;
 /*!40000 ALTER TABLE `consists_of_ing` DISABLE KEYS */;
-INSERT INTO `consists_of_ing` VALUES ('[\"Eggs\"]','[\"1\"]',58),('[\"Milk\", \"Salt\"]','[\"A cup full\", \"A pinch\"]',59),('[\"Milk\"]','[\"A cup full\"]',61),('Eggs','1',1),('Milk','10',1),('[\"Eggs\"]','[\"1\"]',63);
+INSERT INTO `consists_of_ing` VALUES ('[\"Eggs\"]','[\"1\"]',58),('Eggs','1',1),('Milk','10',1);
 /*!40000 ALTER TABLE `consists_of_ing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,7 +54,7 @@ CREATE TABLE `cookware_used` (
   `cookware` char(45) NOT NULL,
   `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   KEY `fk_r_no_idx` (`r_no`),
-  CONSTRAINT `fk_r_no` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
+  CONSTRAINT `fk_r_no` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -64,7 +64,7 @@ CREATE TABLE `cookware_used` (
 
 LOCK TABLES `cookware_used` WRITE;
 /*!40000 ALTER TABLE `cookware_used` DISABLE KEYS */;
-INSERT INTO `cookware_used` VALUES ('\"Whisk\"',1),('\" Pan\"',1),('Frying Pan',58),('Cup',61),('Bowl',63);
+INSERT INTO `cookware_used` VALUES ('\"Whisk\"',1),('\" Pan\"',1),('Frying Pan',58);
 /*!40000 ALTER TABLE `cookware_used` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -77,7 +77,7 @@ DROP TABLE IF EXISTS `favorites`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `favorites` (
   `user_id` char(45) NOT NULL,
-  `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
+  `r_no` smallint(11) NOT NULL,
   `f_name` char(45) NOT NULL,
   KEY `r_no_idx` (`r_no`),
   KEY `u_id_idx` (`user_id`),
@@ -85,7 +85,7 @@ CREATE TABLE `favorites` (
   CONSTRAINT `food_name_fk` FOREIGN KEY (`f_name`) REFERENCES `food` (`fname`),
   CONSTRAINT `r_no_fk2` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE,
   CONSTRAINT `u_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user_recipesearcher` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,6 +109,7 @@ CREATE TABLE `food` (
   `fname` char(45) NOT NULL,
   `r_no` smallint(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`fname`),
+  UNIQUE KEY `fname_UNIQUE` (`fname`),
   KEY `r_no_idx` (`r_no`),
   CONSTRAINT `r_no_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -120,7 +121,7 @@ CREATE TABLE `food` (
 
 LOCK TABLES `food` WRITE;
 /*!40000 ALTER TABLE `food` DISABLE KEYS */;
-INSERT INTO `food` VALUES ('Pancakes',1),('\"Fried Eggs\"',58),('\"Warm milk\"',59),('Eggs',62),('Milk',64);
+INSERT INTO `food` VALUES ('Pancakes',1),('\"Fried Eggs\"',58);
 /*!40000 ALTER TABLE `food` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,7 +146,7 @@ CREATE TABLE `food_type` (
 
 LOCK TABLES `food_type` WRITE;
 /*!40000 ALTER TABLE `food_type` DISABLE KEYS */;
-INSERT INTO `food_type` VALUES ('Pancakes','Cake'),('\"Fried Eggs\"','[\"Breakfast\"]'),('\"Warm milk\"','[\"Comfort\"]'),('\"Warm milk\"','[\"Comfort\"]'),('\"Warm milk\"','[\"Comfort\"]'),('Eggs','[\"Eggs\"]'),('Eggs','[\"Eggs\"]'),('Milk','[\"Drink\"]'),('Eggs','[\"Snack\"]');
+INSERT INTO `food_type` VALUES ('Pancakes','Cake'),('\"Fried Eggs\"','[\"Breakfast\"]');
 /*!40000 ALTER TABLE `food_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,7 +171,7 @@ CREATE TABLE `ingredients` (
 
 LOCK TABLES `ingredients` WRITE;
 /*!40000 ALTER TABLE `ingredients` DISABLE KEYS */;
-INSERT INTO `ingredients` VALUES ('[\"Eggs\"]','[\"Protein\"]'),('[\"Milk\", \"Salt\"]','[\"Dairy\", \"Misc\"]'),('[\"Milk\"]','[\"Dairy\"]'),('Artichokes','Vegetable'),('Asparagus','Vegetable'),('Baking powder','Misc'),('Baking soda','Misc'),('Beet','Vegetable'),('Blueberry','Fruit'),('Broccoli','Vegetable'),('Brown Sugar','Sugar'),('Brussels sprouts','Vegetable'),('Butter','Dairy'),('Cabbage','Vegetable'),('Cane Sugar','Sugar'),('Cantaloupe','Fruit'),('Carrot','Vegetable'),('Cauliflower','Vegetable'),('Celery','Vegetable'),('Chedder Cheese','Dairy'),('Chicken(breast)','Poultry'),('Chicken(drumstick)','Poultry'),('Chicken(whole)','Poultry'),('Chicken(wings)','Poultry'),('Chilli peppers','Vegetable'),('Cucumber','Vegetable'),('Eggplant','Vegetable'),('Eggs','Protein'),('Flour','Grain'),('Garlic','Vegetable'),('Green onion','Vegetable'),('Honey','Sugar'),('Honeydew(Melon)','Fruit'),('Kale','Vegetable'),('Milk','Dairy'),('Onion','Vegetable'),('Peas','Vegetable'),('Potatoes','Vegetable'),('Pumpkin','Vegetable'),('Rhubarb','Vegetable'),('Rice','Grain'),('Rice flour','Grain'),('Sea Salt','Salt'),('Spinach','Vegetable'),('Steak(t-bone)','Beef'),('Strawberry','Fruit'),('Sweet Rice','Grain'),('Sweet Rice flour','Grain'),('Table Salt','Salt'),('Tomatoes','Fruit'),('Turkey(whole)','Poultry'),('Water','Misc'),('Watermelon','Fruit'),('White Sugar','Sugar'),('Yams','Vegetable');
+INSERT INTO `ingredients` VALUES ('[\"Eggs\"]','[\"Protein\"]'),('[\"Milk\"]','[\"Dairy\"]'),('Artichokes','Vegetable'),('Asparagus','Vegetable'),('Baking powder','Misc'),('Baking soda','Misc'),('Beet','Vegetable'),('Blueberry','Fruit'),('Broccoli','Vegetable'),('Brown Sugar','Sugar'),('Brussels sprouts','Vegetable'),('Butter','Dairy'),('Cabbage','Vegetable'),('Cane Sugar','Sugar'),('Cantaloupe','Fruit'),('Carrot','Vegetable'),('Cauliflower','Vegetable'),('Celery','Vegetable'),('Chedder Cheese','Dairy'),('Chicken(breast)','Poultry'),('Chicken(drumstick)','Poultry'),('Chicken(whole)','Poultry'),('Chicken(wings)','Poultry'),('Chilli peppers','Vegetable'),('Cucumber','Vegetable'),('Eggplant','Vegetable'),('Eggs','Protein'),('Flour','Grain'),('Garlic','Vegetable'),('Green onion','Vegetable'),('Honey','Sugar'),('Honeydew(Melon)','Fruit'),('Kale','Vegetable'),('Milk','Dairy'),('Onion','Vegetable'),('Peas','Vegetable'),('Potatoes','Vegetable'),('Pumpkin','Vegetable'),('Rhubarb','Vegetable'),('Rice','Grain'),('Rice flour','Grain'),('Sea Salt','Salt'),('Spinach','Vegetable'),('Steak(t-bone)','Beef'),('Strawberry','Fruit'),('Sweet Rice','Grain'),('Sweet Rice flour','Grain'),('Table Salt','Salt'),('Tomatoes','Fruit'),('Turkey(whole)','Poultry'),('Water','Misc'),('Watermelon','Fruit'),('White Sugar','Sugar'),('Yams','Vegetable');
 /*!40000 ALTER TABLE `ingredients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,7 +200,7 @@ CREATE TABLE `recipe` (
 
 LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` DISABLE KEYS */;
-INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving '),(58,'test','\"Fried Eggs\"','\"10\"','\" Fry the eggs in the pan\"'),(59,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(60,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(61,'test','\"Warm milk\"','\"30 seconds\"','\" Put milk in cup, add a pinch of salt. run in microwave for 30seconds\"'),(62,'a','Eggs','1min','i don\'t know it\'s just eggs '),(63,'a','Eggs','1min','i don\'t know it\'s just eggs '),(64,'a','Milk','1min','pour milk into cup. drink '),(65,'test','Eggs','15',' Boil the egg in water');
+INSERT INTO `recipe` VALUES (1,'test','Pancakes','10','1)Mix the flour, baking powder, salt and sugar 2)Add in the milk, egg and melted butter, until no chunks are seen 3) Heat a frying pan, melt a little butter to oil said pan and cook the batter until golden on both sides before serving '),(58,'test','\"Fried Eggs\"','\"10\"','\" Fry the eggs in the pan\"');
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,11 +216,10 @@ CREATE TABLE `review` (
   `u_id` char(45) NOT NULL,
   `rating` text NOT NULL,
   `stars` smallint(5) NOT NULL,
-  UNIQUE KEY `u_id_UNIQUE` (`u_id`),
-  UNIQUE KEY `r_no_UNIQUE` (`r_no`),
   KEY `recipe_num_fk_idx` (`r_no`),
-  CONSTRAINT `recipe_num_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE,
-  CONSTRAINT `user_id_fk2` FOREIGN KEY (`u_id`) REFERENCES `user_recipesearcher` (`id`) ON DELETE CASCADE
+  KEY `user_id_fk2` (`u_id`),
+  CONSTRAINT `recipe_num_fk` FOREIGN KEY (`r_no`) REFERENCES `recipe` (`num`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_id_fk2` FOREIGN KEY (`u_id`) REFERENCES `user_recipesearcher` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -242,7 +242,7 @@ DROP TABLE IF EXISTS `user_recipesearcher`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `user_recipesearcher` (
   `ID` char(45) NOT NULL,
-  `pswd` char(45) DEFAULT NULL,
+  `pswd` char(45) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -254,7 +254,7 @@ CREATE TABLE `user_recipesearcher` (
 
 LOCK TABLES `user_recipesearcher` WRITE;
 /*!40000 ALTER TABLE `user_recipesearcher` DISABLE KEYS */;
-INSERT INTO `user_recipesearcher` VALUES ('',''),('a','a'),('anothertest','tester'),('asdfasdf','asdf'),('test','test'),('test2','a'),('testa','test'),('tester','tester'),('user','a'),('user2','a'),('users','t');
+INSERT INTO `user_recipesearcher` VALUES ('test','test'),('user','a'),('user2','a'),('users','t');
 /*!40000 ALTER TABLE `user_recipesearcher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -947,4 +947,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-13 19:48:48
+-- Dump completed on 2018-12-13 21:59:23
